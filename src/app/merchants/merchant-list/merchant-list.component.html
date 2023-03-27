@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <div class="table-responsive"style="height:550px; overflow-y: scroll;">
+        <table class="table table-sm table-bordered table-striped table-hover overflow-auto" #dataTable>
+          <thead class="thead-dark">
+            <tr>
+              <th>Sr No.</th>
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let merchant of merchants;let i = index" style="cursor: pointer;">
+              <td [routerLink]="merchant.merchantId">{{ i + 1 }}</td>
+              <td [routerLink]="merchant.merchantId">{{ merchant.merchantName }}</td>
+              <td><button (click)="editMerchant(merchant.merchantId)" class="btn btn-primary btn-sm">Edit</button></td>
+              <td><button (click)="deleteMerchant(merchant.merchantId)" class="btn btn-danger btn-sm">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-6">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="row mb-4">
+    </div>
+  </div>
+</div>

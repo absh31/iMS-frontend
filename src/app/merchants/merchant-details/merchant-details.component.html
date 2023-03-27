@@ -1,0 +1,65 @@
+<div class="container" *ngIf="dataFetched">
+  <div class="row mb-3"></div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <p style="font-weight: bold;">Name : {{merchantDetails.merchantName}}</p>
+      <p style="font-weight: bold;">GST : {{merchantDetails.merchantGST}}</p>
+      <p style="font-weight: bold;">Last Traded : {{merchantDetails.lastTraded}}</p>
+      <p style="font-weight: bold;">Added : {{merchantDetails.merchantAdded}}</p>
+      <p style="font-weight: bold;">Last Modified : {{merchantDetails.lastModifiedTime}}</p>
+      <p style="font-weight: bold;">Remarks : {{merchantDetails.remarks}}</p>
+      <hr>
+      <p style="font-weight: bold;">Contacts : </p>
+      <div class="row">
+        <div *ngFor="let contact of merchantDetails.theContacts" class="col-md-12 col-lg-6">
+          <div class="card border-dark bg-transparent">
+            <div class="card-body">
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{contact.contactType}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">No. : {{contact.contactNo}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{contact.contactAdded}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                {{contact.lastModifiedTime}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{contact.remarks}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p style="font-weight: bold;">Emails : </p>
+      <div class="row">
+        <div *ngFor="let email of merchantDetails.theEmails" class="col-md-12 col-lg-6">
+          <div class="card border-dark bg-transparent">
+            <div class="card-body">
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{email.emailType}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Email. : {{email.email}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{email.emailAdded}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                {{email.lastModifiedTime}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{email.remarks}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p style="font-weight: bold;">Address : </p>
+      <div class="row">
+        <div *ngFor="let address of merchantDetails.theAddress" class="col-md-12 col-lg-6">
+          <div class="card border-dark bg-transparent">
+            <div class="card-body">
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 1 : {{address.addressLine1}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 2 : {{address.addressLine2}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">City : {{address.addressCity}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">State : {{address.addressState}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Pincode : {{address.addressPincode}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{address.addressAdded}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                {{address.lastModifiedTime}}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{address.remarks}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+</div>

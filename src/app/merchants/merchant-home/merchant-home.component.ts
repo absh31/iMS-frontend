@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-merchants',
-  templateUrl: './merchants.component.html',
-  styleUrls: ['./merchants.component.css'],
+  selector: 'app-merchant-home',
+  templateUrl: './merchant-home.component.html',
+  styleUrls: ['./merchant-home.component.css'],
 })
-export class MerchantsComponent implements OnInit {
+export class MerchantHomeComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}

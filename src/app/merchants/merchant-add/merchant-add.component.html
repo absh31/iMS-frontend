@@ -1,0 +1,191 @@
+<div class="container">
+  <div class="row mt-3">
+  </div>
+  <div class="row">
+    <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Add Merchant : </h2>
+  </div>
+  <div class="row mb-3">
+  </div>
+  <div class="row">
+    <form [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <h4>Details : </h4>
+        <div class="col-md-12 col-lg-5">
+          <div>
+            <label for="merchantname">Name :</label>
+            <input type="text" formControlName="merchantName" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-3">
+          <div>
+            <label for="merchantgst">GST :</label>
+            <input type="text" formControlName="merchantGST" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-4">
+          <div>
+            <label for="remarks">Remarks :</label>
+            <input type="text" formControlName="remarks" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Contact Details:</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-success" (click)="addContactDetails()" type="button">Add Contact</button>
+          </div>
+        </div>
+        <div class="row" formArrayName="theContacts">
+          <div class="row"
+            *ngFor="let contactDetail of this.merchantForm.get('theContacts')['controls']; let i = index"
+            [formGroupName]="i">
+            <div class="col-md-12 col-lg-2">
+              <div>
+                <label for="contactType">Contact Type :</label>
+                <select formControlName="contactType" class="form-control">
+                  <option value="Primary" selected>Primary</option>
+                  <option value="Secondary">Secondary</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+              <div>
+                <label for="contactNo">Contact Number :</label>
+                <input type="text" formControlName="contactNo" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-11 col-lg-6">
+              <div>
+                <label for="remarks">Remarks :</label>
+                <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+              </div>
+            </div>
+            <div class="col-md-1 col-lg-1">
+              <div>
+                <label for="">&nbsp;</label>
+                <button type="button" (click)="removeContactDetails(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Email Details:</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-success" (click)="addEmailDetails()" type="button">Add Email</button>
+          </div>
+        </div>
+        <div class="row" formArrayName="theEmails">
+          <div class="row"
+            *ngFor="let contactDetail of this.merchantForm.get('theEmails')['controls']; let i = index"
+            [formGroupName]="i">
+            <div class="col-md-12 col-lg-2">
+              <div>
+                <label for="emailType">Email Type :</label>
+                <select formControlName="emailType" class="form-control">
+                  <option value="Primary" selected>Primary</option>
+                  <option value="Secondary">Secondary</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+              <div>
+                <label for="email">Email Id :</label>
+                <input type="text" formControlName="email" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-11 col-lg-6">
+              <div>
+                <label for="remarks">Remarks :</label>
+                <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+              </div>
+            </div>
+            <div class="col-md-1 col-lg-1">
+              <div>
+                <label for="">&nbsp;</label>
+                <button type="button" (click)="removeEmailDetails(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Address Details:</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-success" (click)="addAddressDetails()" type="button">Add Address</button>
+          </div>
+        </div>
+        <div class="row" formArrayName="theAddress">
+          <div class="row"
+            *ngFor="let contactDetail of this.merchantForm.get('theAddress')['controls']; let i = index"
+            [formGroupName]="i">
+            <div class="col-md-12 col-lg-5">
+              <div>
+                <label for="addressLine1">Address Line 1 :</label>
+                <input type="text" formControlName="addressLine1" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-5">
+              <div>
+                <label for="addressLine2">Address Line 2 :</label>
+                <input type="text" formControlName="addressLine2" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-2">
+              <div>
+                <label for="addressPincode">Pincode :</label>
+                <input type="text" formControlName="addressPincode" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+              <div>
+                <label for="addressCity">City :</label>
+                <select formControlName="addressCity" class="form-control">
+                  <option value="1">A</option>
+                  <option>B</option>
+                  <option>C</option>
+                  <option>D</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+              <div>
+                <label for="addressState">State :</label>
+                <select formControlName="addressState" class="form-control">
+                  <option value="1">AA</option>
+                  <option>BB</option>
+                  <option>CC</option>
+                  <option>DD</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-11 col-lg-5">
+              <div>
+                <label for="contactType">Remarks :</label>
+                <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+              </div>
+            </div>
+            <div class="col-md-1 col-lg-1">
+              <div>
+                <label for="">&nbsp;</label>
+                <button type="button" (click)="removeAddressDetails(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-4">
+        <button type="submit" class="btn btn-success">Save Merchant</button>
+      </div>
+    </form>
+  </div>
+</div>
