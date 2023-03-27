@@ -1,1 +1,210 @@
-<p>dashboard works!</p>
+<div class="cont">
+  <div class="container">
+    <div class="row mb-5">
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="row text-left">
+          <h2>Sales </h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Orders</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">₹</h2>
+                <p class="card-text" style="font-weight: bold;">Amount</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Return</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">₹</h2>
+                <p class="card-text" style="font-weight: bold;">Amount</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+
+        </div>
+        <div class="row text-left">
+          <h2>Purchase </h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Orders</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">₹</h2>
+                <p class="card-text" style="font-weight: bold;">Amount</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Return</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">₹</h2>
+                <p class="card-text" style="font-weight: bold;">Amount</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-0 col-lg-1">
+      </div>
+      <div class="col-md-12 col-lg-5">
+        <div class="row text-left">
+          <h2>Inventory </h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Total</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Blocked</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2"></div>
+        <div class="row text-left">
+          <h2>Product </h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Merchants</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header">#</h2>
+                <p class="card-text" style="font-weight: bold;">Products</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4">
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <h3>Sales v/s Purchase (Qty.)</h3>
+          <hr>
+          <canvas id="MyChart">{{ chart }}</canvas>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <h3>Sales v/s Purchase (Orders)</h3>
+          <hr>
+          <canvas id="MyChart1">{{ chart }}</canvas>
+        </div>
+      </div>
+      <div class="row mb-5">
+      </div>
+      <div class="row">
+        <h3>Top Selling Stock :</h3>
+        <hr>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered table-striped table-hover" datatable [dtOptions]="dtOptions">
+            <thead class="thead-dark">
+              <tr>
+                <th>Sr No.</th>
+                <th>Desc</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Qty.</th>
+                <th>Last Purchased</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of data">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.address.street }}, {{ user.address.city }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Low Quantity Stock :</h3>
+        <hr>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered table-striped table-hover" datatable [dtOptions]="dtOptions">
+            <thead class="thead-dark">
+              <tr>
+                <th>Sr No.</th>
+                <th>Desc</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Qty.</th>
+                <th>Last Purchased</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of data">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.address.street }}, {{ user.address.city }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
