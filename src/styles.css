@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-image: linear-gradient(rgba(0, 187, 255, 0.2), rgba(167, 255, 165, 0.2));
+  background-repeat: no-repeat;
+}
+@import "~bootstrap-icons/font/bootstrap-icons.css";
