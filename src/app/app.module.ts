@@ -36,6 +36,7 @@ import { MerchantDetailsComponent } from './merchants/merchant-details/merchant-
 import { MerchantListComponent } from './merchants/merchant-list/merchant-list.component';
 import { MerchantStartComponent } from './merchants/merchant-start/merchant-start.component';
 import { SettingsComponent } from './settings/settings.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -76,9 +77,12 @@ import { SettingsComponent } from './settings/settings.component';
     MdbValidationModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  // public static apiLink = 'http://localhost:8080/ims/';
+  public static apiLink = 'http://192.1.200.123:8080/ims/';
+}
