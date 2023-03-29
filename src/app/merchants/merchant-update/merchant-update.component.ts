@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppModule } from 'src/app/app.module';
 import { Merchant } from '../merchant.model';
 
 @Component({
@@ -29,7 +30,7 @@ export class MerchantUpdateComponent {
 
   getMerchantDetails(id: number) {
     this.http
-      .get('http://localhost:8080/ims/merchants/'.concat(id.toString()))
+      .get(AppModule.apiLink+'merchants/'.concat(id.toString()))
       .subscribe((data) => {
         this.merchantDetails = data;
         this.initForm();
@@ -43,17 +44,16 @@ export class MerchantUpdateComponent {
     let merchantName = this.merchantForm.value['merchantName'];
     let merchantGST = this.merchantForm.value['merchantGST'];
     let remarks = this.merchantForm.value['remarks'];
-    const editMerchant = {
+    const data = {
       merchantId,
       merchantType,
       merchantName,
       merchantGST,
       remarks,
     };
-    let data = JSON.parse(JSON.stringify(editMerchant));
 
     this.http
-      .put('http://localhost:8080/ims/merchants', data)
+      .put(AppModule.apiLink+'merchants', data)
       .subscribe((data) => {
         console.log(data);
         if (data['success'] === true) {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-merchant-details',
@@ -26,7 +27,7 @@ export class MerchantDetailsComponent implements OnInit{
   }
 
   getMerchantDetails(id: number) {
-    this.http.get('http://localhost:8080/ims/merchants/'.concat(id.toString()),).subscribe(
+    this.http.get(AppModule.apiLink+'merchants/'.concat(id.toString()),).subscribe(
       (data) => {
         this.dataFetched = false;
         this.merchantDetails = data;

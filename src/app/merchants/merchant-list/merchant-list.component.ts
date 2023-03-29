@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppModule } from 'src/app/app.module';
 declare var $;
 @Component({
   selector: 'app-merchant-list',
@@ -26,7 +27,7 @@ export class MerchantListComponent {
   }
 
   getMerchants() {
-    this.http.get('http://localhost:8080/ims/merchants').subscribe((data) => {
+    this.http.get(AppModule.apiLink+'merchants').subscribe((data) => {
       this.merchants = data;
       // console.log(this.merchants);
 
@@ -69,7 +70,7 @@ export class MerchantListComponent {
   deleteMerchant(merchantId: number) {
     console.log(merchantId);
     this.http
-      .delete('http://localhost:8080/ims/merchants/' + merchantId)
+      .delete(AppModule.apiLink+'merchants/' + merchantId)
       .subscribe((data) => {
         alert('Merchant deleted Successfully!');
         console.log(data);
