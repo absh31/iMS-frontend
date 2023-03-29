@@ -1,1 +1,224 @@
-<p>settings works!</p>
+<div class="container">
+  <div class="row mt-1">
+    <div class="col-md-12 col-lg-7" style="border-right: 1.5px solid black;">
+      <div class="row" style="border-bottom: 1.5px solid black;">
+        <h3>Product Type:</h3>
+        <div class="row">
+          <div class="col-md-12 col-lg-5">
+            <div class="row">
+              <form [formGroup]="productTypeForm" (ngSubmit)="onSubmitType()" *ngIf="productTypeForm">
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="producttype">Product Type :</label>
+                      <input type="text" formControlName="productType" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="remarks">Remarks :</label>
+                      <textarea formControlName="remarks" rows="2" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="col-md-9 col-lg-8">
+                    <button type="submit" class="btn btn-success">Save Product Type</button>
+                  </div>
+                  <div class="col-md-9 col-lg-3">
+                    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-7" style="height: 320px; overflow-y: scroll;">
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered border-dark table-striped table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Sr No.</th>
+                      <th>Type</th>
+                      <th>Added</th>
+                      <th>Remarks</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let type of typeDetails;let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ type.productType }}</td>
+                      <td>{{ type.productTypeAdded }}</td>
+                      <td>{{ type.remarks }}</td>
+                      <td>
+                        <div class="btn-group">
+                          <button class="btn btn-primary btn-sm" (click)="onEditType(type.productTypeId)"><i
+                              class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
+                            (click)="onDeleteType(type.productTypeId)"><i class="bi bi-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Product Color:</h3>
+        <div class="row">
+          <div class="col-md-12 col-lg-5">
+            <div class="row">
+              <form [formGroup]="productColorForm" *ngIf="productColorForm" (ngSubmit)="onSubmitColor()">
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="productcolor">Product Color :</label>
+                      <input type="text" formControlName="productColorName" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="remarks">Remarks :</label>
+                      <textarea formControlName="remarks" rows="2" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="col-md-9 col-lg-8">
+                    <button type="submit" class="btn btn-success">Save Product Color</button>
+                  </div>
+                  <div class="col-md-9 col-lg-3">
+                    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-7" style="height: 320px; overflow-y: scroll;">
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered border-dark table-striped table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Sr No.</th>
+                      <th>Color</th>
+                      <th>Added</th>
+                      <th>Remarks</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let color of colorDetails;let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ color.productColorName }}</td>
+                      <td>{{ color.productColorAdded }}</td>
+                      <td>{{ color.remarks }}</td>
+                      <td>
+                        <div class="btn-group">
+                          <button class="btn btn-primary btn-sm" (click)="onEditColor(color.productColorId)"><i
+                              class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
+                            (click)="onDeleteColor(color.productColorId)"><i class="bi bi-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-12 col-lg-1"></div> -->
+    <div class="col-md-12 col-lg-5">
+      <div class="row">
+        <h3>Product Size Type:</h3>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <div class="row p-3">
+              <form [formGroup]="productSizeTypeForm" *ngIf="productSizeTypeForm" (ngSubmit)="onSubmitSize()">
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="productsizetype">Product Size Type :</label>
+                      <input type="text" formControlName="productSizeType" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="productsizes">Product Sizes :</label>
+                      <input type="text" formControlName="productSizes" class="form-control"
+                        placeholder="Comma Seperated Sizes">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="">
+                      <label for="remarks">Remarks :</label>
+                      <textarea formControlName="remarks" rows="2" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="col-md-9 col-lg-6">
+                    <button type="submit" class="btn btn-success">Save Product Size Type</button>
+                  </div>
+                  <div class="col-md-9 col-lg-3">
+                    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 mb-2"></div>
+        <div class="row">
+          <div class="col-md-12 col-lg-12" style="height: 380px; overflow-y: scroll;">
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered border-dark table-striped table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Sr No.</th>
+                      <th>Size Type</th>
+                      <th>Sizes</th>
+                      <th>Added</th>
+                      <th>Remarks</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let size of sizeDetails;let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ size.productSizeType }}</td>
+                      <td>{{ size.productSizes }}</td>
+                      <td>{{ size.productSizeTypeAdded }}</td>
+                      <td>{{ size.remarks }}</td>
+                      <td>
+                        <div class="btn-group">
+                          <button class="btn btn-primary btn-sm" (click)="onEditSize(size.productSizeTypeId)"><i
+                              class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
+                            (click)="onDeleteSize(size.productSizeTypeId)"><i class="bi bi-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
