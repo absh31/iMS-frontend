@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Merchant } from '../merchant.model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { throwError } from 'rxjs';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-merchant-add',
@@ -44,7 +45,7 @@ export class MerchantAddComponent implements OnInit {
     let data = JSON.parse(JSON.stringify(newMerchant));
 
     this.http
-      .post('http://localhost:8080/ims/merchants', data)
+      .post(AppModule.apiLink+'merchants', data)
       .subscribe((data) => {
         console.log(data);
         if (data['success'] === true) {

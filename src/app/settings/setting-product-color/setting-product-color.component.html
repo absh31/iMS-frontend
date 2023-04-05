@@ -1,0 +1,70 @@
+<div class="col-md-12 col-lg-12">
+  <div class="row">
+    <h3>Product Color:</h3>
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <div class="row">
+          <form [formGroup]="productColorForm" *ngIf="productColorForm" (ngSubmit)="onSubmitColor()">
+            <div class="row">
+              <div class="col-md-12 col-lg-12">
+                <div class="">
+                  <label for="productcolor">Product Color :</label>
+                  <input type="text" formControlName="productColorName" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12">
+                <div class="">
+                  <label for="remarks">Remarks :</label>
+                  <textarea formControlName="remarks" rows="2" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-md-9 col-lg-8">
+                <button type="submit" class="btn btn-success">Save Product Color</button>
+              </div>
+              <div class="col-md-9 col-lg-3">
+                <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2"></div>
+      <div class="col-md-12 col-lg-12" style="height: 320px; overflow-y: scroll;">
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered border-dark table-striped table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Color</th>
+                  <th>Added</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let color of colorDetails;let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ color.productColorName }}</td>
+                  <td>{{ color.productColorAdded }}</td>
+                  <td>{{ color.remarks }}</td>
+                  <td>
+                    <div class="btn-group">
+                      <button class="btn btn-primary btn-sm" (click)="onEditColor(color.productColorId)"><i
+                          class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
+                        (click)="onDeleteColor(color.productColorId)"><i class="bi bi-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

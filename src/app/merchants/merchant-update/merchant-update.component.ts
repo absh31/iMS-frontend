@@ -40,13 +40,13 @@ export class MerchantUpdateComponent {
 
   onSubmit() {
     let merchantId = this.merchantForm.value['merchantId'];
-    let merchantType = this.merchantForm.value['merchantType'];
+    // let merchantType = this.merchantForm.value['merchantType'];
     let merchantName = this.merchantForm.value['merchantName'];
     let merchantGST = this.merchantForm.value['merchantGST'];
     let remarks = this.merchantForm.value['remarks'];
     const data = {
       merchantId,
-      merchantType,
+      // merchantType,
       merchantName,
       merchantGST,
       remarks,
@@ -69,14 +69,14 @@ export class MerchantUpdateComponent {
 
   initForm() {
     let merchantId = this.merchantDetails['merchantId'];
-    let merchantType = this.merchantDetails['merchantType'];
+    // let merchantType = this.merchantDetails['merchantType'];
     let merchantName = this.merchantDetails['merchantName'];
     let merchantGST = this.merchantDetails['merchantGST'];
     let remarks = this.merchantDetails['remarks'];
 
     this.merchantForm = new FormGroup({
       merchantId: new FormControl(merchantId, Validators.required),
-      merchantType: new FormControl(merchantType, Validators.required),
+      // merchantType: new FormControl(merchantType, Validators.required),
       merchantName: new FormControl(merchantName, Validators.required),
       merchantGST: new FormControl(merchantGST, Validators.required),
       remarks: new FormControl(remarks),

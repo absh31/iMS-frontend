@@ -37,6 +37,10 @@ import { MerchantListComponent } from './merchants/merchant-list/merchant-list.c
 import { MerchantStartComponent } from './merchants/merchant-start/merchant-start.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RouterModule } from '@angular/router';
+import { ProductAddComponent } from './products/product-add/product-add.component';
+import { SettingProductTypeComponent } from './settings/setting-product-type/setting-product-type.component';
+import { SettingProductColorComponent } from './settings/setting-product-color/setting-product-color.component';
+import { SettingProductSizeTypeComponent } from './settings/setting-product-size-type/setting-product-size-type.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +59,10 @@ import { RouterModule } from '@angular/router';
     MerchantListComponent,
     MerchantStartComponent,
     SettingsComponent,
+    ProductAddComponent,
+    SettingProductTypeComponent,
+    SettingProductColorComponent,
+    SettingProductSizeTypeComponent,
   ],
   imports: [
     BrowserModule,

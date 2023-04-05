@@ -4,7 +4,7 @@ import { EmailDetails } from "./email-details.model";
 
 export class Merchant{
     public merchantId: number | null;
-    public merchantType : string;
+    // public merchantType : string;
     public merchantName : string;
     public merchantGST : string;
     public remarks : string;
@@ -14,7 +14,7 @@ export class Merchant{
 
     constructor(merchantId : number | null, merchantName : string, merchantGST : string, remarks : string, theContacts : ContactDetails[], theEmails : EmailDetails[], theAddress : AddressDetails[]){
         this.merchantId = merchantId;
-        this.merchantType = "";
+        // this.merchantType = "";
         this.merchantName = merchantName;
         this.merchantGST = merchantGST;
         this.remarks = remarks;
