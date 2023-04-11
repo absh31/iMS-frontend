@@ -41,6 +41,11 @@ import { ProductAddComponent } from './products/product-add/product-add.componen
 import { SettingProductTypeComponent } from './settings/setting-product-type/setting-product-type.component';
 import { SettingProductColorComponent } from './settings/setting-product-color/setting-product-color.component';
 import { SettingProductSizeTypeComponent } from './settings/setting-product-size-type/setting-product-size-type.component';
+import { SettingProductSizeComponent } from './settings/setting-product-size/setting-product-size.component';
+import { ProductHomeComponent } from './products/product-home/product-home.component';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
+import { ProductStartComponent } from './products/product-start/product-start.component';
+import { ProductListComponent } from './products/product-list/product-list.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +68,11 @@ import { SettingProductSizeTypeComponent } from './settings/setting-product-size
     SettingProductTypeComponent,
     SettingProductColorComponent,
     SettingProductSizeTypeComponent,
+    SettingProductSizeComponent,
+    ProductHomeComponent,
+    ProductDetailsComponent,
+    ProductStartComponent,
+    ProductListComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +101,6 @@ import { SettingProductSizeTypeComponent } from './settings/setting-product-size
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  // public static apiLink = 'http://localhost:8080/ims/';
-  public static apiLink = 'http://192.1.200.123:8080/ims/';
+  public static apiLink = 'http://localhost:8080/ims/';
+  // public static apiLink = 'http://192.1.200.123:8080/ims/';
 }

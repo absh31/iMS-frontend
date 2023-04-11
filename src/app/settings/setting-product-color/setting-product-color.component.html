@@ -50,7 +50,7 @@
                 <tr *ngFor="let color of colorDetails;let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ color.productColorName }}</td>
-                  <td>{{ color.productColorAdded }}</td>
+                  <td>{{ color.productColorAdded | date : "medium" }}</td>
                   <td>{{ color.remarks }}</td>
                   <td>
                     <div class="btn-group">

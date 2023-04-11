@@ -1,15 +1,25 @@
-<div class="col-md-12 col-lg-12">
+<div class="col-md-12 col-lg-12" *ngIf="dataFetched">
   <div class="row">
     <h3>Product Size Type:</h3>
     <div class="row">
       <div class="col-md-12 col-lg-12">
         <div class="row p-3">
-          <form [formGroup]="productSizeTypeForm" *ngIf="productSizeTypeForm" (ngSubmit)="onSubmitSize()">
+          <form [formGroup]="productSizeForm" *ngIf="productSizeForm" (ngSubmit)="onSubmitSize()">
             <div class="row">
               <div class="col-md-12 col-lg-12">
                 <div class="">
                   <label for="productsizetype">Product Size Type :</label>
-                  <input type="text" formControlName="productSizeType" class="form-control">
+                  <select formControlName="productSizeTypeId" class="form-control">
+                    <option *ngFor="let type of sizeTypes" [value]="type.productSizeTypeId">{{type.productSizeType}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12">
+                <div class="">
+                  <label for="productsize">Product Size :</label>
+                  <input formControlName="productSize" class="form-control" type="text">
                 </div>
               </div>
             </div>
@@ -23,7 +33,7 @@
             </div>
             <div class="row my-2">
               <div class="col-md-9 col-lg-6">
-                <button type="submit" class="btn btn-success">Save Product Size Type</button>
+                <button type="submit" class="btn btn-success">Save Product Size</button>
               </div>
               <div class="col-md-9 col-lg-3">
                 <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
@@ -43,22 +53,23 @@
                 <tr>
                   <th>Sr No.</th>
                   <th>Size Type</th>
+                  <th>Size</th>
                   <th>Added</th>
                   <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let size of sizeDetails;let i = index">
+                <tr *ngFor="let size of sizes;let i = index">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ size.productSizeType }}</td>
-                  <td>{{ size.productSizeTypeAdded | date : "medium" }}</td>
+                  <td>{{ sizeTypeDetails[size.productSizeTypeId] }}</td>
+                  <td>{{ size.productSize }}</td>
+                  <td>{{ size.productSizeAdded | date : "medium" }}</td>
                   <td>{{ size.remarks }}</td>
                   <td>
                     <div class="btn-group">
-                      <button class="btn btn-primary btn-sm" (click)="onEditSize(size.productSizeTypeId)"><i
-                          class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
-                        (click)="onDeleteSize(size.productSizeTypeId)"><i class="bi bi-trash"></i></button>
+                      <button class="btn btn-danger btn-sm"
+                        (click)="onDeleteSize(size.productSizeId)"><i class="bi bi-trash"></i></button>
                     </div>
                   </td>
                 </tr>

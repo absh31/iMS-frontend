@@ -16,6 +16,10 @@ import { SettingProductColorComponent } from './settings/setting-product-color/s
 import { SettingProductSizeTypeComponent } from './settings/setting-product-size-type/setting-product-size-type.component';
 import { SettingProductTypeComponent } from './settings/setting-product-type/setting-product-type.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SettingProductSizeComponent } from './settings/setting-product-size/setting-product-size.component';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
+import { ProductHomeComponent } from './products/product-home/product-home.component';
+import { ProductStartComponent } from './products/product-start/product-start.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -36,19 +40,34 @@ const routes: Routes = [
     ],
   },
   { path: 'products/add', component: ProductAddComponent },
-  { path: 'products', component: ProductsComponent, children: [] },
+  {
+    path: 'products',
+    component: ProductsComponent,
+    children: [
+      {
+        path: '',
+        component: ProductHomeComponent,
+        children: [
+          { path: ':id', component: ProductDetailsComponent },
+          { path: '', component: ProductStartComponent },
+        ],
+      },
+    ],
+  },
   { path: 'orders', component: OrdersComponent, children: [] },
   { path: 'inventory', component: InventoryComponent, children: [] },
   { path: 'reports', component: ReportsComponent, children: [] },
-  { 
-    path: 'settings', 
-    component: SettingsComponent, 
+  {
+    path: 'settings',
+    component: SettingsComponent,
     children: [
-      { path: 'productType', component: SettingProductTypeComponent},
-      { path: 'productColor', component: SettingProductColorComponent},
-      { path: 'productSizeType', component: SettingProductSizeTypeComponent},
-      { path: '', redirectTo : 'productType', pathMatch : 'full'}
-    ] },
+      { path: 'productType', component: SettingProductTypeComponent },
+      { path: 'productColor', component: SettingProductColorComponent },
+      { path: 'productSize', component: SettingProductSizeComponent },
+      { path: 'productSizeType', component: SettingProductSizeTypeComponent },
+      { path: '', redirectTo: 'productType', pathMatch: 'full' },
+    ],
+  },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 

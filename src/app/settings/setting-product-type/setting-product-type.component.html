@@ -50,7 +50,7 @@
                 <tr *ngFor="let type of typeDetails;let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ type.productType }}</td>
-                  <td>{{ type.productTypeAdded }}</td>
+                  <td>{{ type.productTypeAdded | date : "medium" }}</td>
                   <td>{{ type.remarks }}</td>
                   <td>
                     <div class="btn-group">

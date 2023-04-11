@@ -41,7 +41,6 @@ export class SettingProductSizeTypeComponent implements OnInit {
 
   initForm() {
     let productSizeType = '';
-    let productSizes = '';
     let sizeRemarks = '';
     if (this.isEditing) {
       switch (this.editMode) {
@@ -51,7 +50,6 @@ export class SettingProductSizeTypeComponent implements OnInit {
             .subscribe((response) => {
               console.log(response);
               productSizeType = response['productSizeType'];
-              productSizes = response['productSizes'];
               sizeRemarks = response['remarks'];
             });
           break;
@@ -64,7 +62,6 @@ export class SettingProductSizeTypeComponent implements OnInit {
     setTimeout(() => {
       this.productSizeTypeForm = new FormGroup({
         productSizeType: new FormControl(productSizeType),
-        productSizes: new FormControl(productSizes),
         remarks: new FormControl(sizeRemarks),
       });
     }, 500);
@@ -76,7 +73,6 @@ export class SettingProductSizeTypeComponent implements OnInit {
       newSize = {
         'productSizeTypeId': this.id,
         'productSizeType': this.productSizeTypeForm.value['productSizeType'],
-        'productSizes': this.productSizeTypeForm.value['productSizes'],
         'remarks': this.productSizeTypeForm.value['remarks'],
       };
       this.http
@@ -94,11 +90,10 @@ export class SettingProductSizeTypeComponent implements OnInit {
     } else {
       newSize = {
         'productSizeType': this.productSizeTypeForm.value['productSizeType'],
-        'productSizes': this.productSizeTypeForm.value['productSizes'],
         'remarks': this.productSizeTypeForm.value['remarks'],
       };
       this.http
-        .post(AppModule.apiLink+'productcolors', newSize)
+        .post(AppModule.apiLink+'productSizeTypes', newSize)
         .subscribe((data) => {
           console.log(data);
           if (data['success'] === true) {
