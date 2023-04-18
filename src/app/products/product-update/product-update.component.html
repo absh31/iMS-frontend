@@ -1,0 +1,95 @@
+<div class="container" *ngIf="dataFetched">
+  <div class="row mt-3">
+  </div>
+  <div class="row">
+    <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Edit Product :
+    </h2>
+  </div>
+  <div class="row mb-3">
+  </div>
+  <div class="row">
+    <form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="onSubmitDetails()">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <h4>Details : </h4>
+        <div class="row mt-1">
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="productdesc">Product Desc :</label>
+              <input type="text" formControlName="productDesc" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="producttype">Product Type :</label>
+              <select formControlName="productType" class="form-select">
+                <option *ngFor="let type of productTypes" [value]="type.productTypeId">{{type.productType}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="productdesc">Product HSN :</label>
+              <input type="text" formControlName="productHSN" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div>
+              <label for="producttype">Product Remarks :</label>
+              <textarea class="form-control" formControlName="remarks" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-1">
+            <div>
+              <label for="remarks" style="display: none;">Remarks :</label><br>
+              <button type="submit" class="btn btn-success">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <form *ngIf="productComboForm" [formGroup]="productComboForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theProductCombo">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Combinations :</h4>
+          </div>
+        </div>
+        <div class="row" *ngFor="let combo of this.productComboForm.get('theProductCombo')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="contact">Size :</label><br>
+              <select formControlName="productSize" class="form-select">
+                <option *ngFor="let size of sizes" [value]="size.productSizeId">{{ size.productSize}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="contact">Color :</label><br>
+              <select formControlName="productColor" class="form-select">
+                <option *ngFor="let color of colors" [value]="color.productColorId">{{ color.productColorName}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-6">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="onUpdateCombo(i)" class="btn btn-success mt-4 mb-2">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

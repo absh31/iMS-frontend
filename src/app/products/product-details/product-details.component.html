@@ -1,0 +1,44 @@
+<div class="container" *ngIf="dataFetched">
+  <div class="row mb-3"></div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <p style="font-weight: bold;">Desc : {{productDetails.productDesc}}</p>
+      <p style="font-weight: bold;">Type : {{productDetails.productType}}</p>
+      <p style="font-weight: bold;">HSN : {{productDetails.productHSN}}</p>
+      <p style="font-weight: bold;">Added : {{productDetails.productAdded | date : "medium" }}</p>
+      <p style="font-weight: bold;">Last Modified : {{productDetails.lastModifiedTime | date : "medium" }}</p>
+      <p style="font-weight: bold;">Last Purchased : {{productDetails.lastPurchased | date : "medium" }}</p>
+      <p style="font-weight: bold;">Last Sold : {{productDetails.lastSold | date : "medium" }}</p>
+      <p style="font-weight: bold;">Remarks : {{productDetails.remarks}}</p>
+      <hr>
+      <p style="font-weight: bold;">Combinations : </p>
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <div class="table-responsive" style="height:525px; overflow-y: scroll;">
+            <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>Quantity</th>
+                  <th>Dead Count</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let combo of productCombos;let i = index" style="cursor: pointer;">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ sizesObj[combo.productSize] }}</td>
+                  <td>{{ colorObj[combo.productColor] }}</td>
+                  <td>{{ combo.productQuantity }}</td>
+                  <td>{{ combo.deadCount }}</td>
+                  <td>{{ combo.remarks }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

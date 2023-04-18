@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="row mt-3">
+  </div>
+  <div class="row">
+    <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Add Product :
+    </h2>
+  </div>
+  <div class="row mb-3">
+  </div>
+  <div class="row">
+    <form [formGroup]="productForm" *ngIf="productForm" (ngSubmit)="onSubmit()">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
+        <h4>Details : </h4>
+        <div class="row mt-1">
+          <div class="col-md-12 col-lg-4">
+            <div>
+              <label for="productdesc">Product Desc :</label>
+              <input type="text" formControlName="productDesc" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div>
+              <label for="producttype">Product Type :</label>
+              <select formControlName="productType" class="form-select">
+                <option *ngFor="let type of types" [value]="type.productTypeId">{{type.productType}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div>
+              <label for="productdesc">Product HSN :</label>
+              <input type="text" formControlName="productHSN" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-md-12 col-lg-8">
+            <div>
+              <label for="producttype">Product Remarks :</label>
+              <textarea class="form-control" formControlName="remarks" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div>
+              <label for="producttype">Product Size Type :</label>
+              <select formControlName="productSizeType" class="form-select" (change)="onChangeSizeType()">
+                <option *ngFor="let size of sizeTypes" [value]="size.productSizeTypeId">{{size.productSizeType}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-md-12 col-lg-6">
+            <div>
+              <div class="row">
+                <label for="producttype">Product Colors :</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label formArrayName="SelectedColor" *ngFor="let order of selectedColorsArray.controls; let i = index">
+                  <input type="checkbox" (click)="getCombos()" [formControlName]="i">
+                  {{colors[i].productColorName}}&nbsp;&nbsp;
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <div>
+              <div class="row">
+                <label for="producttype">Product Sizes :</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label formArrayName="SelectedSizes" *ngFor="let order of selectedSizeArray.controls; let i = index">
+                  <input type="checkbox" (click)="getCombos()" [formControlName]="i">
+                  {{sizes[i].productSize}}&nbsp;&nbsp;
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-1 pt-2" formArrayName="combinations" *ngIf="this.productForm.get('combinations')['controls'].length > 0">
+          <h4>Combinations : </h4>
+          <div class="">
+            <ul>
+              <li *ngFor="let combination of this.productForm.get('combinations')['controls']; let i = index"
+                [formGroupName]="i">
+                <div class="row mb-2">
+                  <div class="col-sm-12 col-lg-3">
+                    {{ colorObj[combination.controls.productColor.value] }} &lt;=&gt; {{ sizeObj[combination.controls.productSize.value] }}
+                  </div>
+                  <div class="col-sm-10 col-lg-6">
+                    <textarea rows="1" class="form-control" formControlName="remarks" placeholder="Remarks"></textarea>
+                  </div>
+                  <div class="col-sm-2 col-lg-3">
+                    <span (click)="removeCombination(i)" class="btn btn-danger">X</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row m-4">
+        <button type="submit" class="btn btn-success">Save Product</button>
+      </div>
+    </form>
+  </div>
+</div>

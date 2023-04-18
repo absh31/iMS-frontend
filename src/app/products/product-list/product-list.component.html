@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="table-responsive" style="height:525px; overflow-y: scroll;">
+        <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
+          <thead class="thead-dark">
+            <tr>
+              <th>Sr No.</th>
+              <th>Product Desc</th>
+              <th>Product Type</th>
+              <th>Product HSN</th>
+              <th>Last Purchased</th>
+              <th>Last Sold</th>
+              <th>Added</th>
+              <th>Modified Time</th>
+              <th>Remarks</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productsData; let i = index" style="cursor: pointer;">
+              <td [routerLink]="product.productId">{{ i + 1 }}</td>
+              <td [routerLink]="product.productId">{{ product.productDesc }}</td>
+              <td [routerLink]="product.productId">{{ typeObj[product.productType] }}</td>
+              <td [routerLink]="product.productId">{{ product.productHSN }}</td>
+              <td [routerLink]="product.productId">{{ product.lastPurchased | date : "medium" }}</td>
+              <td [routerLink]="product.productId">{{ product.lastSold | date : "medium" }}</td>
+              <td [routerLink]="product.productId">{{ product.productAdded | date : "medium" }}</td>
+              <td [routerLink]="product.productId">{{ product.lastModifiedTime | date : "medium" }}</td>
+              <td [routerLink]="product.productId">{{ product.remarks }}</td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-primary btn-sm" (click)="updateProduct(product.productId)"><i class="bi bi-pen"></i></button>
+                  <button class="btn btn-danger btn-sm" (click)="onDeleteProduct(product.productId)"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-6" style="height:525px; overflow-y: scroll;">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
