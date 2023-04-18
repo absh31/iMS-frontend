@@ -1,9 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Merchant } from '../merchant.model';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
 
 @Component({
@@ -12,90 +11,127 @@ import { AppModule } from 'src/app/app.module';
   styleUrls: ['./merchant-add.component.css'],
 })
 export class MerchantAddComponent implements OnInit {
-  
-
+  dataFetched: boolean = false;
   merchantForm: FormGroup;
+  citiesList: any;
+  statesList: any;
+  postData: any;
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr : ToastrService
   ) {}
 
-  ngOnInit(): void {``
-    this.initForm();
-  }
-
-  onSubmit() {
-    let merchantName = this.merchantForm.value['merchantName'];
-    let merchantGST = this.merchantForm.value['merchantGST'];
-    let remarks = this.merchantForm.value['remarks'];
-    let contactDetails = this.merchantForm.value['theContacts'];
-    let emailDetails = this.merchantForm.value['theEmails'];
-    let addressDetails = this.merchantForm.value['theAddress'];
-    const newMerchant = new Merchant(
-      null,
-      merchantName,
-      merchantGST,
-      remarks,
-      contactDetails,
-      emailDetails,
-      addressDetails
-    );
-    let data = JSON.parse(JSON.stringify(newMerchant));
-
-    this.http
-      .post(AppModule.apiLink+'merchants', data)
-      .subscribe((data) => {
-        console.log(data);
-        if (data['success'] === true) {
-          alert('Merchant Added Successfully!!!');
-          this.merchantForm.reset();
-          this.router.navigate(['../'], { relativeTo: this.route });
-        } else {
-          alert(data['message']);
-          this.merchantForm.reset();
-        }
+  ngOnInit(): void {
+    this.getCitiesList()
+      .then(() => this.getStatesList())
+      .then(() => this.initForm())
+      .then(() => {
+        this.dataFetched = true;
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
-  initForm() {
-    let merchantName = '';
-    let merchantGST = '';
-    let remarks = '';
-    let merchantContactDetails = new FormArray([
-      // new FormGroup({
-      //   contactType: new FormControl(null),
-      //   contactNo: new FormControl(null),
-      //   remarks: new FormControl(null),
-      // }),
-    ]);
-    let merchantEmailDetails = new FormArray([
-      // new FormGroup({
-      //   emailType: new FormControl(null),
-      //   email: new FormControl(null),
-      //   remarks: new FormControl(null),
-      // }),
-    ]);
-    let merchantAddressDetails = new FormArray([
-      // new FormGroup({
-      //   addressLine1: new FormControl(null, Validators.required),
-      //   addressLine2: new FormControl(null, Validators.required),
-      //   addressCity: new FormControl(null, Validators.required),
-      //   addressState: new FormControl(null, Validators.required),
-      //   addressPincode: new FormControl(null, Validators.required),
-      //   remarks: new FormControl(null),
-      // }),
-    ]);
+  onSubmit() {
+    this.getMerchantFormValues()
+      .then(() => this.addMerchant())
+      .then(() => {
+        this.toastr.success("Merchant Added Successfully");
+        this.merchantForm.reset();
+        this.router.navigate(['../'], { relativeTo: this.route });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-    this.merchantForm = new FormGroup({
-      merchantName: new FormControl(merchantName, Validators.required),
-      merchantGST: new FormControl(merchantGST, Validators.required),
-      remarks: new FormControl(remarks),
-      theContacts: merchantContactDetails,
-      theEmails: merchantEmailDetails,
-      theAddress: merchantAddressDetails,
+  getMerchantFormValues() {
+    const promise = new Promise((resolve, reject) => {
+      let merchantName = this.merchantForm.value['merchantName'];
+      let merchantGST = this.merchantForm.value['merchantGST'];
+      let remarks = this.merchantForm.value['remarks'];
+      let contactDetails = this.merchantForm.value['theContacts'];
+      let emailDetails = this.merchantForm.value['theEmails'];
+      let addressDetails = this.merchantForm.value['theAddress'];
+
+      this.postData = {
+        merchantName: merchantName,
+        merchantGST: merchantGST,
+        remarks: remarks,
+        theContacts: contactDetails,
+        theEmails: emailDetails,
+        theAddress: addressDetails,
+      };
+      resolve(this.postData);
     });
+    return promise;
+  }
+
+  addMerchant() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.post(AppModule.apiLink + 'merchants', this.postData).subscribe(
+        (data) => {
+          if (data['success'] === true) {
+            resolve(data);
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+    return promise;
+  }
+
+  initForm() {
+    const promise = new Promise((resolve, reject) => {
+      let merchantName = '';
+      let merchantGST = '';
+      let remarks = '';
+      let merchantContactDetails = new FormArray([]);
+      let merchantEmailDetails = new FormArray([]);
+      let merchantAddressDetails = new FormArray([]);
+
+      this.merchantForm = new FormGroup({
+        merchantName: new FormControl(merchantName, Validators.required),
+        merchantGST: new FormControl(merchantGST, Validators.required),
+        remarks: new FormControl(remarks),
+        theContacts: merchantContactDetails,
+        theEmails: merchantEmailDetails,
+        theAddress: merchantAddressDetails,
+      });
+      resolve(this.merchantForm);
+    });
+  }
+
+  getCitiesList() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'cities').subscribe(
+        (data) => {
+          this.citiesList = data;
+          resolve(data);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
+  }
+
+  getStatesList() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'states').subscribe(
+        (data) => {
+          this.statesList = data;
+          resolve(data);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
   }
 
   addContactDetails() {
@@ -143,8 +179,7 @@ export class MerchantAddComponent implements OnInit {
     (<FormArray>this.merchantForm.get('theAddress')).removeAt(index);
   }
 
-  onBack(){
-    this.router.navigate(['../'], {relativeTo: this.route});
+  onBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
-
 }

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
 
 @Component({
@@ -19,12 +20,12 @@ export class SettingProductColorComponent {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService 
   ) {}
 
   ngOnInit(): void {
     this.http.get(AppModule.apiLink + 'productcolors').subscribe((data) => {
-      console.log(data);
       this.colorDetails = data;
     });
     this.route.queryParams.subscribe((params) => {
@@ -48,9 +49,7 @@ export class SettingProductColorComponent {
           this.http
             .get(AppModule.apiLink + 'productcolors/' + this.id)
             .subscribe((response) => {
-              console.log(response);
               productColor = response['productColorName'];
-              console.log(productColor);
               colorRemarks = response['remarks'];
             });
           break;
@@ -68,7 +67,6 @@ export class SettingProductColorComponent {
     }, 500);
   }
 
-  
   onSubmitColor() {
     let newColor;
     if (this.isEditing) {
@@ -78,14 +76,14 @@ export class SettingProductColorComponent {
         remarks: this.productColorForm.value['remarks'],
       };
       this.http
-        .put(AppModule.apiLink+'productcolors', newColor)
+        .put(AppModule.apiLink + 'productcolors', newColor)
         .subscribe((data) => {
-          console.log(data);
           if (data['success'] === true) {
-            alert('Product Color Updated Successfully!!!');
+            this.toastr.success('Product Color Updated Successfully!!!');
             this.productColorForm.reset();
           } else {
-            alert(data['message']);
+            this.toastr.error("Something went wrong");
+            console.log(data['message']);
             this.productColorForm.reset();
           }
         });
@@ -95,14 +93,14 @@ export class SettingProductColorComponent {
         remarks: this.productColorForm.value['remarks'],
       };
       this.http
-        .post(AppModule.apiLink+'productcolors', newColor)
+        .post(AppModule.apiLink + 'productcolors', newColor)
         .subscribe((data) => {
-          console.log(data);
           if (data['success'] === true) {
-            alert('Product Color Added Successfully!!!');
+            this.toastr.success("Product Color Added Successdfully!!!");
             this.productColorForm.reset();
           } else {
-            alert(data['message']);
+            console.log(data['message']);
+            this.toastr.error("Something went wrong");
             this.productColorForm.reset();
           }
         });
@@ -119,12 +117,12 @@ export class SettingProductColorComponent {
     this.http
       .delete(AppModule.apiLink + 'productcolors' + productColorId)
       .subscribe((data) => {
-        console.log(data);
         if (data['success'] === true) {
-          alert('Product Color Deleted Successfully!!!');
+          this.toastr.success('Product Color Deleted Successfully!!!');
           this.productColorForm.reset();
         } else {
-          alert(data['message']);
+          console.log(data['message']);
+          this.toastr.error("Something went wrong")
           this.productColorForm.reset();
         }
       });

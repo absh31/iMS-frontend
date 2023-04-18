@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
-declare var $;
 @Component({
   selector: 'app-merchant-list',
   templateUrl: './merchant-list.component.html',
@@ -15,7 +15,12 @@ export class MerchantListComponent {
   tableData = [];
   @ViewChild('dataTable', { static: true }) table;
 
-  constructor(private http: HttpClient, private router : Router, private route: ActivatedRoute) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService 
+  ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -27,53 +32,20 @@ export class MerchantListComponent {
   }
 
   getMerchants() {
-    this.http.get(AppModule.apiLink+'merchants').subscribe((data) => {
+    this.http.get(AppModule.apiLink + 'merchants').subscribe((data) => {
       this.merchants = data;
-      // console.log(this.merchants);
-
-      //   this.dtOptions = {
-      //     data: this.merchants,
-      //     columns: [
-      //       { title: 'ID', data: 'merchantId' },
-      //       // {title: 'Email', data: 'email'},
-      //       { title: 'Name', data: 'merchantName' },
-      //       {
-      //         title: 'Edit',
-      //         data: 'merchantId',
-      //         render: function (data) {
-      //           // console.log(data);
-
-      //           return (
-      //             "<button (click)=editMerchant("+data+") class='btn btn-primary btn-sm'>Edit</button>"
-      //           );
-      //         },
-      //       },
-      //     ],
-      //   };
-      // },
-      // (err) => {},
-      // () => {
-      //   this.dataTable = $(this.table.nativeElement);
-      //   this.dataTable.DataTable(this.dtOptions);
     });
   }
 
-  showMerchantDetails(merchantId: number) {
-    console.log(merchantId);
-  }
-
   editMerchant(merchantId: number) {
-    this.router.navigate(['./edit/'+merchantId], {relativeTo: this.route});
-    console.log(merchantId);
+    this.router.navigate(['./edit/' + merchantId], { relativeTo: this.route });
   }
 
   deleteMerchant(merchantId: number) {
-    console.log(merchantId);
     this.http
-      .delete(AppModule.apiLink+'merchants/' + merchantId)
+      .delete(AppModule.apiLink + 'merchants/' + merchantId)
       .subscribe((data) => {
-        alert('Merchant deleted Successfully!');
-        console.log(data);
+        this.toastr.success('Merchant deleted Successfully!');
       });
   }
 }

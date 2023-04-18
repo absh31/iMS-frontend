@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
 
 @Component({
@@ -19,12 +20,12 @@ export class SettingProductSizeTypeComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService 
   ) {}
 
   ngOnInit(): void {
     this.http.get(AppModule.apiLink + 'productSizeTypes').subscribe((data) => {
-      console.log(data);
       this.sizeDetails = data;
     });
     this.route.queryParams.subscribe((params) => {
@@ -47,10 +48,10 @@ export class SettingProductSizeTypeComponent implements OnInit {
         case 'size': {
           this.http
             .get(AppModule.apiLink + 'productSizeTypes/' + this.id)
-            .subscribe((response) => {
-              console.log(response);
-              productSizeType = response['productSizeType'];
-              sizeRemarks = response['remarks'];
+            .subscribe((data) => {
+              productSizeType = data['productSizeType'];
+              productSizeType = data['productSizeType'];
+              sizeRemarks = data['remarks'];
             });
           break;
         }
@@ -71,42 +72,41 @@ export class SettingProductSizeTypeComponent implements OnInit {
     let newSize;
     if (this.isEditing) {
       newSize = {
-        'productSizeTypeId': this.id,
-        'productSizeType': this.productSizeTypeForm.value['productSizeType'],
-        'remarks': this.productSizeTypeForm.value['remarks'],
+        productSizeTypeId: this.id,
+        productSizeType: this.productSizeTypeForm.value['productSizeType'],
+        remarks: this.productSizeTypeForm.value['remarks'],
       };
       this.http
-      .put(AppModule.apiLink+'productSizeTypes', newSize)
-      .subscribe((data) => {
-        console.log(data);
-        if (data['success'] === true) {
-          alert('Product Size Type Updated Successfully!!!');
-          this.productSizeTypeForm.reset();
-        } else {
-          alert(data['message']);
-          this.productSizeTypeForm.reset();
-        }
-      });
-    } else {
-      newSize = {
-        'productSizeType': this.productSizeTypeForm.value['productSizeType'],
-        'remarks': this.productSizeTypeForm.value['remarks'],
-      };
-      this.http
-        .post(AppModule.apiLink+'productSizeTypes', newSize)
+        .put(AppModule.apiLink + 'productSizeTypes', newSize)
         .subscribe((data) => {
-          console.log(data);
           if (data['success'] === true) {
-            alert('Product Size Type Added Successfully!!!');
+            this.toastr.success('Product Size Type Updated Successfully!!!');
             this.productSizeTypeForm.reset();
           } else {
-            alert(data['message']);
+            console.log(data['message']);
+            this.toastr.error("Something went wrong")
+            this.productSizeTypeForm.reset();
+          }
+        });
+    } else {
+      newSize = {
+        productSizeType: this.productSizeTypeForm.value['productSizeType'],
+        remarks: this.productSizeTypeForm.value['remarks'],
+      };
+      this.http
+        .post(AppModule.apiLink + 'productSizeTypes', newSize)
+        .subscribe((data) => {
+          if (data['success'] === true) {
+            this.toastr.success('Product Size Type Added Successfully!!!');
+            this.productSizeTypeForm.reset();
+          } else {
+            console.log(data['message']);
+            this.toastr.error('Something went wrong');
             this.productSizeTypeForm.reset();
           }
         });
     }
   }
-
 
   onEditSize(productSizeTypeId: number) {
     this.router.navigate(['./'], {
@@ -115,18 +115,18 @@ export class SettingProductSizeTypeComponent implements OnInit {
     });
   }
   onDeleteSize(productSizeTypeId: number) {
-    this.http.delete(AppModule.apiLink+"productSizeTypes/"+productSizeTypeId).subscribe(
-      data =>{
-        console.log(data);
+    this.http
+      .delete(AppModule.apiLink + 'productSizeTypes/' + productSizeTypeId)
+      .subscribe((data) => {
         if (data['success'] === true) {
-          alert('Product Type Deleted Successfully!!!');
+          this.toastr.success('Product Type Deleted Successfully!!!');
           this.productSizeTypeForm.reset();
         } else {
-          alert(data['message']);
+          console.log(data['message']);
+          this.toastr.error('Something went wrong');
           this.productSizeTypeForm.reset();
         }
-      }
-    );
+      });
   }
 
   onCancel() {

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
 
 @Component({
@@ -19,12 +20,12 @@ export class SettingProductTypeComponent {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService 
   ) {}
 
   ngOnInit(): void {
     this.http.get(AppModule.apiLink + 'productTypes').subscribe((data) => {
-      console.log(data);
       this.typeDetails = data;
     });
     this.route.queryParams.subscribe((params) => {
@@ -47,10 +48,9 @@ export class SettingProductTypeComponent {
         case 'type': {
           this.http
             .get(AppModule.apiLink + 'productTypes/' + this.id)
-            .subscribe((response) => {
-              console.log(response);
-              productType = response['productType'];
-              typeRemarks = response['remarks'];
+            .subscribe((data) => {
+              productType = data['productType'];
+              typeRemarks = data['remarks'];
             });
           break;
         }
@@ -78,18 +78,17 @@ export class SettingProductTypeComponent {
       this.http
         .put(AppModule.apiLink + 'productTypes', newType)
         .subscribe((data) => {
-          console.log(data);
           if (data['success'] === true) {
-            alert('Product Type Updated Successfully!!!');
+            this.toastr.success('Product Type Updated Successfully!!!');
             this.productTypeForm.reset();
             this.http
               .get(AppModule.apiLink + 'productTypes')
               .subscribe((data) => {
-                console.log(data);
                 this.typeDetails = data;
               });
           } else {
-            alert(data['message']);
+            console.log(data['message']);
+            this.toastr.error("Something went wrong");
             this.productTypeForm.reset();
           }
         });
@@ -101,12 +100,12 @@ export class SettingProductTypeComponent {
       this.http
         .post(AppModule.apiLink + 'productTypes', newType)
         .subscribe((data) => {
-          console.log(data);
           if (data['success'] === true) {
-            alert('Product Type Added Successfully!!!');
+            this.toastr.success('Product Type Added Successfully!!!');
             this.productTypeForm.reset();
           } else {
-            alert(data['message']);
+            console.log(data['message']);
+            this.toastr.error("Something went wrong");
             this.productTypeForm.reset();
           }
         });
@@ -124,12 +123,12 @@ export class SettingProductTypeComponent {
     this.http
       .delete(AppModule.apiLink + 'productTypes/' + productTypeId)
       .subscribe((data) => {
-        console.log(data);
         if (data['success'] === true) {
-          alert('Product Type Deleted Successfully!!!');
+          this.toastr.success("Product Type Deleted Successfully");
           this.productTypeForm.reset();
         } else {
-          alert(data['message']);
+          console.log(data['message']);
+          this.toastr.error("Something went wrong");
           this.productTypeForm.reset();
         }
       });

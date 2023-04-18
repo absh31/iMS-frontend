@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
 
 @Component({
@@ -22,7 +23,8 @@ export class SettingProductSizeComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService 
   ) {}
 
   ngOnInit(): void {
@@ -68,12 +70,12 @@ export class SettingProductSizeComponent implements OnInit {
     this.http
       .post(AppModule.apiLink + 'productSizes', newSize)
       .subscribe((data) => {
-        console.log(data);
         if (data['success'] === true) {
-          alert('Product Size Added Successfully!!!');
+          this.toastr.success('Product Size Added Successfully!!!');
           this.productSizeForm.reset();
         } else {
-          alert(data['message']);
+          console.log(data['message']);
+          this.toastr.error('Something went wrong');
           this.productSizeForm.reset();
         }
       });
@@ -83,12 +85,12 @@ export class SettingProductSizeComponent implements OnInit {
     this.http
       .delete(AppModule.apiLink + 'productSizes/' + productSizeId)
       .subscribe((data) => {
-        console.log(data);
         if (data['success'] === true) {
-          alert('Product Size Deleted Successfully!!!');
+          this.toastr.success('Product Size Added Successfully!!!');
           this.productSizeForm.reset();
         } else {
-          alert(data['message']);
+          console.log(data['message']);
+          this.toastr.error('Something went wrong');
           this.productSizeForm.reset();
         }
       });

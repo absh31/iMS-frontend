@@ -9,7 +9,7 @@
               <div class="col-md-12 col-lg-12">
                 <div class="">
                   <label for="productsizetype">Product Size Type :</label>
-                  <select formControlName="productSizeTypeId" class="form-control">
+                  <select formControlName="productSizeTypeId" class="form-select">
                     <option *ngFor="let type of sizeTypes" [value]="type.productSizeTypeId">{{type.productSizeType}}</option>
                   </select>
                 </div>

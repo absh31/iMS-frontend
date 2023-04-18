@@ -1,16 +1,17 @@
-<div class="container">
+<div class="container" *ngIf="dataFetched">
   <div class="row mt-3">
   </div>
   <div class="row">
-    <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Edit Merchant : </h2>
+    <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Edit Merchant :
+    </h2>
   </div>
   <div class="row mb-3">
   </div>
   <div class="row">
-    <form *ngIf="merchantForm" [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="merchantForm" [formGroup]="merchantForm" (ngSubmit)="onSubmitDetails()">
       <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
         <h4>Details : </h4>
-        <div class="col-md-12 col-lg-5">
+        <div class="col-md-12 col-lg-3">
           <div>
             <label for="merchantname">Name :</label>
             <input type="text" formControlName="merchantName" class="form-control">
@@ -22,15 +23,308 @@
             <input type="text" formControlName="merchantGST" class="form-control">
           </div>
         </div>
-        <div class="col-md-12 col-lg-4">
+        <div class="col-md-12 col-lg-3">
           <div>
             <label for="remarks">Remarks :</label>
             <input type="text" formControlName="remarks" class="form-control">
           </div>
         </div>
+        <div class="col-md-12 col-lg-3">
+          <div>
+            <label for="remarks" style="display: none;">Remarks :</label><br>
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
       </div>
-      <div class="row m-4">
-        <button type="submit" class="btn btn-success">Update Merchant Details</button>
+    </form>
+  </div>
+  <div class="row">
+    <form *ngIf="theContactsForm" [formGroup]="theContactsForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theContacts">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Contacts :</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-primary" (click)="addContacts()" type="button">Add Contact</button>
+          </div>
+        </div>
+        <div class="row" *ngFor="let contact of this.theContactsForm.get('theContacts')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="contactType">Contact Type :</label>
+              <select formControlName="contactType" class="form-select">
+                <option value="Primary" selected>Primary</option>
+                <option value="Secondary">Secondary</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="contact">Contact No :</label>
+              <input type="text" formControlName="contactNo" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-6">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="onUpdateContacts(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="deleteContact(i)" class="btn btn-danger mt-4 mb-2"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form *ngIf="newContactsForm" [formGroup]="newContactsForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theNewContacts" *ngIf="this.newContactsForm.get('theNewContacts')['controls'].length > 0">
+        <div class="row" *ngFor="let contact of this.newContactsForm.get('theNewContacts')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="contactType">Contact Type :</label>
+              <select formControlName="contactType" class="form-select">
+                <option value="Primary" selected>Primary</option>
+                <option value="Secondary">Secondary</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="contact">Contact No :</label>
+              <input type="text" formControlName="contactNo" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-6">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="saveNewContact(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="removeNewContact(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <form *ngIf="theEmailsForm" [formGroup]="theEmailsForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theEmails">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Emails:</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-primary" (click)="addEmails()" type="button">Add Email</button>
+          </div>
+        </div>
+        <div class="row" *ngFor="let email of this.theEmailsForm.get('theEmails')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="emailType">Email Type :</label>
+              <select formControlName="emailType" class="form-select">
+                <option value="Primary" selected>Primary</option>
+                <option value="Secondary">Secondary</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="email">Email :</label>
+              <input type="email" formControlName="email" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-6">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="onUpdateEmails(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="deleteEmail(i)" class="btn btn-danger mt-4 mb-2"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form *ngIf="newEmailsForm" [formGroup]="newEmailsForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theNewEmails" *ngIf="this.newEmailsForm.get('theNewEmails')['controls'].length > 0">
+        <div class="row" *ngFor="let email of this.newEmailsForm.get('theNewEmails')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="emailType">Email Type :</label>
+              <select formControlName="emailType" class="form-select">
+                <option value="Primary" selected>Primary</option>
+                <option value="Secondary">Secondary</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="email">Email :</label>
+              <input type="email" formControlName="email" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-6">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="saveNewEmail(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="removeNewEmail(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <form *ngIf="theAddressForm" [formGroup]="theAddressForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theAddress">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Address :</h4>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-primary" (click)="addAddress()" type="button">Add Address</button>
+          </div>
+        </div>
+        <div class="row" *ngFor="let address of this.theAddressForm.get('theAddress')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-5">
+            <div>
+              <label for="addressLine1">Address Line 1 :</label>
+              <input type="text" formControlName="addressLine1" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-5">
+            <div>
+              <label for="addressLine2">Address Line 2 :</label>
+              <input type="text" formControlName="addressLine2" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="addressPincode">Pincode :</label>
+              <input type="text" formControlName="addressPincode" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="addressCity">City :</label>
+              <select formControlName="addressCity" class="form-select">
+                <option *ngFor="let city of citiesList" [value]="city.cityId">{{ city.cityName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="addressState">State :</label>
+              <select formControlName="addressState" class="form-select">
+                <option *ngFor="let state of statesList" [value]="state.stateId">{{ state.stateName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-5">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="onUpdateAddress(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="deleteAddress(i)" class="btn btn-danger mt-4 mb-2"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form *ngIf="newAddressForm" [formGroup]="newAddressForm">
+      <div class="row mb-3 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;"
+        formArrayName="theNewAddress" *ngIf="this.newAddressForm.get('theNewAddress')['controls'].length > 0">
+        <div class="row" *ngFor="let address of this.newAddressForm.get('theNewAddress')['controls']; let i = index"
+          [formGroupName]="i">
+          <div class="col-md-12 col-lg-5">
+            <div>
+              <label for="addressLine1">Address Line 1 :</label>
+              <input type="text" formControlName="addressLine1" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-5">
+            <div>
+              <label for="addressLine2">Address Line 2 :</label>
+              <input type="text" formControlName="addressLine2" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-2">
+            <div>
+              <label for="addressPincode">Pincode :</label>
+              <input type="text" formControlName="addressPincode" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="addressCity">City :</label>
+              <select formControlName="addressCity" class="form-select">
+                <option *ngFor="let city of citiesList" [value]="city.cityId">{{ city.cityName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-3">
+            <div>
+              <label for="addressState">State :</label>
+              <select formControlName="addressState" class="form-select">
+                <option *ngFor="let state of statesList" [value]="state.stateId">{{ state.stateName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-11 col-lg-5">
+            <div>
+              <label for="remarks">Remarks :</label>
+              <textarea formControlName="remarks" class="form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <div>
+              <div class="btn-group">
+                <button type="button" (click)="saveNewAddress(i)" class="btn btn-success mt-4 mb-2">Save</button>
+                <button type="button" (click)="removeNewAddress(i)" class="btn btn-danger mt-4 mb-2">X</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
