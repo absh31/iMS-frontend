@@ -21,7 +21,7 @@ export class AuthService {
 
   login(data) {
     const promise = new Promise((resolve, reject) => {
-      this.http.post(AppModule.apiLink + 'auth', data).subscribe(
+      this.http.post(AppModule.apiLink + 'auth', data, {headers: {'Access-Control-Allow-Origin': '*'}}).subscribe(
         (data) => {
           resolve(data);
         },
