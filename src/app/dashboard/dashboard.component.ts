@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { AppModule } from '../app.module';
+import { AES, enc } from 'crypto-ts';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,31 +17,39 @@ export class DashboardComponent implements OnInit {
   public chart1: any;
   sales = {};
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService, private authService: AuthService) {}
 
+  sessionDetails = AES.decrypt(sessionStorage.getItem('loginDetails'), "absh").toString(enc.Utf8);
+  sessionDetailsJSON = JSON.parse(this.sessionDetails);
+  sessionIP = this.sessionDetailsJSON['IP'];
   ngOnInit(): void {
     this.createChart();
     this.createChart1();
     this.getSalesData()
-      // .then(() => {
-      //   this.dataFetched = true;
-      // })
-      // .catch(() => {
-      //   console.log('something went wrong');
-      // });
+      .then(() => {
+        this.dataFetched = true;
+      })
+      .catch((error) => {
+        this.toastr.error("Something went wrong")
+        console.log(error);
+      });
   }
 
   getSalesData() {
     const promise = new Promise((resolve, reject) => {
-      this.http.get(AppModule.apiLink + 'utility/sales').subscribe(
-        (data) => {
-          this.sales = data;
-          resolve(data);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
+      this.http
+        .get(AppModule.apiLink + 'utility/sales', {
+          headers: { ip: this.sessionIP },
+        })
+        .subscribe(
+          (data) => {
+            this.sales = data;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
     });
     return promise;
   }

@@ -38,6 +38,7 @@ import { SettingProductSizeTypeComponent } from './settings/setting-product-size
 import { SettingProductSizeComponent } from './settings/setting-product-size/setting-product-size.component';
 import { SettingProductTypeComponent } from './settings/setting-product-type/setting-product-type.component';
 import { SettingsComponent } from './settings/settings.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { SettingsComponent } from './settings/settings.component';
     OrderStartComponent,
     ProductUpdateComponent,
     OrderUpdateComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,9 @@ import { SettingsComponent } from './settings/settings.component';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  // public static apiLink = 'http://localhost:8080/ims/';
+  public static apiLink = 'http://localhost:8080/ims/';
   // public static apiLink = 'http://192.1.200.123:8080/ims/';
-  public static apiLink = 'https://projectinventory-dev.up.railway.app/ims/';
+  // public static apiLink = 'https://projectinventory-dev.up.railway.app/ims/';
+
+  public IP = '';
 }

@@ -23,6 +23,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "chart.js": "^4.2.1",
+    "crypto-ts": "^1.0.2",
     "datatables.net": "^1.13.4",
     "datatables.net-dt": "^1.13.4",
     "jquery": "^3.6.4",
