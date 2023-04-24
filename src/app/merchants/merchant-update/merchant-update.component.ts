@@ -4,6 +4,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 
 @Component({
   selector: 'app-merchant-update',
@@ -31,7 +32,8 @@ export class MerchantUpdateComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   ngOnInit(): void {
@@ -105,12 +107,19 @@ export class MerchantUpdateComponent {
   }
 
   onSubmitDetails() {
-    this.getDetailsForm()
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.getDetailsForm())
       .then((data) => this.updateMerchantDetails(data))
+      .then(() => this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success('Merchant details updated!');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   getDetailsForm() {
@@ -145,11 +154,25 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateContacts(index: number) {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.updateContacts(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('Contact Updated Successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
+  }
+
+  updateContacts(index: number) {
     const promise = new Promise((resolve, reject) => {
       let data = this.theContactsForm.value['theContacts'][index];
       this.http.put(AppModule.apiLink + 'contacts', data).subscribe(
         (data) => {
-          this.toastr.success("Contact Updated Successfully");
           resolve(data);
         },
         (error) => reject(error)
@@ -159,11 +182,25 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateEmails(index: number) {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.updateEmails(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('Email Updated Successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
+  }
+
+  updateEmails(index: number) {
     const promise = new Promise((resolve, reject) => {
       let data = this.theEmailsForm.value['theEmails'][index];
       this.http.put(AppModule.apiLink + 'emails', data).subscribe(
         (data) => {
-          this.toastr.success("Email Updated Successfully");
           resolve(data);
         },
         (error) => reject(error)
@@ -173,11 +210,26 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateAddress(index: number) {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.updateAddress(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('Address Updated Successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
+  }
+
+  updateAddress(index: number) {
     const promise = new Promise((resolve, reject) => {
       let data = this.theAddressForm.value['theAddress'][index];
       this.http.put(AppModule.apiLink + 'address', data).subscribe(
         (data) => {
-          this.toastr.success("Address Updated Successfully");
+          this.toastr.success('Address Updated Successfully');
           resolve(data);
         },
         (error) => reject(error)
@@ -261,16 +313,28 @@ export class MerchantUpdateComponent {
     (<FormArray>this.newContactsForm.get('theNewContacts')).removeAt(index);
   }
 
+  onSaveNewContact(index: number) {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.saveNewContact(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('New Contact Saved Successfully');
+        this.removeNewContact(index);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
+  }
+
   saveNewContact(index: number) {
     let data = this.newContactsForm.value['theNewContacts'][index];
     const promise = new Promise((resolve, reject) => {
       this.http.post(AppModule.apiLink + 'contacts', data).subscribe(
         (data) => {
-          if (data['success']) {
-            this.toastr.success("New Contact Saved Successfully");
-            this.removeNewContact(index);
-            resolve(data);
-          }
+          resolve(data);
         },
         (error) => reject(error)
       );
@@ -322,6 +386,22 @@ export class MerchantUpdateComponent {
 
   removeNewEmail(index: number) {
     (<FormArray>this.newEmailsForm.get('theNewEmails')).removeAt(index);
+  }
+
+  onSaveNewEmail(index : number){
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.saveNewEmail(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('New Email Saved Successfully');
+        this.removeNewEmail(index);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   saveNewEmail(index: number) {
@@ -391,6 +471,22 @@ export class MerchantUpdateComponent {
 
   removeNewAddress(index: number) {
     (<FormArray>this.newAddressForm.get('theNewAddress')).removeAt(index);
+  }
+
+  onSaveNewAddress(index: number)  {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.saveNewAddress(index))
+      .then(() => this.dbSave.commitChanges())
+      .then(() => {
+        this.toastr.success('New Address Saved Successfully');
+        this.removeNewAddress(index);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   saveNewAddress(index: number) {

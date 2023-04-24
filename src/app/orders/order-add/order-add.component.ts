@@ -6,6 +6,7 @@ import { resolve } from 'chart.js/dist/helpers/helpers.options';
 import { data } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 
 @Component({
   selector: 'app-order-add',
@@ -38,7 +39,8 @@ export class OrderAddComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   ngOnInit(): void {
@@ -294,16 +296,22 @@ export class OrderAddComponent implements OnInit {
 
   onSaveOrder(dispatch: boolean) {
     this.onRefresh()
+      .then(() => this.dbSave.saveCheckPoint())
       .then(() => this.getOrderFormData(dispatch))
       .then(() => this.saveOrder())
       .then(() => this.getOrderItems())
       .then(() => this.saveOrderItems())
+      .then(() => this.dbSave.commitChanges())
       .then((data) => {
         this.toastr.success('Order Saved Successfully!!!');
         this.orderForm.reset();
         this.router.navigate(['../'], { relativeTo: this.route });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   getOrderFormData(dispatch: boolean) {

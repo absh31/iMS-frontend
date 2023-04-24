@@ -4,6 +4,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 
 @Component({
   selector: 'app-merchant-add',
@@ -21,7 +22,8 @@ export class MerchantAddComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr : ToastrService
+    private toastr : ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   ngOnInit(): void {
@@ -38,14 +40,18 @@ export class MerchantAddComponent implements OnInit {
 
   onSubmit() {
     this.getMerchantFormValues()
+      .then(()=> this.dbSave.saveCheckPoint())
       .then(() => this.addMerchant())
+      .then(()=>this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success("Merchant Added Successfully");
         this.merchantForm.reset();
         this.router.navigate(['../'], { relativeTo: this.route });
       })
       .catch((error) => {
+        this.dbSave.rollbackToCheckPoint();
         console.log(error);
+        this.toastr.error("Something went wrong");
       });
   }
 

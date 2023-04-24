@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 @Component({
   selector: 'app-merchant-list',
   templateUrl: './merchant-list.component.html',
@@ -19,7 +20,8 @@ export class MerchantListComponent {
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +41,18 @@ export class MerchantListComponent {
 
   editMerchant(merchantId: number) {
     this.router.navigate(['./edit/' + merchantId], { relativeTo: this.route });
+  }
+
+  onDeleteMerchant(merchantId: number) {
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.deleteMerchant(merchantId))
+      .then(() => this.dbSave.commitChanges())
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went Wrong!');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   deleteMerchant(merchantId: number) {

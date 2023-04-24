@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 
 @Component({
   selector: 'app-product-add',
@@ -30,7 +31,8 @@ export class ProductAddComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   private addCheckboxesToColorForm() {
@@ -136,8 +138,11 @@ export class ProductAddComponent implements OnInit {
       remarks: this.productForm.value['remarks'],
     };
 
-    this.addProduct(data)
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.addProduct(data))
       .then(() => this.addCombos())
+      .then(()=> this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success('Product Added Successfully!!!');
         this.productForm.reset();
@@ -146,6 +151,8 @@ export class ProductAddComponent implements OnInit {
       .catch((error) => {
         this.productForm.reset();
         console.log(error);
+        this.toastr.error("Something went wrong!");
+        this.dbSave.rollbackToCheckPoint();
       });
   }
 

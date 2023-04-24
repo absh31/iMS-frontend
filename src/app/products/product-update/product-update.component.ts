@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { DbSaveService } from 'src/app/db-save.service';
 
 @Component({
   selector: 'app-product-update',
@@ -25,7 +26,8 @@ export class ProductUpdateComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dbSave: DbSaveService
   ) {}
 
   ngOnInit(): void {
@@ -86,12 +88,19 @@ export class ProductUpdateComponent {
   }
 
   onSubmitDetails() {
-    this.getDetailsForm()
+    this.dbSave
+      .saveCheckPoint()
+      .then(() => this.getDetailsForm())
       .then((data) => this.updateProductDetails(data))
+      .then(() => this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success('Product details updated');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+        this.dbSave.rollbackToCheckPoint();
+      });
   }
 
   getDetailsForm() {
