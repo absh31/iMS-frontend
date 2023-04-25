@@ -1,22 +1,41 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12">
-      <div class="table-responsive" style="height:500px; overflow-y: scroll;">
-        <table class="table table-sm table-bordered table-striped table-hover overflow-auto" #dataTable>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="merchants">
           <thead class="thead-dark">
             <tr>
               <th>Sr No.</th>
               <th>Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>GST</th>
+              <th>Last Traded</th>
+              <th>Added</th>
+              <th>Remarks</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let merchant of merchants;let i = index" style="cursor: pointer;">
               <td [routerLink]="merchant.merchantId">{{ i + 1 }}</td>
               <td [routerLink]="merchant.merchantId">{{ merchant.merchantName }}</td>
-              <td><button (click)="editMerchant(merchant.merchantId)" class="btn btn-primary btn-sm">Edit</button></td>
-              <td><button (click)="onDeleteMerchant(merchant.merchantId)" class="btn btn-danger btn-sm">Delete</button>
+              <td [routerLink]="merchant.merchantId">{{ merchant.merchantGST ? merchant.merchantGST : "-" }}</td>
+              <td [routerLink]="merchant.merchantId">
+                {{ merchant.lastTraded ? (merchant.lastTraded | date : "medium") : "-" }}</td>
+              <td [routerLink]="merchant.merchantId">{{ merchant.merchantAdded | date : "medium" }}</td>
+              <td [routerLink]="merchant.merchantId">{{ merchant.remarks ? merchant.remarks : "-" }}</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" (click)="editMerchant(merchant.merchantId)"><i
+                        class="bi bi-pencil-square"></i> Edit </a>
+                    <a class="dropdown-item" (click)="onDeleteMerchant(merchant.merchantId)"><i class="bi bi-trash"></i>
+                      Delete </a>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>

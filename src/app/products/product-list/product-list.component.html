@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12">
-      <div class="table-responsive" style="height:525px; overflow-y: scroll;">
-        <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="productsData">
           <thead class="thead-dark">
             <tr>
               <th>Sr No.</th>
@@ -23,15 +23,25 @@
               <td [routerLink]="product.productId">{{ product.productDesc }}</td>
               <td [routerLink]="product.productId">{{ typeObj[product.productType] }}</td>
               <td [routerLink]="product.productId">{{ product.productHSN }}</td>
-              <td [routerLink]="product.productId">{{ product.lastPurchased | date : "medium" }}</td>
-              <td [routerLink]="product.productId">{{ product.lastSold | date : "medium" }}</td>
+              <td [routerLink]="product.productId">
+                {{ product.lastPurchased ? (product.lastPurchased | date : "medium") : "-" }}</td>
+              <td [routerLink]="product.productId">{{ product.lastSold ? (product.lastSold | date : "medium") : "-" }}
+              </td>
               <td [routerLink]="product.productId">{{ product.productAdded | date : "medium" }}</td>
               <td [routerLink]="product.productId">{{ product.lastModifiedTime | date : "medium" }}</td>
-              <td [routerLink]="product.productId">{{ product.remarks }}</td>
+              <td [routerLink]="product.productId">{{ product.remarks ? product.remarks : "-" }}</td>
               <td>
-                <div class="btn-group">
-                  <button class="btn btn-primary btn-sm" (click)="updateProduct(product.productId)"><i class="bi bi-pen"></i></button>
-                  <button class="btn btn-danger btn-sm" (click)="onDeleteProduct(product.productId)"><i class="bi bi-trash"></i></button>
+                <div class="dropdown">
+                  <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" (click)="updateProduct(product.productId)"><i
+                        class="bi bi-pencil-square"></i> Edit </a>
+                    <a class="dropdown-item" (click)="onDeleteProduct(product.productId)"><i class="bi bi-trash"></i>
+                      Delete </a>
+                  </div>
                 </div>
               </td>
             </tr>

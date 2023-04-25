@@ -11,6 +11,7 @@ import { AppModule } from 'src/app/app.module';
   styleUrls: ['./setting-product-color.component.css'],
 })
 export class SettingProductColorComponent {
+  dtOptions : DataTables.Settings = {};
   productColorForm: FormGroup;
   id: number;
   isEditing: boolean;
@@ -25,6 +26,11 @@ export class SettingProductColorComponent {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
+    };
     this.http.get(AppModule.apiLink + 'productcolors').subscribe((data) => {
       this.colorDetails = data;
     });

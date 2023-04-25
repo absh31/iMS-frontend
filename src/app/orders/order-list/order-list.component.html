@@ -1,52 +1,61 @@
 <div class="container">
-    <div class="row">
-      <div class="col-md-12 col-lg-12">
-        <div class="table-responsive" style="height:525px; overflow-y: scroll;">
-          <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
-            <thead class="thead-dark">
-              <tr>
-                <th>Sr No.</th>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Merchant</th>
-                <th>Date</th>
-                <th>Dispatch</th>
-                <th>Dispatch Date</th>
-                <th>Amount</th>
-                <th>Total</th>
-                <th>Discount</th>
-                <th>Quantity</th>
-                <th>Remarks</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of ordersData; let i = index" style="cursor: pointer;">
-                <td [routerLink]="order.orderId">{{ i + 1 }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderId }}</td>
-                <td [routerLink]="order.orderId">{{ orderTypeObj[order.orderTypeId] }}</td>
-                <td [routerLink]="order.orderId">{{ merchantObj[order.orderMerchantId] }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderDateTime | date : "medium" }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderDispatch }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderDispatchDateTime | date : "medium" }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderAmount }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderTotal }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderDiscount }}</td>
-                <td [routerLink]="order.orderId">{{ order.orderQuantity }}</td>
-                <td [routerLink]="order.orderId">{{ order.remarks }}</td>
-                <td>
-                  <div class="btn-group">
-                    <button class="btn btn-primary btn-sm" (click)="onEdit(order.orderId)"><i class="bi bi-pen"></i></button>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="ordersData">
+          <thead class="thead-dark">
+            <tr>
+              <th>Sr No.</th>
+              <th>Id</th>
+              <th>Type</th>
+              <th>Merchant</th>
+              <th>Date</th>
+              <th>Dispatch</th>
+              <th>Dispatch Date</th>
+              <th>Amount</th>
+              <th>Total</th>
+              <th>Discount</th>
+              <th>Quantity</th>
+              <th>Remarks</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of ordersData; let i = index" style="cursor: pointer;">
+              <td [routerLink]="order.orderId">{{ i + 1 }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderId }}</td>
+              <td [routerLink]="order.orderId">{{ orderTypeObj[order.orderTypeId] }}</td>
+              <td [routerLink]="order.orderId">{{ merchantObj[order.orderMerchantId] }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderDateTime | date : "medium" }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderDispatch ? "Yes" : "No" }}</td>
+              <td [routerLink]="order.orderId">
+                {{ order.orderDispatchDateTime ? (order.orderDispatchDateTime | date : "medium") : "NA" }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderAmount }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderTotal }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderDiscount }}</td>
+              <td [routerLink]="order.orderId">{{ order.orderQuantity }}</td>
+              <td [routerLink]="order.orderId">{{ order.remarks ? order.remarks : "-" }}</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" (click)="onEdit(order.orderId)"><i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a class="dropdown-item" (click)="onDispatch(order.orderId)" *ngIf="!order.orderDispatch"><i
+                        class="bi bi-check2-square"></i> Dispatch </a>
                   </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-12 col-lg-6" style="height:525px; overflow-y: scroll;">
-        <router-outlet></router-outlet>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+    <div class="col-md-12 col-lg-6" style="height:525px; overflow-y: scroll;">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-  
+</div>

@@ -11,11 +11,8 @@ import { DbSaveService } from 'src/app/db-save.service';
 })
 export class MerchantListComponent {
   merchants: any;
-  dtOptions: any;
-  dataTable: any;
-  tableData = [];
-  @ViewChild('dataTable', { static: true }) table;
-
+  dtOptions : DataTables.Settings = {};
+  
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -26,9 +23,9 @@ export class MerchantListComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 5,
-      lengthMenu: [5, 10, 25],
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
     };
     this.getMerchants();
   }

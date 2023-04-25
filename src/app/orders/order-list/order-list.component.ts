@@ -10,6 +10,7 @@ import { AppModule } from 'src/app/app.module';
   styleUrls: ['./order-list.component.css'],
 })
 export class OrderListComponent {
+  dtOptions : DataTables.Settings = {};
   dataFetched: boolean = false;
   ordersData: any;
   merchantDetails: any;
@@ -24,6 +25,11 @@ export class OrderListComponent {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
+    };
     this.fetchOrders()
       .then(() => this.getMerchants())
       .then(() => this.getMerchantObj())

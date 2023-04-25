@@ -10,7 +10,8 @@
                 <div class="">
                   <label for="productsizetype">Product Size Type :</label>
                   <select formControlName="productSizeTypeId" class="form-select">
-                    <option *ngFor="let type of sizeTypes" [value]="type.productSizeTypeId">{{type.productSizeType}}</option>
+                    <option *ngFor="let type of sizeTypes" [value]="type.productSizeTypeId">{{type.productSizeType}}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -45,10 +46,10 @@
     </div>
     <div class="row mt-2 mb-2"></div>
     <div class="row">
-      <div class="col-md-12 col-lg-12" style="height: 380px; overflow-y: scroll;">
+      <div class="col-md-12 col-lg-12">
         <div class="row">
           <div class="table-responsive">
-            <table class="table table-sm table-bordered border-dark table-striped table-hover">
+            <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="sizes">
               <thead class="thead-dark">
                 <tr>
                   <th>Sr No.</th>
@@ -65,11 +66,18 @@
                   <td>{{ sizeTypeDetails[size.productSizeTypeId] }}</td>
                   <td>{{ size.productSize }}</td>
                   <td>{{ size.productSizeAdded | date : "medium" }}</td>
-                  <td>{{ size.remarks }}</td>
+                  <td>{{ size.remarks ? size.remarks : "-" }}</td>
                   <td>
-                    <div class="btn-group">
-                      <button class="btn btn-danger btn-sm"
-                        (click)="onDeleteSize(size.productSizeId)"><i class="bi bi-trash"></i></button>
+                    <div class="dropdown">
+                      <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                        <a class="dropdown-item" (click)="onDeleteSize(size.productSizeId)"><i class="bi bi-trash"></i>
+                          Delete </a>
+                      </div>
                     </div>
                   </td>
                 </tr>

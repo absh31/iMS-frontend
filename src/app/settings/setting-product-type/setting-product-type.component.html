@@ -33,10 +33,11 @@
         </div>
       </div>
       <div class="row mt-2 mb-2"></div>
-      <div class="col-md-12 col-lg-12" style="height: 320px; overflow-y: scroll;">
+      <div class="col-md-12 col-lg-12">
         <div class="row">
           <div class="table-responsive">
-            <table class="table table-sm table-bordered border-dark table-striped table-hover">
+            <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions"
+              *ngIf="typeDetails">
               <thead class="thead-dark">
                 <tr>
                   <th>Sr No.</th>
@@ -51,12 +52,19 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ type.productType }}</td>
                   <td>{{ type.productTypeAdded | date : "medium" }}</td>
-                  <td>{{ type.remarks }}</td>
+                  <td>{{ type.remarks ? type.remarks : '-' }}</td>
                   <td>
-                    <div class="btn-group">
-                      <button class="btn btn-primary btn-sm" (click)="onEditType(type.productTypeId)"><i
-                          class="bi bi-pen"></i></button><button class="btn btn-danger btn-sm"
-                        (click)="onDeleteType(type.productTypeId)"><i class="bi bi-trash"></i></button>
+                    <div class="dropdown">
+                      <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="onEditType(type.productTypeId)"><i
+                            class="bi bi-pencil-square"></i> Edit </a>
+                        <a class="dropdown-item" (click)="onDeleteType(type.productTypeId)"><i class="bi bi-trash"></i>
+                          Delete </a>
+                      </div>
                     </div>
                   </td>
                 </tr>

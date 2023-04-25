@@ -19,6 +19,7 @@ export class SettingProductSizeComponent implements OnInit {
   sizeTypes: any;
   sizeTypeDetails = {};
   sizes: any;
+  dtOptions : DataTables.Settings = {};
 
   constructor(
     private http: HttpClient,
@@ -28,6 +29,11 @@ export class SettingProductSizeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
+    };
     this.http.get(AppModule.apiLink + 'productSizeTypes').subscribe((data) => {
       this.sizeTypes = data;
       this.getSizeTypeDetails();

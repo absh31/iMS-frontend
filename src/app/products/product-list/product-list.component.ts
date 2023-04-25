@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
   productTypes: any;
   productObj = {};
   typeObj = {};
+  dtOptions : DataTables.Settings = {};
 
   constructor(
     private http: HttpClient,
@@ -25,6 +26,11 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
+    };
     this.fetchProducts()
       .then(() => this.getProductObj())
       .then(() => this.getProductTypes())

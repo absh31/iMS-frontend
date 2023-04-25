@@ -16,6 +16,8 @@ export class SettingProductTypeComponent {
   isEditing: boolean;
   editMode: string;
   typeDetails: any;
+  dtOptions : DataTables.Settings = {};
+
 
   constructor(
     private http: HttpClient,
@@ -25,6 +27,11 @@ export class SettingProductTypeComponent {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType : 'full_numbers',
+      pageLength : 10,
+      processing : true
+    };
     this.http.get(AppModule.apiLink + 'productTypes').subscribe((data) => {
       this.typeDetails = data;
     });
