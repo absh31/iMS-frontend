@@ -16,13 +16,16 @@
           </thead>
           <tbody>
             <tr *ngFor="let merchant of merchants;let i = index" style="cursor: pointer;">
-              <td [routerLink]="merchant.merchantId">{{ i + 1 }}</td>
-              <td [routerLink]="merchant.merchantId">{{ merchant.merchantName }}</td>
-              <td [routerLink]="merchant.merchantId">{{ merchant.merchantGST ? merchant.merchantGST : "-" }}</td>
-              <td [routerLink]="merchant.merchantId">
+              <td (click)="openDetails(merchant.merchantId, content)">{{ i + 1 }}</td>
+              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.merchantName }}</td>
+              <td (click)="openDetails(merchant.merchantId, content)">
+                {{ merchant.merchantGST ? merchant.merchantGST : "-" }}</td>
+              <td (click)="openDetails(merchant.merchantId, content)">
                 {{ merchant.lastTraded ? (merchant.lastTraded | date : "medium") : "-" }}</td>
-              <td [routerLink]="merchant.merchantId">{{ merchant.merchantAdded | date : "medium" }}</td>
-              <td [routerLink]="merchant.merchantId">{{ merchant.remarks ? merchant.remarks : "-" }}</td>
+              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.merchantAdded | date : "medium" }}
+              </td>
+              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.remarks ? merchant.remarks : "-" }}
+              </td>
               <td>
                 <div class="dropdown">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -42,10 +45,85 @@
         </table>
       </div>
     </div>
-    <div class="col-md-12 col-lg-6" style="height:500px; overflow-y: scroll;">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="row mb-4">
-    </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Merchant</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <p style="font-weight: bold;">Name : {{ merchantDetails.merchantName }}</p>
+        <p style="font-weight: bold;">GST : {{ merchantDetails.merchantGST }}</p>
+        <p style="font-weight: bold;">Last Traded :
+          {{ merchantDetails.lastTraded ? (merchantDetails.lastTraded | date : "medium"): "-" }}</p>
+        <p style="font-weight: bold;">Added : {{ merchantDetails.merchantAdded | date : "medium" }}</p>
+        <p style="font-weight: bold;">Last Modified : {{ merchantDetails.lastModifiedTime | date : "medium" }}</p>
+        <p style="font-weight: bold;">Remarks : {{ merchantDetails.remarks }}</p>
+        <hr>
+        <p style="font-weight: bold;">Contacts : </p>
+        <div class="row p-3">
+          <div *ngFor="let contact of merchantDetails.theContacts" class="col-md-12 col-lg-6 p-3">
+            <div class="card border-dark bg-transparent">
+              <div class="card-body">
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ contact.contactType }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">No. : {{ contact.contactNo }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                  {{ contact.contactAdded | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                  {{ contact.lastModifiedTime | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ contact.remarks }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <p style="font-weight: bold;">Emails : </p>
+        <div class="row p-3">
+          <div *ngFor="let email of merchantDetails.theEmails" class="col-md-12 col-lg-6 p-3">
+            <div class="card border-dark bg-transparent">
+              <div class="card-body">
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ email.emailType }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Email. : {{ email.email }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                  {{ email.emailAdded | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                  {{ email.lastModifiedTime | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ email.remarks }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <p style="font-weight: bold;">Address : </p>
+        <div class="row p-3">
+          <div *ngFor="let address of merchantDetails.theAddress; let i = index" class="col-md-12 col-lg-6 p-3">
+            <div class="card border-dark bg-transparent">
+              <div class="card-body">
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 1 :
+                  {{ address.addressLine1 }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 2 :
+                  {{ address.addressLine2 }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">City :
+                  {{  citiesObj[address.addressCity] }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">State :
+                  {{  statesObj[address.addressState] }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Pincode : {{ address.addressPincode }}
+                </p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                  {{ address.addressAdded | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
+                  {{ address.lastModifiedTime | date : "medium"  }}</p>
+                <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ address.remarks }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</ng-template>

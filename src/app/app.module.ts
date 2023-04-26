@@ -39,6 +39,7 @@ import { SettingProductSizeComponent } from './settings/setting-product-size/set
 import { SettingProductTypeComponent } from './settings/setting-product-type/setting-product-type.component';
 import { SettingsComponent } from './settings/settings.component';
 import { LoginComponent } from './login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -83,13 +84,14 @@ import { LoginComponent } from './login/login.component';
     ReactiveFormsModule,
     HttpClientModule,
     ToastrModule.forRoot(),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  public static apiLink = 'http://localhost:8080/ims/';
-  // public static apiLink = 'http://192.1.200.123:8080/ims/';
+  // public static apiLink = 'http://localhost:8080/ims/';
+  public static apiLink = 'http://192.1.200.123:8080/ims/';
   // public static apiLink = 'https://projectinventory-dev.up.railway.app/ims/';
 
   public IP = '';

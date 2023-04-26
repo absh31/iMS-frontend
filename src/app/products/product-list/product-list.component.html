@@ -19,17 +19,17 @@
           </thead>
           <tbody>
             <tr *ngFor="let product of productsData; let i = index" style="cursor: pointer;">
-              <td [routerLink]="product.productId">{{ i + 1 }}</td>
-              <td [routerLink]="product.productId">{{ product.productDesc }}</td>
-              <td [routerLink]="product.productId">{{ typeObj[product.productType] }}</td>
-              <td [routerLink]="product.productId">{{ product.productHSN }}</td>
-              <td [routerLink]="product.productId">
+              <td (click)="openDetails(product.productId, content)">{{ i + 1 }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ product.productDesc }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ typeObj[product.productType] }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ product.productHSN }}</td>
+              <td (click)="openDetails(product.productId, content)">
                 {{ product.lastPurchased ? (product.lastPurchased | date : "medium") : "-" }}</td>
-              <td [routerLink]="product.productId">{{ product.lastSold ? (product.lastSold | date : "medium") : "-" }}
+              <td (click)="openDetails(product.productId, content)">{{ product.lastSold ? (product.lastSold | date : "medium") : "-" }}
               </td>
-              <td [routerLink]="product.productId">{{ product.productAdded | date : "medium" }}</td>
-              <td [routerLink]="product.productId">{{ product.lastModifiedTime | date : "medium" }}</td>
-              <td [routerLink]="product.productId">{{ product.remarks ? product.remarks : "-" }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ product.productAdded | date : "medium" }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ product.lastModifiedTime | date : "medium" }}</td>
+              <td (click)="openDetails(product.productId, content)">{{ product.remarks ? product.remarks : "-" }}</td>
               <td>
                 <div class="dropdown">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -49,8 +49,59 @@
         </table>
       </div>
     </div>
-    <div class="col-md-12 col-lg-6" style="height:525px; overflow-y: scroll;">
-      <router-outlet></router-outlet>
-    </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Product</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <p style="font-weight: bold;">Desc : {{productDetails.productDesc}}</p>
+        <p style="font-weight: bold;">Type : {{ typeObj[productDetails.productType] }}</p>
+        <p style="font-weight: bold;">HSN : {{productDetails.productHSN}}</p>
+        <p style="font-weight: bold;">Added : {{productDetails.productAdded | date : "medium" }}</p>
+        <p style="font-weight: bold;">Last Modified : {{productDetails.lastModifiedTime | date : "medium" }}</p>
+        <p style="font-weight: bold;">Last Purchased :
+          {{ productDetails.lastPurchased ? (productDetails.lastPurchased | date : "medium") : "-" }}</p>
+        <p style="font-weight: bold;">Last Sold :
+          {{ productDetails.lastSold ? (productDetails.lastSold | date : "medium") : "-" }}</p>
+        <p style="font-weight: bold;">Remarks : {{productDetails.remarks}}</p>
+        <hr>
+        <p style="font-weight: bold;">Combinations : </p>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <div class="table-responsive">
+              <table class="table table-sm table-striped table-hover overflow-auto" datatable [dtOptions]="dtOptions"
+                *ngIf="productsData">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Sr No.</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th>Dead Count</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let combo of productCombos;let i = index" style="cursor: pointer;">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ sizesObj[combo.productSize] }}</td>
+                    <td>{{ colorObj[combo.productColor] }}</td>
+                    <td>{{ combo.productQuantity }}</td>
+                    <td>{{ combo.deadCount }}</td>
+                    <td>{{ combo.remarks }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

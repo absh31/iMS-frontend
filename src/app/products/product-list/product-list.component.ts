@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { error } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
@@ -16,32 +17,43 @@ export class ProductListComponent implements OnInit {
   productTypes: any;
   productObj = {};
   typeObj = {};
-  dtOptions : DataTables.Settings = {};
+  productDetails: any;
+  productCombos: any;
+  colors: any;
+  sizes: any;
+  colorObj = {};
+  sizesObj = {};
+  dtOptions: DataTables.Settings = {};
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType : 'full_numbers',
-      pageLength : 10,
-      processing : true
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
     };
-    this.fetchProducts()
+    this.getProducts()
       .then(() => this.getProductObj())
       .then(() => this.getProductTypes())
       .then(() => this.getTypeObj())
+      .then(() => this.getproductColors())
+      .then(() => this.getproductSizes())
+      .then(() => this.getColorObj())
+      .then(() => this.getSizeObj())
       .catch(() => {
         console.log(error);
-        this.toastr.error("Something went wrong")
+        this.toastr.error('Something went wrong');
       });
   }
 
-  fetchProducts() {
+  getProducts() {
     const promise = new Promise((resolve, reject) => {
       this.http.get(AppModule.apiLink + 'products').subscribe(
         (data) => {
@@ -115,7 +127,7 @@ export class ProductListComponent implements OnInit {
       this.http.delete(AppModule.apiLink + 'products/' + productId).subscribe(
         (data) => {
           if (data['success'] === true) {
-            this.toastr.success("Product deleted successfully");
+            this.toastr.success('Product deleted successfully');
             resolve(data);
           }
         },
@@ -123,5 +135,101 @@ export class ProductListComponent implements OnInit {
       );
     });
     return promise;
+  }
+
+  getProductDetails(id: number) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'products/'.concat(id.toString()))
+        .subscribe(
+          (data) => {
+            this.dataFetched = false;
+            this.productDetails = data;
+            resolve(data);
+          },
+          (error) => {
+            this.toastr.error('Something went wrong');
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
+
+  getProductComboDetails(id: number) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'productCombos/product/'.concat(id.toString()))
+        .subscribe(
+          (data) => {
+            this.dataFetched = false;
+            this.productCombos = data;
+            this.dataFetched = true;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
+
+  getproductColors() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'productcolors').subscribe(
+        (data) => {
+          this.colors = data;
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+    return promise;
+  }
+
+  getproductSizes() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'productSizes').subscribe(
+        (data) => {
+          this.sizes = data;
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+    return promise;
+  }
+
+  getColorObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.colors.forEach((color) => {
+        this.colorObj[color['productColorId']] = color['productColorName'];
+      });
+      resolve(this.colorObj);
+    });
+    return promise;
+  }
+
+  getSizeObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.sizes.forEach((size) => {
+        this.sizesObj[size['productSizeId']] = size['productSize'];
+      });
+      resolve(this.sizesObj);
+    });
+    return promise;
+  }
+
+  openDetails(id: number, content: any) {
+    this.getProductDetails(id)
+      .then(() => this.getProductComboDetails(id))
+      .then(() => {
+        this.modalService.open(content, { size: 'xl', scrollable: true });
+      });
   }
 }

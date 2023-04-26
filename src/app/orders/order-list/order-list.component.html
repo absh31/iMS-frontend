@@ -22,21 +22,21 @@
           </thead>
           <tbody>
             <tr *ngFor="let order of ordersData; let i = index" style="cursor: pointer;">
-              <td [routerLink]="order.orderId">{{ i + 1 }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderId }}</td>
-              <td [routerLink]="order.orderId">{{ orderTypeObj[order.orderTypeId] }}</td>
-              <td [routerLink]="order.orderId">{{ merchantObj[order.orderMerchantId] }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderDateTime | date : "medium" }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderDispatch ? "Yes" : "No" }}</td>
-              <td [routerLink]="order.orderId">
-                {{ order.orderDispatchDateTime ? (order.orderDispatchDateTime | date : "medium") : "NA" }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderAmount }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderTotal }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderDiscount }}</td>
-              <td [routerLink]="order.orderId">{{ order.orderQuantity }}</td>
-              <td [routerLink]="order.orderId">{{ order.remarks ? order.remarks : "-" }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ i + 1 }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderId }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ orderTypeObj[order.orderTypeId] }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ merchantObj[order.orderMerchantId] }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderDateTime | date : "medium" }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderDispatch ? "Yes" : "No" }}</td>
+              <td (click)="openDetails(order.orderId, content)">
+                {{ order.orderDispatch ? (order.orderDispatchDateTime | date : "medium") : "NA" }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderAmount }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderTotal }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderDiscount }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.orderQuantity }}</td>
+              <td (click)="openDetails(order.orderId, content)">{{ order.remarks ? order.remarks : "-" }}</td>
               <td>
-                <div class="dropdown">
+                <div class="dropdown" *ngIf="!order.orderDispatch">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
@@ -44,18 +44,80 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" (click)="onEdit(order.orderId)"><i class="bi bi-pencil-square"></i> Edit
                     </a>
-                    <a class="dropdown-item" (click)="onDispatch(order.orderId)" *ngIf="!order.orderDispatch"><i
-                        class="bi bi-check2-square"></i> Dispatch </a>
+                    <a class="dropdown-item" (click)="onDispatch(order.orderId)"><i class="bi bi-check2-square"></i>
+                      Dispatch </a>
                   </div>
                 </div>
+                <div *ngIf="order.orderDispatch"> - </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="col-md-12 col-lg-6" style="height:525px; overflow-y: scroll;">
-      <router-outlet></router-outlet>
-    </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Order</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <p style="font-weight: bold;">Id : {{orderDetails.orderId}}</p>
+        <p style="font-weight: bold;">Type : {{orderTypeObj[orderDetails.orderTypeId]}}</p>
+        <p style="font-weight: bold;">Merchant : {{merchantObj[orderDetails.orderMerchantId]}}</p>
+        <p style="font-weight: bold;">Date : {{orderDetails.orderDateTime | date : "medium" }}</p>
+        <p style="font-weight: bold;">Dispatch : {{ orderDetails.orderDispatch ? "Yes" : "No"}}</p>
+        <p style="font-weight: bold;">Dispatch Date :
+          {{ orderDetails.orderDispatch ? (orderDetails.orderDispatchDateTime | date : "medium") : "-" }}</p>
+        <p style="font-weight: bold;">Amount : {{orderDetails.orderAmount }}</p>
+        <p style="font-weight: bold;">Total : {{orderDetails.orderTotal}}</p>
+        <p style="font-weight: bold;">Discount : {{orderDetails.orderDiscount}}</p>
+        <p style="font-weight: bold;">Quantity : {{orderDetails.orderQuantity}}</p>
+        <p style="font-weight: bold;">Remarks : {{orderDetails.remarks}}</p>
+        <hr>
+        <p style="font-weight: bold;">Items : </p>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <div class="table-responsive">
+              <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions"
+                *ngIf="productInventory">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Sr No.</th>
+                    <th>Desc</th>
+                    <th>Type</th>
+                    <th>HSN</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>Tax</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of productInventory;let i = index" style="cursor: pointer;">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productDesc'] }}</td>
+                    <td>
+                      {{ productTypeObj[productObj[productComboObj[product.productComboId]['productId']]['productType']] }}
+                    </td>
+                    <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productHSN'] }}</td>
+                    <td>{{ sizesObj[productComboObj[product.productComboId]['productSize']] }}</td>
+                    <td>{{ colorObj[productComboObj[product.productComboId]['productColor']] }}</td>
+                    <td>{{ product.productPrice }}</td>
+                    <td>{{ product.productGST }}</td>
+                    <td>{{ product.productComboQuantity }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
