@@ -1,56 +1,56 @@
 <div class="container" *ngIf="dataFetched">
-    <div class="row mb-3"></div>
-    <div class="row">
-      <div class="col-md-12 col-lg-12">
-        <p style="font-weight: bold;">Id : {{orderDetails.orderId}}</p>
-        <p style="font-weight: bold;">Type : {{orderTypeObj[orderDetails.orderTypeId]}}</p>
-        <p style="font-weight: bold;">Merchant : {{merchantObj[orderDetails.orderMerchantId]}}</p>
-        <p style="font-weight: bold;">Date : {{orderDetails.orderDateTime | date : "medium" }}</p>
-        <p style="font-weight: bold;">Dispatch : {{orderDetails.orderDispatch}}</p>
-        <p style="font-weight: bold;">Dispatch Date : {{orderDetails.orderDispatchDateTime | date : "medium" }}</p>
-        <p style="font-weight: bold;">Amount : {{orderDetails.orderAmount }}</p>
-        <p style="font-weight: bold;">Total : {{orderDetails.orderTotal}}</p>
-        <p style="font-weight: bold;">Discount : {{orderDetails.orderDiscount}}</p>
-        <p style="font-weight: bold;">Quantity : {{orderDetails.orderQuantity}}</p>
-        <p style="font-weight: bold;">Remarks : {{orderDetails.remarks}}</p>
-        <hr>
-        <p style="font-weight: bold;">Items : </p>
-        <div class="row">
-          <div class="col-md-12 col-lg-12">
-            <div class="table-responsive" style="height:525px; overflow-y: scroll;">
-              <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>Sr No.</th>
-                    <th>Desc</th>
-                    <th>Type</th>
-                    <th>HSN</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>Tax</th>
-                    <th>Quantity</th>
-                    <th>Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let product of productInventory;let i = index" style="cursor: pointer;">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productDesc'] }}</td>
-                    <td>{{ productTypeObj[productObj[productComboObj[product.productComboId]['productId']]['productType']] }}</td>
-                    <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productHSN'] }}</td>
-                    <td>{{ sizesObj[productComboObj[product.productComboId]['productSize']] }}</td>
-                    <td>{{ colorObj[productComboObj[product.productComboId]['productColor']] }}</td>
-                    <td>{{ product.productPrice }}</td>
-                    <td>{{ product.productGST }}</td>
-                    <td>{{ product.productComboQuantity }}</td>
-                    <td>{{ product.remarks }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <p style="font-weight: bold;">Id : {{orderDetails.orderId}}</p>
+      <p style="font-weight: bold;">Type : {{orderTypeObj[orderDetails.orderTypeId]}}</p>
+      <p style="font-weight: bold;">Merchant : {{merchantObj[orderDetails.orderMerchantId]}}</p>
+      <p style="font-weight: bold;">Date : {{orderDetails.orderDateTime | date : "medium" }}</p>
+      <p style="font-weight: bold;">Dispatch : {{orderDetails.orderDispatch}}</p>
+      <p style="font-weight: bold;">Dispatch Date : {{orderDetails.orderDispatchDateTime | date : "medium" }}</p>
+      <p style="font-weight: bold;">Amount : {{orderDetails.orderAmount }}</p>
+      <p style="font-weight: bold;">Total : {{orderDetails.orderTotal}}</p>
+      <p style="font-weight: bold;">Discount : {{orderDetails.orderDiscount}}</p>
+      <p style="font-weight: bold;">Quantity : {{orderDetails.orderQuantity}}</p>
+      <p style="font-weight: bold;">Remarks : {{orderDetails.remarks}}</p>
+      <hr>
+      <p style="font-weight: bold;">Items : </p>
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <div class="table-responsive" style="height:525px; overflow-y: scroll;">
+            <table class="table table-sm table-bordered border-dark table-striped table-hover overflow-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Desc</th>
+                  <th>Type</th>
+                  <th>HSN</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>Price</th>
+                  <th>Tax</th>
+                  <th>Quantity</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productInventory;let i = index" style="cursor: pointer;">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productDesc'] }}</td>
+                  <td>
+                    {{ productTypeObj[productObj[productComboObj[product.productComboId]['productId']]['productType']] }}
+                  </td>
+                  <td>{{ productObj[productComboObj[product.productComboId]['productId']]['productHSN'] }}</td>
+                  <td>{{ sizesObj[productComboObj[product.productComboId]['productSize']] }}</td>
+                  <td>{{ colorObj[productComboObj[product.productComboId]['productColor']] }}</td>
+                  <td>{{ product.productPrice }}</td>
+                  <td>{{ product.productGST }}</td>
+                  <td>{{ product.productComboQuantity }}</td>
+                  <td>{{ product.remarks }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-  
+  </div>

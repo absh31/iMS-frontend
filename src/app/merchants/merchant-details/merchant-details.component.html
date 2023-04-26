@@ -1,5 +1,4 @@
 <div class="container" *ngIf="dataFetched">
-  <div class="row mb-3"></div>
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <p style="font-weight: bold;">Name : {{ merchantDetails.merchantName }}</p>
@@ -16,7 +15,8 @@
             <div class="card-body">
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ contact.contactType }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">No. : {{ contact.contactNo }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{ contact.contactAdded | date : "medium"  }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                {{ contact.contactAdded | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
                 {{ contact.lastModifiedTime | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ contact.remarks }}</p>
@@ -32,7 +32,8 @@
             <div class="card-body">
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ email.emailType }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Email. : {{ email.email }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{ email.emailAdded | date : "medium"  }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                {{ email.emailAdded | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
                 {{ email.lastModifiedTime | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ email.remarks }}</p>
@@ -46,12 +47,18 @@
         <div *ngFor="let address of merchantDetails.theAddress; let i = index" class="col-md-12 col-lg-6">
           <div class="card border-dark bg-transparent">
             <div class="card-body">
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 1 : {{ address.addressLine1 }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 2 : {{ address.addressLine2 }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">City : {{  citiesObj[address.addressCity] }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">State : {{  statesObj[address.addressState] }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Pincode : {{ address.addressPincode }}</p>
-              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added : {{ address.addressAdded | date : "medium"  }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 1 :
+                {{ address.addressLine1 }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 2 :
+                {{ address.addressLine2 }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">City :
+                {{  citiesObj[address.addressCity] }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">State :
+                {{  statesObj[address.addressState] }}</p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Pincode : {{ address.addressPincode }}
+              </p>
+              <p class="card-text" style="font-weight: bold; font-size: 12px;">Added :
+                {{ address.addressAdded | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Last Modified :
                 {{ address.lastModifiedTime | date : "medium"  }}</p>
               <p class="card-text" style="font-weight: bold; font-size: 12px;">Remarks : {{ address.remarks }}</p>
