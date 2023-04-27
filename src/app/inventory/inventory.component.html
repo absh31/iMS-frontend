@@ -2,131 +2,57 @@
   <div class="row">
     <div class="row m-2">
       <div class="col-md-6 col-lg-3">
-        <label for="ordertype" class="form-label">Order Type :</label>
-        <select class="form-select" (change)="onChange()">
-          <option>All</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <label for="ordertype" class="form-label">Merchant :</label>
-        <select class="form-select">
-          <option>All</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <label for="ordertype" class="form-label">Product :</label>
-        <select class="form-select">
-          <option>All</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+        <label for="ordertype" class="form-label">Log Type :</label>
+        <select class="form-select" (change)="onChange()" id="logType">
+          <option selected>All</option>
+          <option>IN</option>
+          <option>OUT</option>
         </select>
       </div>
       <div class="col-md-6 col-lg-3">
         <label for="ordertype" class="form-label">Dispatched :</label>
-        <select class="form-select">
-          <option>All</option>
+        <select class="form-select" (change)="onChange()" id="dispatch">
+          <option selected>All</option>
           <option>Yes</option>
           <option>No</option>
         </select>
       </div>
     </div>
-    <div class="row">
-      <div class="alert m-0">
-        <div class="row">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE(₹)</div>
-          <div class="col-lg-1">QTY.(Pcs.)</div>
-          <div class="col-lg-1">GST(%)</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-danger" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-in-down-left"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-success" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-up-right"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-danger" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-in-down-left"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-success" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-up-right"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-danger" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-in-down-left"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-success" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-up-right"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-danger" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-in-down-left"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
-      </div>
-      <div class="alert alert-success" role="alert">
-        <div class="row">
-          <div class="col-lg-1"><i class="bi bi-box-arrow-up-right"></i></div>
-          <div class="col-lg-5">PRODUCT DETAILS</div>
-          <div class="col-lg-2">PRICE</div>
-          <div class="col-lg-1">QTY.</div>
-          <div class="col-lg-1">GST</div>
-          <div class="col-lg-2">DATE</div>
-        </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="logs">
+          <thead class="thead-dark">
+            <tr>
+              <th><i class="bi bi-activity"></i></th>
+              <th>PRODUCT</th>
+              <th>COLOR</th>
+              <th>SIZE</th>
+              <th>MERCHANT</th>
+              <th>PRICE</th>
+              <th>QTY.</th>
+              <th>GST</th>
+              <th>DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logs">
+              <td class="text-danger" *ngIf="log['logType'] == 'IN'"><i class="bi bi-box-arrow-in-down-left"></i></td>
+              <td class="text-success" *ngIf="log['logType'] != 'IN'"><i class="bi bi-box-arrow-in-up-right"></i></td>
+              <td>{{ productObj[productComboObj[log['productComboId']]] }}</td>
+              <td>{{ colorObj[productComboObj[log['productComboId']]] }}</td>
+              <td>{{ sizeObj[productComboObj[log['productComboId']]] }}</td>
+              <td>{{ merchantObj[orderObj[log['orderId']]] }}</td>
+              <td>{{ log['productPrice'] }}</td>
+              <td>{{ log['productComboQuantity'] }}</td>
+              <td>{{ log['productGST'] }}</td>
+              <td>{{ log['logTimeStamp'] | date : "medium" }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

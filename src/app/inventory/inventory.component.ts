@@ -9,38 +9,72 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./inventory.component.css'],
 })
 export class InventoryComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
   orderTypes: any;
+  orders: any;
+  orderObj = {};
   merchants: any;
   merchantObj = {};
   products: any;
   productObj = {};
   productCombos: any;
+  productComboObj = {};
   colors: any;
   sizes: any;
   colorObj = {};
   sizeObj = {};
-
-  selectedOrderType: string = 'All';
-  selectedMerchant: string = 'All';
-  selectedProduct: string = 'All';
-  selectedDispatch: string = 'All';
+  logs: any;
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
   ngOnInit() {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+    };
     this.getOrderTypes()
       .then(() => this.getMerchants())
       .then(() => this.getMerchantObj())
+      .then(() => this.getOrders())
+      .then(() => this.getOrderObj())
       .then(() => this.getProducts())
       .then(() => this.getProductObj())
       .then(() => this.getProductCombos())
+      .then(() => this.getProductComboObj())
       .then(() => this.getColors())
       .then(() => this.getColorObj())
       .then(() => this.getSizes())
       .then(() => this.getSizeObj())
+      .then(() => this.getLogs('ALL', 'ALL'))
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
       });
+  }
+
+  getLogs(logType: string, dispatched: string) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(
+          AppModule.apiLink +
+            'productLogs/params?logType=' +
+            logType +
+            '&dispatch=' +
+            dispatched
+        )
+        .subscribe(
+          (data) => {
+            this.logs = data;
+            console.log(data);
+            resolve(this.logs);
+          },
+          (error) => {
+            console.log(error);
+            reject(error);
+          }
+        );
+    });
+    return promise;
   }
 
   getOrderTypes() {
@@ -79,6 +113,29 @@ export class InventoryComponent implements OnInit {
     return promise;
   }
 
+  getOrders() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'orders').subscribe(
+        (data) => {
+          this.orders = data;
+          resolve(this.orders);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
+  }
+
+  getOrderObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.orders.forEach((order) => {
+        this.orderObj[order['orderId']] = order['orderMerchantId'];
+      });
+      resolve(this.orderObj);
+    });
+    return promise;
+  }
+
   getProducts() {
     const promise = new Promise((resolve, reject) => {
       this.http.get(AppModule.apiLink + 'products').subscribe(
@@ -111,6 +168,17 @@ export class InventoryComponent implements OnInit {
         },
         (error) => reject(error)
       );
+    });
+    return promise;
+  }
+
+  getProductComboObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.productCombos.forEach((productCombo) => {
+        this.productComboObj[productCombo['productComboId']] =
+          productCombo['productId'];
+      });
+      resolve(this.colorObj);
     });
     return promise;
   }
@@ -161,5 +229,13 @@ export class InventoryComponent implements OnInit {
     return promise;
   }
 
-  onChange() {}
+  onChange() {
+    let logType = (<HTMLInputElement>document.getElementById('logType')).value;
+    let dispatch = (<HTMLInputElement>document.getElementById('dispatch'))
+      .value;
+    this.getLogs(logType, dispatch).catch((error) => {
+      console.log(error);
+      this.toastr.error('Something went wrong!');
+    });
+  }
 }
