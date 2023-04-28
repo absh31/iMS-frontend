@@ -34,8 +34,6 @@ export class AuthService {
   saveLoginDetails(data) {
     const promise = new Promise((resolve, reject) => {
       this.sessionDetailsJSON = data;
-      console.log(data);
-
       let details = JSON.stringify(data);
       let encDetails = AES.encrypt(details, 'absh').toString();
       sessionStorage.setItem('loginDetails', encDetails);
@@ -75,7 +73,7 @@ export class AuthService {
           return false;
         }
       } else {
-        // this.toastr.warning('Login Required');
+        this.toastr.warning('Login Required');
         return false;
       }
     } else {
