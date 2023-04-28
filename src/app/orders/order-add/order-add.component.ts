@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { resolve } from 'chart.js/dist/helpers/helpers.options';
 import { data } from 'jquery';
@@ -14,6 +20,7 @@ import { DbSaveService } from 'src/app/db-save.service';
   styleUrls: ['./order-add.component.css'],
 })
 export class OrderAddComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
   productTypeSelected: boolean = false;
   productSelected: boolean = false;
   orderForm: FormGroup;
@@ -25,15 +32,20 @@ export class OrderAddComponent implements OnInit {
   dispatchRequired: boolean = true;
   merchants: any;
   productTypes: any;
+  productTypeObj = {};
   products: any;
   productObj = {};
+  productToTypeObj = {};
   productCombos: any;
+  productComboObj = {};
+  productComboToQtyObj = {};
   currentProductCombo: any;
   colors: any;
   sizes: any;
   colorObj = {};
   sizeObj = {};
   orderId: any;
+  addedItems = [];
 
   constructor(
     private http: HttpClient,
@@ -44,16 +56,37 @@ export class OrderAddComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+    };
     this.getOrderTypes()
       .then(() => this.getOrderTypeObj())
       .then(() => this.getMerchants())
       .then(() => this.getProductTypes())
+      .then(() => this.getProductTypeObj())
+      .then(() => this.getProducts())
+      .then(() => this.getProductObj())
+      .then(() => this.getProductCombos())
+      .then(() => this.getProductComboObj())
       .then(() => this.getColors())
       .then(() => this.getColorObj())
       .then(() => this.getSizes())
       .then(() => this.getSizeObj())
       .then(() => this.initForm())
       .catch((error) => console.log(error));
+  }
+
+  onChangeOrderType() {
+    this.currentOrderTypeId = (<HTMLInputElement>(
+      document.getElementById('orderTypeId')
+    )).value;
+    if (this.orderTypeObj[this.currentOrderTypeId] == 'IN') {
+      this.dispatchRequired = false;
+    } else {
+      this.dispatchRequired = true;
+    }
   }
 
   getOrderTypes() {
@@ -151,32 +184,63 @@ export class OrderAddComponent implements OnInit {
     return promise;
   }
 
-  getProducts(productTypeId: string) {
+  getProductTypeObj() {
     const promise = new Promise((resolve, reject) => {
-      this.http
-        .get(AppModule.apiLink + 'products/productType/' + productTypeId)
-        .subscribe(
-          (data) => {
-            this.products = data;
-            resolve(this.products);
-          },
-          (error) => reject(error)
-        );
+      this.productTypes.forEach((productType) => {
+        this.productTypeObj[productType['productTypeId']] =
+          productType['productType'];
+      });
+      resolve(this.productObj);
     });
     return promise;
   }
 
-  getProductCombos(productId: string) {
+  getProducts() {
     const promise = new Promise((resolve, reject) => {
-      this.http
-        .get(AppModule.apiLink + 'productCombos/product/' + productId)
-        .subscribe(
-          (data) => {
-            this.productCombos = data;
-            resolve(this.productCombos);
-          },
-          (error) => reject(error)
-        );
+      this.http.get(AppModule.apiLink + 'products').subscribe(
+        (data) => {
+          this.products = data;
+          resolve(this.products);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
+  }
+
+  getProductObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.products.forEach((product) => {
+        this.productObj[product['productId']] = product['productDesc'];
+        this.productToTypeObj[product['productId']] = product['productType'];
+      });
+      resolve(this.productObj);
+    });
+    return promise;
+  }
+
+  getProductCombos() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'productCombos').subscribe(
+        (data) => {
+          this.productCombos = data;
+          resolve(this.productCombos);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
+  }
+
+  getProductComboObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.productCombos.forEach((productCombo) => {
+        this.productComboObj[productCombo['productComboId']] =
+          productCombo['productId'];
+        this.productComboToQtyObj[productCombo['productComboId']] =
+          productCombo['productQuantity'];
+      });
+      resolve(this.productObj);
     });
     return promise;
   }
@@ -202,124 +266,56 @@ export class OrderAddComponent implements OnInit {
       let orderMerchantId = '';
       let orderDateTime = '';
       let orderDispatch = false;
-      let orderDiscount = '';
+      let orderDiscount = '0';
       let remarks = '';
       this.orderForm = new FormGroup({
-        orderTypeId: new FormControl(orderTypeId),
-        orderMerchantId: new FormControl(orderMerchantId),
-        orderDateTime: new FormControl(orderDateTime),
-        orderDispatch: new FormControl(orderDispatch),
+        orderTypeId: new FormControl(orderTypeId, Validators.required),
+        orderMerchantId: new FormControl(orderMerchantId, Validators.required),
+        orderDateTime: new FormControl(orderDateTime, Validators.required),
+        orderDispatch: new FormControl(orderDispatch, Validators.required),
         orderAmount: new FormControl({ value: null, disabled: true }),
         orderTotal: new FormControl({ value: null, disabled: true }),
-        orderDiscount: new FormControl(orderDiscount),
+        orderDiscount: new FormControl(orderDiscount, Validators.required),
         orderQuantity: new FormControl({ value: null, disabled: true }),
         remarks: new FormControl(remarks),
         productType: new FormControl(null),
         product: new FormControl(null),
         productItem: new FormControl(null),
-        productCombos: new FormArray([]),
-        productInventory: new FormArray([]),
+        productInventory: new FormArray([], Validators.required),
       });
       resolve(this.orderForm);
     });
     return promise;
   }
 
-  onChangeProductType() {
-    let productType = (<HTMLInputElement>document.getElementById('productType'))
-      .value;
-    this.getProducts(productType)
-      .then(() => {
-        this.products.forEach((product) => {
-          this.productObj[product['productId']] = product['productDesc'];
-        });
-        this.productTypeSelected = true;
-      })
-      .catch((error) => console.log(error));
-  }
-
-  onChangeProduct() {
-    let product = (<HTMLInputElement>document.getElementById('product')).value;
-    this.getProductCombos(product)
-      .then(() => {
-        this.productSelected = true;
-      })
-      .catch((error) => console.log(error));
-  }
-
-  onChangeOrderType() {
-    this.currentOrderTypeId = (<HTMLInputElement>(
-      document.getElementById('orderTypeId')
-    )).value;
-    if (this.orderTypeObj[this.currentOrderTypeId] == 'IN') {
-      this.dispatchRequired = false;
-    } else {
-      this.dispatchRequired = true;
-    }
-  }
-
-  onAddItem() {
-    let productCombo = (<HTMLInputElement>(
-      document.getElementById('productItem')
-    )).value;
-    if (productCombo) {
-      this.getCurrentProductCombo(productCombo)
+  onSaveOrder() {
+    this.onRefresh().then(() => {});
+    console.log(this.orderForm);
+    if (this.orderForm.valid) {
+      this.onRefresh()
+        .then(() => this.getOrderItems())
+        .then(() => this.getOrderFormData())
+        .then(() => this.saveOrder())
         .then((data) => {
-          this.addItem(data, productCombo);
+          this.toastr.success('Order Saved Successfully!!!');
+          this.orderForm.reset();
+          this.router.navigate(['../'], { relativeTo: this.route });
         })
-        .then(() => {
-          this.resetProducts();
-        })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
     } else {
-      this.toastr.warning('Please Select an Item!!!');
+      this.toastr.warning('Enter valid Details!');
     }
   }
 
-  addItem(data: any, productComboId: string) {
-    let displayText =
-      this.productObj[data['productId']] +
-      '-' +
-      this.sizeObj[data['productSize']] +
-      '-' +
-      this.colorObj[data['productColor']];
-    (<FormArray>this.orderForm.get('productInventory')).push(
-      new FormGroup({
-        productCombo: new FormControl({ value: displayText, disabled: true }),
-        productComboId: new FormControl(productComboId),
-        productPrice: new FormControl(null),
-        productGST: new FormControl(null),
-        productComboQuantity: new FormControl(null),
-      })
-    );
-  }
-
-  onSaveOrder(dispatch: boolean) {
-    this.onRefresh()
-      .then(() => this.dbSave.saveCheckPoint())
-      .then(() => this.getOrderFormData(dispatch))
-      .then(() => this.saveOrder())
-      .then(() => this.getOrderItems())
-      .then(() => this.saveOrderItems())
-      .then(() => this.dbSave.commitChanges())
-      .then((data) => {
-        this.toastr.success('Order Saved Successfully!!!');
-        this.orderForm.reset();
-        this.router.navigate(['../'], { relativeTo: this.route });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
-      });
-  }
-
-  getOrderFormData(dispatch: boolean) {
+  getOrderFormData() {
     const promise = new Promise((resolve, reject) => {
       let orderTypeId = this.orderForm.value['orderTypeId'];
       let orderMerchantId = this.orderForm.value['orderMerchantId'];
       let orderDateTime = this.orderForm.value['orderDateTime'];
-      let orderDispatch = dispatch;
+      let orderDispatch = false;
       let orderAmount = this.orderForm.value['orderAmount'];
       let orderTotal = this.orderForm.value['orderTotal'];
       let orderDiscount = this.orderForm.value['orderDiscount'];
@@ -335,8 +331,8 @@ export class OrderAddComponent implements OnInit {
         orderDiscount: orderDiscount,
         orderQuantity: orderQuantity,
         remarks: remarks,
+        theLogs: this.orderItems,
       };
-      console.log(this.orderFormData);
       resolve(this.orderFormData);
     });
     return promise;
@@ -429,7 +425,42 @@ export class OrderAddComponent implements OnInit {
   }
 
   onRemoveItem(index: number) {
+    let itemId =
+      this.orderForm.value['productInventory'][index]['productComboId'];
+    this.addedItems.splice(this.addedItems.indexOf(itemId), 1);
     (<FormArray>this.orderForm.get('productInventory')).removeAt(index);
+  }
+
+  onToggle(productCombo: any, event: Event) {
+    if (event.srcElement['checked']) {
+      if (this.addedItems.indexOf(productCombo.productComboId) === -1) {
+        let displayText =
+          this.productObj[productCombo['productId']] +
+          '-' +
+          this.sizeObj[productCombo['productSize']] +
+          '-' +
+          this.colorObj[productCombo['productColor']];
+        (<FormArray>this.orderForm.get('productInventory')).push(
+          new FormGroup({
+            productCombo: new FormControl({
+              value: displayText,
+              disabled: true,
+            }),
+            productComboId: new FormControl(productCombo.productComboId),
+            productPrice: new FormControl(null),
+            productGST: new FormControl(null),
+            productComboQuantity: new FormControl(null),
+            maxQty: new FormControl({
+              value: productCombo.productComboQuantity,
+              disabled: true,
+            }),
+          })
+        );
+        this.addedItems.push(productCombo.productComboId);
+      } else {
+        this.toastr.warning('Already Added!');
+      }
+    }
   }
 
   onBack() {

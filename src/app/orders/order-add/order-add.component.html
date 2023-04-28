@@ -5,14 +5,14 @@
     <h2><span (click)="onBack()" style="cursor: pointer;"><i class="bi bi-arrow-left mr-3"></i></span> Add Order :
     </h2>
   </div>
-  <div class="row mb-3">
+  <div class="row mb-1">
   </div>
-  <form [formGroup]="orderForm" *ngIf="orderForm">
+  <form [formGroup]="orderForm" *ngIf="orderForm" (ngSubmit)="onSaveOrder()">
     <div class="row">
-      <div class="col-md-12 col-lg-4">
+      <div class="col-md-12 col-lg-12">
         <h4>Details : </h4>
-        <div class="row mt-1 mb-3 p-2 pb-5" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 1.5%;">
-          <div class="col-md-12 col-lg-6">
+        <div class="row mt-1 mb-1 p-2 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 1.5%;">
+          <div class="col-md-12 col-lg-2">
             <div>
               <label for="ordertype">Type :</label>
               <select formControlName="orderTypeId" class="form-select" (change)="onChangeOrderType()" id="orderTypeId">
@@ -21,7 +21,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-12 col-lg-12">
+          <div class="col-md-12 col-lg-3">
             <div>
               <label for="merchant">Merchant :</label>
               <select formControlName="orderMerchantId" class="form-select">
@@ -30,13 +30,13 @@
               </select>
             </div>
           </div>
-          <div class="col-md-12 col-lg-8">
+          <div class="col-md-12 col-lg-3">
             <div>
               <label for="date">Date :</label>
               <input type="datetime-local" formControlName="orderDateTime" class="form-control">
             </div>
           </div>
-          <div class="col-md-12 col-lg-4">
+          <div class="col-md-12 col-lg-2">
             <label for="discount">Discount :</label>
             <div class="input-group">
               <input type="number" formControlName="orderDiscount" class="form-control" min="0" max="100">
@@ -44,8 +44,9 @@
             </div>
           </div>
         </div>
-        <div class="row mt-1 p-2">
-          <div class="col-md-12 col-lg-6">
+      </div>
+      <div class="row p-2">
+        <!-- <div class="col-md-12 col-lg-6">
             <div>
               <label for="merchant">Product Type :</label>
               <select class="form-select" id="productType" (change)="onChangeProductType()">
@@ -77,90 +78,125 @@
               </select>
             </div>
           </div>
-          <!-- <div class="col-md-12 col-lg-5">
-            <div>
-              <label for="merchant">Size :</label>
-              <select class="form-select" id="productItem">
-                <option value="" disabled selected>Select</option>
-                <option *ngFor="let productCombo of productCombos" [value]="productCombo.productComboId">
-                  {{ sizeObj[productCombo.productSize] }} - {{ colorObj[productCombo.productColor]}}
-                </option>
-              </select>
-            </div>
-          </div> -->
           <div class="col-md-12 col-lg-1">
             <div>
               <label style="display: none;">Null Text :</label>
               <button class="btn btn-success mt-4" type="button" (click)="onAddItem()">+</button>
             </div>
+          </div> -->
+        <div class="col-md-12 col-lg-4" style="height: 395px; overflow-y: scroll;">
+          <div class="table-responsive">
+            <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions"
+              *ngIf="productCombos">
+              <thead class="thead-dark">
+                <tr>
+                  <th></th>
+                  <th>Type</th>
+                  <th>Desc</th>
+                  <th>Color</th>
+                  <th>Size</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let productCombo of productCombos;let i = index">
+                  <td><input type="checkbox" class="editor-active" (change)="onToggle(productCombo, $event)"></td>
+                  <td>{{ productTypeObj[productToTypeObj[productCombo.productId]] }}</td>
+                  <td>{{ productObj[productCombo.productId] }}</td>
+                  <td>{{ colorObj[productCombo.productColor] }}</td>
+                  <td>{{ sizeObj[productCombo.productSize] }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <!-- <div class="col-md-12 col-lg-3">
-              <div>
-                <label for="merchant">Size :</label>
-                <select class="form-select">
-                  <option *ngFor="let merchant of merchants" [value]="merchant.merchantId">{{merchant.merchantName}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-12 col-lg-3">
-              <div>
-                <label for="merchant">Color :</label>
-                <select class="form-select">
-                  <option *ngFor="let merchant of merchants" [value]="merchant.merchantId">{{merchant.merchantName}}</option>
-                </select>
-              </div>
-            </div> -->
         </div>
-      </div>
-      <div class="col-md-12 col-lg-8">
-        <div class="row mb-3 pb-2">
-          <div style="height: 495px; overflow-y: scroll;">
-            <h4>Items : </h4>
-            <div class="row my-1 pt-2" formArrayName="productInventory"
-              *ngIf="this.orderForm.get('productInventory')['controls'].length > 0">
-              <div class="row"
-                *ngFor="let productInv of this.orderForm.get('productInventory')['controls']; let i = index"
-                [formGroupName]="i">
-                <div class="row mt-1 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 0.5%;">
-                  <div class="col-md-12 col-lg-4">
-                    <div>
-                      <label for="item">Item :</label>
-                      <div class="input-group">
-                        <input type="text" formControlName="productCombo" class="form-control" min="0" max="100">
+        <!-- <div class="col-md-12 col-lg-6">
+          Items :
+          <div class="table-responsive" formArrayName="productInventory"
+            *ngIf="this.orderForm.get('productInventory')['controls'].length > 0">
+            <table class="table table-sm table-hover table-responsive" *ngIf="productCombos">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Details</th>
+                  <th></th>
+                  <th>Price(₹)</th>
+                  <th>GST(%)</th>
+                  <th>Qty.(Pcs.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let productInv of this.orderForm.get('productInventory')['controls']; let i = index"
+                  [formGroupName]="i">
+                  <td colspan="2"><input type="text" formControlName="productCombo" class="form-control"></td>
+                  <td><input type="number" formControlName="productPrice" class="form-control" min="1"></td>
+                  <td><input type="number" formControlName="productGST" class="form-control" min="0" max="100"></td>
+                  <td><input type="number" formControlName="productComboQuantity" class="form-control" min="1" max="">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div> -->
+        <div class="col-md-12 col-lg-8" style="height: 395px; overflow-y: scroll;">
+          <div class="row mb-3 pb-2">
+            <div>
+              <h4>Items : </h4>
+              <div class="row my-1 pt-2" formArrayName="productInventory"
+                *ngIf="this.orderForm.get('productInventory')['controls'].length > 0">
+                <!-- <div class="col-md-12 col-lg-4">Item</div>
+              <div class="col-md-12 col-lg-2">Price</div>
+              <div class="col-md-12 col-lg-2">GST</div>
+              <div class="col-md-12 col-lg-4">Qty.</div> -->
+                <div class="row"
+                  *ngFor="let productInv of this.orderForm.get('productInventory')['controls']; let i = index;"
+                  [formGroupName]="i">
+                  <div class="row m-1">
+                    <div class="col-md-12 col-lg-4">
+                      <div>
+                        <!-- <label for="item">Item :</label> -->
+                        <div class="input-group">
+                          <input type="text" formControlName="productCombo" class="form-control" min="0" max="100">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12 col-lg-2">
-                    <div>
-                      <label for="price">Price :</label>
-                      <div class="input-group">
-                        <input type="number" formControlName="productPrice" class="form-control" min="1">
-                        <!-- <span class="input-group-text bg-muted">.00</span> -->
+                    <div class="col-md-12 col-lg-2">
+                      <div>
+                        <!-- <label for="price">Price :</label> -->
+                        <div class="input-group">
+                          <input type="number" formControlName="productPrice" placeholder="Price(₹)"
+                            class="form-control" min="1">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12 col-lg-2">
-                    <div>
-                      <label for="gst">GST :</label>
-                      <div class="input-group">
-                        <input type="number" formControlName="productGST" class="form-control" min="0" max="100">
-                        <span class="input-group-text bg-muted"> %</span>
+                    <div class="col-md-12 col-lg-2">
+                      <div>
+                        <!-- <label for="gst">GST :</label> -->
+                        <div class="input-group">
+                          <input type="number" formControlName="productGST" placeholder="GST(%)" class="form-control"
+                            min="0" max="100">
+                          <!-- <span class="input-group-text bg-muted"> %</span> -->
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12 col-lg-3">
-                    <div>
-                      <label for="qty">Qty. :</label>
-                      <div class="input-group">
-                        <input type="number" formControlName="productComboQuantity" class="form-control" min="1" max="">
-                        <span class="input-group-text bg-muted">/ 1000</span>
+                    <div class="col-md-12 col-lg-3">
+                      <div>
+                        <!-- <label for="qty">Qty. :</label> -->
+                        <div class="input-group">
+                          <input type="number" formControlName="productComboQuantity" placeholder="Qty(Pcs)"
+                            class="form-control" min="0" [max]="productComboToQtyObj[productInv['controls']['productComboId']['value']]" *ngIf="dispatchRequired">
+                            <input type="number" formControlName="productComboQuantity" placeholder="Qty(Pcs)"
+                            class="form-control" min="1" *ngIf="!dispatchRequired">
+                          <span class="input-group-text bg-muted"
+                            *ngIf="dispatchRequired">{{ productComboToQtyObj[productInv['controls']['productComboId']['value']] }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12 col-lg-1">
-                    <div>
-                      <label style="display: none;">Sub-Product :</label>
-                      <button class="btn btn-danger mt-4" (click)="onRemoveItem(i)">X</button>
+                    <div class="col-md-12 col-lg-1">
+                      <div>
+                        <div class="input-group">
+                          <button class="btn btn-danger" (click)="onRemoveItem(i)">X</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -218,9 +254,9 @@
       </div>
       <div class="row mt-4">
         <div class="btn-group">
-          <button class="btn btn-primary" type="button" (click)="onSaveOrder(false)" *ngIf="dispatchRequired">Save
+          <button class="btn btn-primary" type="submit" *ngIf="dispatchRequired">Save
             Order</button>
-          <button class="btn btn-success" type="button" (click)="onSaveOrder(true)">Save
+          <button class="btn btn-success" type="submit" *ngIf="!dispatchRequired">Save
             & Dispatch</button>
         </div>
       </div>
