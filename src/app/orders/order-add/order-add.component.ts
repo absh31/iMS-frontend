@@ -65,7 +65,10 @@ export class OrderAddComponent implements OnInit {
       .then(() => this.getSizes())
       .then(() => this.getSizeObj())
       .then(() => this.initForm())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   onChangeOrderType() {

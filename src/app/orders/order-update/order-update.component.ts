@@ -60,7 +60,10 @@ export class OrderUpdateComponent {
         .then(() => this.getExisitngOrderItems())
         .then(() => this.initForm())
         .then(() => this.initOrderItems())
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
     });
   }
 
@@ -327,14 +330,20 @@ export class OrderUpdateComponent {
         });
         this.productTypeSelected = true;
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   onChangeProduct() {
     let product = (<HTMLInputElement>document.getElementById('product')).value;
     this.getProductCombos(product)
       .then(() => this.getProductObj)
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   onChangeOrderType() {
@@ -360,7 +369,10 @@ export class OrderUpdateComponent {
         .then(() => {
           this.resetProducts();
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
     } else {
       this.toastr.warning('Please Select an Item!!!');
     }

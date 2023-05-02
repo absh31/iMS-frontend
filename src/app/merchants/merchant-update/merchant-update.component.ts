@@ -47,7 +47,10 @@ export class MerchantUpdateComponent {
         .then(() => this.getStatesList())
         .then(() => this.initForm())
         .then(() => (this.dataFetched = true))
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
     });
   }
 
@@ -228,7 +231,10 @@ export class MerchantUpdateComponent {
       .then(() => this.initNewContacts())
       .then(() => this.initNewEmails())
       .then(() => this.initNewAddress())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   initDetails() {

@@ -146,7 +146,6 @@ export class OrderListComponent {
             resolve(data);
           },
           (error) => {
-            console.log(error);
             reject(error);
           }
         );
@@ -338,7 +337,6 @@ export class OrderListComponent {
           resolve(data);
         },
         (error) => {
-          console.log(error);
           reject(error);
         }
       );

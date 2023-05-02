@@ -65,11 +65,9 @@ export class InventoryComponent implements OnInit {
         .subscribe(
           (data) => {
             this.logs = data;
-            console.log(data);
             resolve(this.logs);
           },
           (error) => {
-            console.log(error);
             reject(error);
           }
         );

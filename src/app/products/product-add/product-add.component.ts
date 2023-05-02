@@ -61,7 +61,10 @@ export class ProductAddComponent implements OnInit {
       .then(() => this.getColors())
       .then(() => this.getColorObj())
       .then(() => this.addCheckboxesToColorForm())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   getColors() {
@@ -125,7 +128,10 @@ export class ProductAddComponent implements OnInit {
           });
         }, 10);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   onSubmit() {
@@ -160,7 +166,6 @@ export class ProductAddComponent implements OnInit {
           resolve(data);
         },
         (error) => {
-          console.log(error);
           reject(error);
         }
       );
@@ -179,9 +184,10 @@ export class ProductAddComponent implements OnInit {
         .subscribe(
           (data) => {
             if (data['success']) {
-              console.log('Combos Done');
+              resolve(data);
+            } else {
+              reject(data);
             }
-            resolve(data);
           },
           (error) => {
             reject(error);
@@ -243,7 +249,10 @@ export class ProductAddComponent implements OnInit {
     this.getSizeType()
       .then(() => this.getSizeTypeObj())
       .then(() => this.addCheckboxesToSizeForm())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   getSizeTypeObj() {

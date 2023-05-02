@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppModule } from 'src/app/app.module';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-order-details',
@@ -27,7 +28,11 @@ export class OrderDetailsComponent {
   productTypeObj = {};
   colorObj = {};
   sizesObj = {};
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private toastr: ToastrServices
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -53,6 +58,7 @@ export class OrderDetailsComponent {
         })
         .catch((error) => {
           console.log(error);
+          this.toastr.error('Something went wrong');
         });
     });
   }
@@ -68,7 +74,6 @@ export class OrderDetailsComponent {
             resolve(data);
           },
           (error) => {
-            console.log(error);
             reject(error);
           }
         );
@@ -215,8 +220,6 @@ export class OrderDetailsComponent {
       this.productDetails.forEach((product) => {
         this.productObj[product['productId']] = product;
       });
-      console.log(this.productObj);
-
       resolve(this.productObj);
     });
     return promise;
@@ -228,8 +231,6 @@ export class OrderDetailsComponent {
         this.productTypeObj[productType['productTypeId']] =
           productType['productType'];
       });
-      console.log(this.productTypeObj);
-
       resolve(this.productTypeObj);
     });
     return promise;
@@ -270,8 +271,6 @@ export class OrderDetailsComponent {
       this.orderTypes.forEach((orderType) => {
         this.orderTypeObj[orderType['orderTypeId']] = orderType['orderType'];
       });
-      console.log(this.orderTypeObj);
-
       resolve(this.orderTypeObj);
     });
     return promise;

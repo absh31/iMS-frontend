@@ -33,6 +33,7 @@ export class MerchantAddComponent implements OnInit {
       })
       .catch((error) => {
         console.log(error);
+        this.toastr.success("Something went wrong");
       });
   }
 

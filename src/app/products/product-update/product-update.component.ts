@@ -38,7 +38,10 @@ export class ProductUpdateComponent {
         .then(() => this.getSizes())
         .then(() => this.initForm())
         .then(() => (this.dataFetched = true))
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
     });
   }
 
@@ -176,7 +179,10 @@ export class ProductUpdateComponent {
   initForm() {
     this.initDetails()
       .then(() => this.initProductCombo())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   initDetails() {

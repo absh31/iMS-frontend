@@ -38,6 +38,7 @@ export class ProductDetailsComponent implements OnInit {
         })
         .catch((error) => {
           console.log(error);
+          this.toastr.error('Something went wrong');
         });
     });
   }
@@ -53,7 +54,6 @@ export class ProductDetailsComponent implements OnInit {
             resolve(data);
           },
           (error) => {
-            this.toastr.error("Something went wrong");
             reject(error);
           }
         );

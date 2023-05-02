@@ -40,6 +40,7 @@ export class MerchantListComponent {
       .then(() => this.getStateObj())
       .catch((error) => {
         console.log(error);
+        this.toastr.error("Something went wrong");
       });
   }
 

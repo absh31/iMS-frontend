@@ -50,8 +50,6 @@ export class MerchantHomeComponent implements OnInit {
         })
         .subscribe(
           (data) => {
-            console.log(data);
-            
             this.merchantsData = data;
             resolve(data);
           },

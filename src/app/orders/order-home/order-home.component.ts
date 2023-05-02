@@ -50,7 +50,6 @@ export class OrderHomeComponent implements OnInit {
         })
         .subscribe(
           (data) => {
-            console.log(data);
             this.ordersData = data;
             resolve(data);
           },

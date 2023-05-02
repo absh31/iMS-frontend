@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Toast } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-merchant-details',
@@ -17,7 +19,11 @@ export class MerchantDetailsComponent implements OnInit {
   statesObj = {};
   citiesObj = {};
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private toastr: ToastrServices
+  ) {}
 
   ngOnInit(): void {
     this.getCityDetails()
@@ -34,6 +40,7 @@ export class MerchantDetailsComponent implements OnInit {
       })
       .catch((error) => {
         console.log(error);
+        this.toastr.error('Something went wrong');
       });
   }
 
@@ -47,7 +54,6 @@ export class MerchantDetailsComponent implements OnInit {
       this.cityDetails.forEach((city) => {
         this.citiesObj[city['cityId']] = city['cityName'];
       });
-      // console.log(this.citiesObj);
       resolve(this.citiesObj);
       return promise;
     });
@@ -59,7 +65,6 @@ export class MerchantDetailsComponent implements OnInit {
         this.statesObj[state['stateId']] = state['stateName'];
       });
       resolve(this.statesObj);
-      // console.log(this.statesObj);
       return promise;
     });
   }
@@ -86,7 +91,6 @@ export class MerchantDetailsComponent implements OnInit {
     const promise = new Promise((resolve, reject) => {
       this.http.get(AppModule.apiLink + 'cities').subscribe(
         (data) => {
-          // console.log(data);
           this.cityDetails = data;
           resolve(data);
         },
@@ -103,7 +107,6 @@ export class MerchantDetailsComponent implements OnInit {
       this.http.get(AppModule.apiLink + 'states').subscribe(
         (data) => {
           this.stateDetails = data;
-          // console.log(data);
           resolve(data);
         },
         (error) => {
