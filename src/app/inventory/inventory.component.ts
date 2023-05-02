@@ -28,7 +28,7 @@ export class InventoryComponent implements OnInit {
   constructor(private http: HttpClient, private toastr: ToastrService) {}
   ngOnInit() {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: 'numbers',
       pageLength: 10,
       processing: true,
     };

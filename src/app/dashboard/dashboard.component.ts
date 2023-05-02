@@ -16,21 +16,35 @@ export class DashboardComponent implements OnInit {
   public chart: any;
   public chart1: any;
   sales = {};
-
-  constructor(private http: HttpClient, private toastr: ToastrService, private authService: AuthService) {}
-
-  sessionDetails = AES.decrypt(sessionStorage.getItem('loginDetails'), "absh").toString(enc.Utf8);
+  inventory = {};
+  purchase = {};
+  product = {};
+  charts: any;
+  sessionDetails = AES.decrypt(
+    sessionStorage.getItem('loginDetails'),
+    'absh'
+  ).toString(enc.Utf8);
   sessionDetailsJSON = JSON.parse(this.sessionDetails);
   sessionIP = this.sessionDetailsJSON['IP'];
+
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+    private authService: AuthService
+  ) {}
+
   ngOnInit(): void {
-    this.createChart();
-    this.createChart1();
     this.getSalesData()
+      .then(() => this.getPurchaseData())
+      .then(() => this.getInventoryData())
+      .then(() => this.getProductData())
+      .then(() => this.getChartsData())
       .then(() => {
+        this.createCharts();
         this.dataFetched = true;
       })
       .catch((error) => {
-        this.toastr.error("Something went wrong")
+        this.toastr.error('Something went wrong');
         console.log(error);
       });
   }
@@ -54,31 +68,96 @@ export class DashboardComponent implements OnInit {
     return promise;
   }
 
-  createChart() {
-    this.chart = new Chart('MyChart', {
-      type: 'bar', //this denotes tha type of chart
+  getPurchaseData() {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'utility/purchase', {
+          headers: { ip: this.sessionIP },
+        })
+        .subscribe(
+          (data) => {
+            this.purchase = data;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
 
+  getInventoryData() {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'utility/inventory', {
+          headers: { ip: this.sessionIP },
+        })
+        .subscribe(
+          (data) => {
+            this.inventory = data;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
+
+  getProductData() {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'utility/product', {
+          headers: { ip: this.sessionIP },
+        })
+        .subscribe(
+          (data) => {
+            this.product = data;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
+
+  getChartsData() {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .get(AppModule.apiLink + 'utility/charts', {
+          headers: { ip: this.sessionIP },
+        })
+        .subscribe(
+          (data) => {
+            this.charts = data;
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
+  }
+
+  createCharts() {
+    this.chart = new Chart('LineQty', {
+      type: 'line',
       data: {
-        // values on X-Axis
-        labels: [
-          '2022-05-10',
-          '2022-05-11',
-          '2022-05-12',
-          '2022-05-13',
-          '2022-05-14',
-          '2022-05-15',
-          '2022-05-16',
-          '2022-05-17',
-        ],
+        labels: this.charts['dates'],
         datasets: [
           {
             label: 'Sales',
-            data: ['467', '576', '572', '79', '92', '574', '573', '576'],
+            data: this.charts['sales'],
             backgroundColor: 'green',
           },
           {
             label: 'Purchase',
-            data: ['542', '542', '536', '327', '17', '0.00', '538', '541'],
+            data: this.charts['purchase'],
             backgroundColor: 'red',
           },
         ],
@@ -87,32 +166,21 @@ export class DashboardComponent implements OnInit {
         aspectRatio: 2.5,
       },
     });
-  }
-  createChart1() {
-    this.chart1 = new Chart('MyChart1', {
+    this.chart1 = new Chart('LineCount', {
       type: 'line', //this denotes tha type of chart
 
       data: {
         // values on X-Axis
-        labels: [
-          '2022-05-10',
-          '2022-05-11',
-          '2022-05-12',
-          '2022-05-13',
-          '2022-05-14',
-          '2022-05-15',
-          '2022-05-16',
-          '2022-05-17',
-        ],
+        labels: this.charts['dates'],
         datasets: [
           {
             label: 'Sales',
-            data: ['467', '576', '572', '79', '92', '574', '573', '576'],
+            data: this.charts['salesQty'],
             backgroundColor: 'green',
           },
           {
             label: 'Purchase',
-            data: ['542', '542', '536', '327', '17', '0.00', '538', '541'],
+            data: this.charts['purchaseQty'],
             backgroundColor: 'red',
           },
         ],

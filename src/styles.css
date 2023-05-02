@@ -1,9 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
 body {
   font-family: 'Poppins', sans-serif;
   width: 100vw;
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 187, 255, 0.2), rgba(167, 255, 165, 0.2));
+  background-color: #EAFAEA;
+  /* background-image: linear-gradient(#80C3BF, #E6EEEA); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -11,6 +11,36 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.navbar,
+.modal-header,
+.dark {
+  /* background-color: #EAFAEA; */
+  background-color: #2C3743;
+  color: #EAFAEA;
+}
+
+.modal-body {
+  background-color: azure;
+}
+
+.card-body{
+  background-color: transparent;
+}
+
+.dark-bg{
+  background-color: #2C3743;
+  color: #EAFAEA;
+}
+
+.card-body{
+  background-color: #ffffff;
+  color: #2C3743; 
+}
+
+.dark-font{
+  color: #2C3743;
 }
 
 ::-webkit-scrollbar {

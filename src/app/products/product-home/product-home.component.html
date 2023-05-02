@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="dataFetched">
   <div class="row m-2">
   </div>
   <div class="row">
@@ -12,32 +12,32 @@
         <div class="col-md-12 col-lg-3">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Qty.</p>
+              <h2 class="card-header py-3">{{ productsData['types'] ? productsData['types']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">Types</p>
             </div>
           </div>
         </div>
         <div class="col-md-12 col-lg-3">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Types</p>
+              <h2 class="card-header py-3">{{ productsData['products'] ? productsData['products']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">Products</p>
             </div>
           </div>
         </div>
         <div class="col-md-12 col-lg-3">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Product Desc</p>
+              <h2 class="card-header py-3">{{ productsData['qty'] ? productsData['qty']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">Pcs.</p>
             </div>
           </div>
         </div>
         <div class="col-md-12 col-lg-3">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Products</p>
+              <h2 class="card-header py-3">{{ productsData['deadCount'] ? productsData['deadCount']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">Dead Count</p>
             </div>
           </div>
         </div>
@@ -47,8 +47,9 @@
       <div class="row">
         <div class="col-md-12 col-lg-12">
           <div class="card m-1 bg-transparent" style="border: 0px;">
-            <div class="card-body text-center">
-              <h2 class="card-title"><button class="btn btn-success btn-lg" (click)="addProduct()">Add</button></h2>
+            <div class="card-body bg-transparent text-center pt-4">
+              <h2 class="card-title"><button class="btn dark-bg btn-lg" (click)="addProduct()">Add&nbsp;&nbsp;<i
+                    class="bi bi-bag-plus-fill"></i></button></h2>
               <p class="card-text" style="font-weight: bold;">&nbsp;</p>
             </div>
           </div>

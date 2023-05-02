@@ -12,7 +12,7 @@
       <div class="col-md-12 col-lg-12">
         <h4>Details : </h4>
         <div class="row mt-1 mb-1 p-2 pb-2" style="border-bottom: 1.5px solid rgba(0,0,0,0.3); border-radius: 1.5%;">
-          <div class="col-md-12 col-lg-2">
+          <div class="col-md-12 col-lg-3">
             <div>
               <label for="ordertype">Type :</label>
               <select formControlName="orderTypeId" class="form-select" (change)="onChangeOrderType()" id="orderTypeId">
@@ -21,7 +21,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-12 col-lg-3">
+          <div class="col-md-12 col-lg-4">
             <div>
               <label for="merchant">Merchant :</label>
               <select formControlName="orderMerchantId" class="form-select">
@@ -46,44 +46,6 @@
         </div>
       </div>
       <div class="row p-2">
-        <!-- <div class="col-md-12 col-lg-6">
-            <div>
-              <label for="merchant">Product Type :</label>
-              <select class="form-select" id="productType" (change)="onChangeProductType()">
-                <option value="" disabled selected>Select</option>
-                <option *ngFor="let productType of productTypes" [value]="productType.productTypeId">
-                  {{productType.productType}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12 col-lg-6">
-            <div>
-              <label for="merchant">Product :</label>
-              <select class="form-select" id="product" (change)="onChangeProduct()">
-                <option value="" disabled selected>Select</option>
-                <option *ngFor="let product of products" [value]="product.productId">{{product.productDesc}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12 col-lg-6">
-            <div>
-              <label for="merchant">Color :</label>
-              <select class="form-select" id="productItem">
-                <option value="" disabled selected>Select</option>
-                <option *ngFor="let productCombo of productCombos" [value]="productCombo.productComboId">
-                  {{ sizeObj[productCombo.productSize] }} - {{ colorObj[productCombo.productColor]}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12 col-lg-1">
-            <div>
-              <label style="display: none;">Null Text :</label>
-              <button class="btn btn-success mt-4" type="button" (click)="onAddItem()">+</button>
-            </div>
-          </div> -->
         <div class="col-md-12 col-lg-4" style="height: 395px; overflow-y: scroll;">
           <div class="table-responsive">
             <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions"
@@ -140,7 +102,7 @@
         <div class="col-md-12 col-lg-8" style="height: 395px; overflow-y: scroll;">
           <div class="row mb-3 pb-2">
             <div>
-              <h4>Items : </h4>
+              <h4>Selected Items : </h4>
               <div class="row my-1 pt-2" formArrayName="productInventory"
                 *ngIf="this.orderForm.get('productInventory')['controls'].length > 0">
                 <!-- <div class="col-md-12 col-lg-4">Item</div>
@@ -183,11 +145,13 @@
                         <!-- <label for="qty">Qty. :</label> -->
                         <div class="input-group">
                           <input type="number" formControlName="productComboQuantity" placeholder="Qty(Pcs)"
-                            class="form-control" min="0" [max]="productComboToQtyObj[productInv['controls']['productComboId']['value']]" *ngIf="dispatchRequired">
-                            <input type="number" formControlName="productComboQuantity" placeholder="Qty(Pcs)"
+                            class="form-control" min="0"
+                            [max]="productComboToQtyObj[productInv['controls']['productComboId']['value']]"
+                            *ngIf="dispatchRequired">
+                          <input type="number" formControlName="productComboQuantity" placeholder="Qty(Pcs)"
                             class="form-control" min="1" *ngIf="!dispatchRequired">
                           <span class="input-group-text bg-muted"
-                            *ngIf="dispatchRequired">{{ productComboToQtyObj[productInv['controls']['productComboId']['value']] }}</span>
+                            *ngIf="dispatchRequired">/{{ productComboToQtyObj[productInv['controls']['productComboId']['value']] }}</span>
                         </div>
                       </div>
                     </div>
@@ -200,6 +164,11 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="row my-5 pt-5 text-center text-muted"
+                *ngIf="this.orderForm.get('productInventory')['controls'].length <= 0">
+                <h3>No Items Selected</h3>
+                <h6>Select from the left panel.</h6>
               </div>
             </div>
           </div>

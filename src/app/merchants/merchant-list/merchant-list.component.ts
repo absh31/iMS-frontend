@@ -31,7 +31,7 @@ export class MerchantListComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: 'numbers',
       pageLength: 10,
       processing: true,
     };
@@ -40,7 +40,6 @@ export class MerchantListComponent {
       .then(() => this.getStateDetails())
       .then(() => this.getCityObj())
       .then(() => this.getStateObj())
-      // .then(() => {})
       .catch((error) => {
         console.log(error);
       });
@@ -91,7 +90,6 @@ export class MerchantListComponent {
       this.cityDetails.forEach((city) => {
         this.citiesObj[city['cityId']] = city['cityName'];
       });
-      // console.log(this.citiesObj);
       resolve(this.citiesObj);
       return promise;
     });
@@ -103,7 +101,6 @@ export class MerchantListComponent {
         this.statesObj[state['stateId']] = state['stateName'];
       });
       resolve(this.statesObj);
-      // console.log(this.statesObj);
       return promise;
     });
   }
@@ -135,7 +132,6 @@ export class MerchantListComponent {
     const promise = new Promise((resolve, reject) => {
       this.http.get(AppModule.apiLink + 'cities').subscribe(
         (data) => {
-          // console.log(data);
           this.cityDetails = data;
           resolve(data);
         },
@@ -152,7 +148,6 @@ export class MerchantListComponent {
       this.http.get(AppModule.apiLink + 'states').subscribe(
         (data) => {
           this.stateDetails = data;
-          // console.log(data);
           resolve(data);
         },
         (error) => {

@@ -3,91 +3,51 @@
     <div class="row mb-5">
     </div>
     <div class="row">
-      <div class="col-md-12 col-lg-6">
+      <div class="col-md-12 col-lg-5">
         <div class="row text-left">
           <h2>Sales </h2>
           <hr>
         </div>
         <div class="row">
-          <div class="col-md-3 col-lg-3">
+          <div class="col-md-3 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <!-- <h2 class="card-header" *ngIf="sales !== {}">#</h2> -->
-                <h2 class="card-header" *ngIf="sales !== {}" >{{ sales.orderCount }}</h2>
-                <p class="card-text" style="font-weight: bold;">Orders</p>
+                <h1 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ sales['orderCount'] ? sales['orderCount']: '#' }}</h1>
+                <p class="card-text py-2" style="font-weight: bold;">Orders</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-lg-3">
+          <div class="col-md-3 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">₹</h2>
-                <p class="card-text" style="font-weight: bold;">Amount</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ sales['orderAmount'] ? sales['orderAmount']: '₹' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Amount</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-lg-3">
+          <div class="col-md-3 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Return</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ sales['returnOrderCount'] ? sales['returnOrderCount']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Return</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-lg-3">
+          <div class="col-md-3 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">₹</h2>
-                <p class="card-text" style="font-weight: bold;">Amount</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ sales['returnOrderAmount'] ? sales['returnOrderAmount']: '₹' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Amount</p>
               </div>
             </div>
           </div>
         </div>
         <div class="row mb-2">
-
         </div>
-        <div class="row text-left">
-          <h2>Purchase </h2>
-          <hr>
-        </div>
-        <div class="row">
-          <div class="col-md-3 col-lg-3">
-            <div class="card m-1">
-              <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Orders</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <div class="card m-1">
-              <div class="card-body text-center">
-                <h2 class="card-header">₹</h2>
-                <p class="card-text" style="font-weight: bold;">Amount</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <div class="card m-1">
-              <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Return</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <div class="card m-1">
-              <div class="card-body text-center">
-                <h2 class="card-header">₹</h2>
-                <p class="card-text" style="font-weight: bold;">Amount</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-0 col-lg-1">
-      </div>
-      <div class="col-md-12 col-lg-5">
         <div class="row text-left">
           <h2>Inventory </h2>
           <hr>
@@ -96,39 +56,89 @@
           <div class="col-md-6 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Total</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ inventory['inventoryTotal'] ? inventory['inventoryTotal']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Total</p>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Blocked</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ inventory['blockedTotal'] ? inventory['blockedTotal']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Blocked</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-0 col-lg-2">
+      </div>
+      <div class="col-md-12 col-lg-5">
+        <div class="row text-left">
+          <h2>Purchase </h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h1 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ purchase['orderCount'] ? purchase['orderCount']: '#' }}</h1>
+                <p class="card-text py-2" style="font-weight: bold;">Orders</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ purchase['orderAmount'] ? purchase['orderAmount']: '₹' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Amount</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ purchase['returnOrderCount'] ? purchase['returnOrderCount']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Return</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-6">
+            <div class="card m-1">
+              <div class="card-body text-center">
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ purchase['returnOrderAmount'] ? purchase['returnOrderAmount']: '₹' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Amount</p>
               </div>
             </div>
           </div>
         </div>
         <div class="row mb-2"></div>
         <div class="row text-left">
-          <h2>Product </h2>
+          <h2>Counts </h2>
           <hr>
         </div>
         <div class="row">
           <div class="col-md-6 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Merchants</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ product['merchantCount'] ? product['merchantCount']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Merchants</p>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-6">
             <div class="card m-1">
               <div class="card-body text-center">
-                <h2 class="card-header">#</h2>
-                <p class="card-text" style="font-weight: bold;">Products</p>
+                <h2 class="card-header py-3" style="font-weight: bold; font-size: 175%;">
+                  {{ product['productCount'] ? product['productCount']: '#' }}</h2>
+                <p class="card-text py-2" style="font-weight: bold;">Products</p>
               </div>
             </div>
           </div>
@@ -140,70 +150,12 @@
         <div class="col-md-12 col-lg-6">
           <h3>Sales v/s Purchase (Qty.)</h3>
           <hr>
-          <canvas id="MyChart">{{ chart }}</canvas>
+          <canvas id="LineCount">{{ chart }}</canvas>
         </div>
         <div class="col-md-12 col-lg-6">
           <h3>Sales v/s Purchase (Orders)</h3>
           <hr>
-          <canvas id="MyChart1">{{ chart }}</canvas>
-        </div>
-      </div>
-      <div class="row mb-5">
-      </div>
-      <div class="row">
-        <h3>Top Selling Stock :</h3>
-        <hr>
-        <div class="table-responsive">
-          <table class="table table-sm table-bordered table-striped table-hover" datatable [dtOptions]="dtOptions">
-            <thead class="thead-dark">
-              <tr>
-                <th>Sr No.</th>
-                <th>Desc</th>
-                <th>Color</th>
-                <th>Size</th>
-                <th>Qty.</th>
-                <th>Last Purchased</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of data">
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.address.street }}, {{ user.address.city }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row">
-        <h3>Low Quantity Stock :</h3>
-        <hr>
-        <div class="table-responsive">
-          <table class="table table-sm table-bordered table-striped table-hover" datatable [dtOptions]="dtOptions">
-            <thead class="thead-dark">
-              <tr>
-                <th>Sr No.</th>
-                <th>Desc</th>
-                <th>Color</th>
-                <th>Size</th>
-                <th>Qty.</th>
-                <th>Last Purchased</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of data">
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.address.street }}, {{ user.address.city }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <canvas id="LineQty">{{ chart }}</canvas>
         </div>
       </div>
     </div>

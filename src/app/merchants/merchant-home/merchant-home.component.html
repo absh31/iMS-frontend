@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="dataFetched">
   <div class="row m-2">
   </div>
   <div class="row">
@@ -12,24 +12,25 @@
         <div class="col-md-12 col-lg-4">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Buyers</p>
+              <h2 class="card-header py-3">{{ merchantsData['wGST'] ? merchantsData['wGST']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">With GST</p>
             </div>
           </div>
         </div>
         <div class="col-md-12 col-lg-4">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Sellers</p>
+              <h2 class="card-header py-3">{{ merchantsData['woGST'] ? merchantsData['woGST']: '#' }}</h2>
+              <p class="card-text py-2" style="font-weight: bold;">W/O GST</p>
             </div>
           </div>
         </div>
         <div class="col-md-12 col-lg-4">
           <div class="card m-1">
             <div class="card-body text-center">
-              <h2 class="card-header">#</h2>
-              <p class="card-text" style="font-weight: bold;">Total</p>
+              <h2 class="card-header py-3">{{ merchantsData['totalMerchants'] ? merchantsData['totalMerchants']: '#' }}
+              </h2>
+              <p class="card-text py-2" style="font-weight: bold;">Total</p>
             </div>
           </div>
         </div>
@@ -39,8 +40,9 @@
       <div class="row">
         <div class="col-md-12 col-lg-12">
           <div class="card m-1 bg-transparent" style="border: 0px;">
-            <div class="card-body text-center">
-              <h2 class="card-title"><button class="btn btn-success btn-lg" (click)="addMerchant()">Add</button></h2>
+            <div class="card-body bg-transparent text-center pt-4">
+              <h2 class="card-title"><button class="btn dark-bg btn-lg" (click)="addMerchant()">Add&nbsp;&nbsp;<i
+                    class="bi bi-person-plus-fill"></i></button></h2>
               <p class="card-text" style="font-weight: bold;">&nbsp;</p>
             </div>
           </div>

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="row m-2">
       <div class="col-md-6 col-lg-3">
-        <label for="ordertype" class="form-label">Log Type :</label>
+        <h3>Log Type :</h3>
         <select class="form-select" (change)="onChange()" id="logType">
           <option selected>All</option>
           <option>IN</option>
@@ -10,7 +10,7 @@
         </select>
       </div>
       <div class="col-md-6 col-lg-3">
-        <label for="ordertype" class="form-label">Dispatched :</label>
+        <h3>Dispatched :</h3>
         <select class="form-select" (change)="onChange()" id="dispatch">
           <option selected>All</option>
           <option>Yes</option>
@@ -24,7 +24,7 @@
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div class="table-responsive">
-        <table class="table table-sm table-striped table-hover" datatable [dtOptions]="dtOptions" *ngIf="logs">
+        <table class="table table-sm table-striped" datatable [dtOptions]="dtOptions" *ngIf="logs">
           <thead class="thead-dark">
             <tr>
               <th><i class="bi bi-activity"></i></th>
@@ -40,7 +40,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let log of logs">
-              <td class="text-danger" *ngIf="log['logType'] == 'IN'"><i class="bi bi-box-arrow-in-down-left"></i></td>
+              <td class="text-danger" *ngIf="log['logType'] == 'IN'"><span style="display: none;">i</span><i class="bi bi-box-arrow-in-down-left"></i></td>
               <td class="text-success" *ngIf="log['logType'] != 'IN'"><i class="bi bi-box-arrow-in-up-right"></i></td>
               <td>{{ productObj[productComboObj[log['productComboId']]] }}</td>
               <td>{{ colorObj[productComboObj[log['productComboId']]] }}</td>

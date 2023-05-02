@@ -43,7 +43,7 @@ export class OrderListComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: 'numbers',
       pageLength: 10,
       processing: true,
     };
@@ -320,10 +320,6 @@ export class OrderListComponent {
   }
 
   onDispatch(id: number) {
-    // this.dbSave
-      // .saveCheckPoint()
-      // .then(() => this.dispatchOrder(id))
-      // .then(()=> this.dbSave.commitChanges())
       this.dispatchOrder(id)
       .then(() => {
         this.toastr.success('Order has been dispatched successfully!');
@@ -331,7 +327,6 @@ export class OrderListComponent {
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        // this.dbSave.rollbackToCheckPoint();
       });
   }
 

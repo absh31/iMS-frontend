@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row login-box">
       <div class="col-lg-8">
-        <div class="row mx-5 text">
+        <div class="row mx-5 text logo-text dark-font">
           <div class="row">INVENTORY</div>
           <div class="row">MANAGEMENT</div>
           <div class="row">SYSTEM</div>
@@ -11,15 +11,15 @@
       <div class="col login-cont">
         <div class="row">
           <div class="row">
-            <p class="logo-text">
-              iMS
+            <p class="logo-text dark-font">
+              <span><img src=".././assets/logo.png" width="68"></span> iMS
             </p>
           </div>
           <div class="row">
-            <p style="font-size: 24px; font-weight: 700;">
+            <p class="dark-font" style="font-size: 24px; font-weight: 700;">
               Log in to your Account
             </p>
-            <p class="m-0" style="font-weight: 100;">
+            <p class="m-0 dark-font" style="font-weight: 100;">
               Please enter your details
             </p>
           </div>
@@ -27,19 +27,20 @@
             <div class="form">
               <form [formGroup]="loginForm" *ngIf="loginForm" (ngSubmit)="onSubmit()">
                 <div class="mb-3">
-                  <label class="form-label" for="username">Username</label>
-                  <input type="text" class="form-control" formControlName="username" placeholder="Username">
+                  <label class="form-label dark-font" for="username">Username</label>
+                  <input type="text" class="form-control dark-font" formControlName="username" placeholder="Username">
                   <div class="form-text">We'll never share your info with anyone else.</div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label" for="password">Password</label>
-                  <input type="password" class="form-control" formControlName="password" placeholder="Password">
+                  <label class="form-label dark-font" for="password">Password</label>
+                  <input type="password" class="form-control dark-font" formControlName="password"
+                    placeholder="Password">
                 </div>
                 <div class="mb-3 text-center">
                   <a (click)="onForgotPassword()" style="text-decoration: none;">Forgot Password?</a>
                 </div>
                 <div class="mb-3 d-grid">
-                  <input type="submit" class="btn btn-primary" value="Sign in" name="login">
+                  <input type="submit" class="btn dark-bg" value="Sign in" name="login">
                 </div>
               </form>
             </div>

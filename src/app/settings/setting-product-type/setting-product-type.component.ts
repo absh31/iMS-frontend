@@ -28,7 +28,7 @@ export class SettingProductTypeComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType : 'full_numbers',
+      pagingType : 'numbers',
       pageLength : 10,
       processing : true
     };

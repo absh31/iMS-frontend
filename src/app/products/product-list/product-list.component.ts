@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { error } from 'jquery';
@@ -23,6 +24,7 @@ export class ProductListComponent implements OnInit {
   sizes: any;
   colorObj = {};
   sizesObj = {};
+  deadCountForm: FormGroup;
   dtOptions: DataTables.Settings = {};
 
   constructor(
@@ -35,7 +37,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: 'numbers',
       pageLength: 10,
       processing: true,
     };
@@ -47,6 +49,7 @@ export class ProductListComponent implements OnInit {
       .then(() => this.getproductSizes())
       .then(() => this.getColorObj())
       .then(() => this.getSizeObj())
+      .then(() => this.initForm())
       .catch(() => {
         console.log(error);
         this.toastr.error('Something went wrong');
@@ -231,5 +234,60 @@ export class ProductListComponent implements OnInit {
       .then(() => {
         this.modalService.open(content, { size: 'xl', scrollable: true });
       });
+  }
+
+  initForm() {
+    const promise = new Promise((resolve, reject) => {
+      let deadCount = 0;
+      this.deadCountForm = new FormGroup({
+        count: new FormControl(deadCount),
+      });
+      resolve(this.deadCountForm);
+    });
+    return promise;
+  }
+
+  onSaveDeadCount(productComboId: number, productQuantity: number, deadCount: number) {
+    let dCount = +(<HTMLInputElement>(
+      document.getElementById('dCount' + productComboId)
+    )).value;
+    if (dCount > productQuantity || dCount <= 0) {
+      this.toastr.error('Enter valid Quantity');
+    } else {
+      this.saveDeadCount(productComboId, dCount)
+        .then(() => {
+          this.toastr.success('Saved Successfully!');
+        })
+        .catch((error) => {
+          console.log(error);
+          this.toastr.error('Something went wrong');
+        });
+    }
+  }
+
+  saveDeadCount(productComboId: number, dCount: number) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .put(
+          AppModule.apiLink +
+            'productCombos/dead?productComboId=' +
+            productComboId +
+            '&dCount=' +
+            dCount,
+          {
+            productComboId: productComboId,
+            dCount: dCount,
+          }
+        )
+        .subscribe(
+          (data) => {
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
+    return promise;
   }
 }

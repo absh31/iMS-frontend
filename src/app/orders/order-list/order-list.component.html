@@ -61,23 +61,29 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Order</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    <button type="button" class="btn-close bg-white" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <p style="font-weight: bold;">Id : {{orderDetails.orderId}}</p>
+          <p style="font-weight: bold;">Type : {{orderTypeObj[orderDetails.orderTypeId]}}</p>
+          <p style="font-weight: bold;">Merchant : {{merchantObj[orderDetails.orderMerchantId]}}</p>
+          <p style="font-weight: bold;">Date : {{orderDetails.orderDateTime | date : "medium" }}</p>
+          <p style="font-weight: bold;">Dispatch : {{ orderDetails.orderDispatch ? "Yes" : "No"}}</p>
+          <p style="font-weight: bold;">Dispatch Date :
+            {{ orderDetails.orderDispatch ? (orderDetails.orderDispatchDateTime | date : "medium") : "-" }}</p>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <p style="font-weight: bold;">Amount : {{orderDetails.orderAmount }}</p>
+          <p style="font-weight: bold;">Total : {{orderDetails.orderTotal}}</p>
+          <p style="font-weight: bold;">Discount : {{orderDetails.orderDiscount}}</p>
+          <p style="font-weight: bold;">Quantity : {{orderDetails.orderQuantity}}</p>
+          <p style="font-weight: bold;">Remarks : {{orderDetails.remarks}}</p>
+        </div>
+      </div>
       <div class="col-md-12 col-lg-12">
-        <p style="font-weight: bold;">Id : {{orderDetails.orderId}}</p>
-        <p style="font-weight: bold;">Type : {{orderTypeObj[orderDetails.orderTypeId]}}</p>
-        <p style="font-weight: bold;">Merchant : {{merchantObj[orderDetails.orderMerchantId]}}</p>
-        <p style="font-weight: bold;">Date : {{orderDetails.orderDateTime | date : "medium" }}</p>
-        <p style="font-weight: bold;">Dispatch : {{ orderDetails.orderDispatch ? "Yes" : "No"}}</p>
-        <p style="font-weight: bold;">Dispatch Date :
-          {{ orderDetails.orderDispatch ? (orderDetails.orderDispatchDateTime | date : "medium") : "-" }}</p>
-        <p style="font-weight: bold;">Amount : {{orderDetails.orderAmount }}</p>
-        <p style="font-weight: bold;">Total : {{orderDetails.orderTotal}}</p>
-        <p style="font-weight: bold;">Discount : {{orderDetails.orderDiscount}}</p>
-        <p style="font-weight: bold;">Quantity : {{orderDetails.orderQuantity}}</p>
-        <p style="font-weight: bold;">Remarks : {{orderDetails.remarks}}</p>
         <hr>
         <p style="font-weight: bold;">Items : </p>
         <div class="row">

@@ -1,0 +1,14 @@
+.card-body {
+  background-color: #EAFAEA;
+  color: #2C3743;
+}
+
+.card-body:hover {
+  background-color: #c7e0c7;
+  color: #2C3743;
+}
+
+.dark-bg {
+  background-color: #2C3743;
+  color: #EAFAEA;
+}

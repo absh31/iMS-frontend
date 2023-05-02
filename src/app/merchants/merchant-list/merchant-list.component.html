@@ -51,23 +51,29 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Merchant</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    <button type="button" class="btn-close bg-white" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <p style="font-weight: bold;">Name : {{ merchantDetails.merchantName }}</p>
+          <p style="font-weight: bold;">GST : {{ merchantDetails.merchantGST }}</p>
+          <p style="font-weight: bold;">Last Traded :
+            {{ merchantDetails.lastTraded ? (merchantDetails.lastTraded | date : "medium"): "-" }}</p>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <p style="font-weight: bold;">Added : {{ merchantDetails.merchantAdded | date : "medium" }}</p>
+          <p style="font-weight: bold;">Last Modified : {{ merchantDetails.lastModifiedTime | date : "medium" }}</p>
+          <p style="font-weight: bold;">Remarks : {{ merchantDetails.remarks }}</p>
+        </div>
+      </div>
       <div class="col-md-12 col-lg-12">
-        <p style="font-weight: bold;">Name : {{ merchantDetails.merchantName }}</p>
-        <p style="font-weight: bold;">GST : {{ merchantDetails.merchantGST }}</p>
-        <p style="font-weight: bold;">Last Traded :
-          {{ merchantDetails.lastTraded ? (merchantDetails.lastTraded | date : "medium"): "-" }}</p>
-        <p style="font-weight: bold;">Added : {{ merchantDetails.merchantAdded | date : "medium" }}</p>
-        <p style="font-weight: bold;">Last Modified : {{ merchantDetails.lastModifiedTime | date : "medium" }}</p>
-        <p style="font-weight: bold;">Remarks : {{ merchantDetails.remarks }}</p>
         <hr>
         <p style="font-weight: bold;">Contacts : </p>
         <div class="row p-3">
           <div *ngFor="let contact of merchantDetails.theContacts" class="col-md-12 col-lg-6 p-3">
-            <div class="card border-dark bg-transparent">
+            <div class="card border bg-transparent">
               <div class="card-body">
                 <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ contact.contactType }}</p>
                 <p class="card-text" style="font-weight: bold; font-size: 12px;">No. : {{ contact.contactNo }}</p>
@@ -84,7 +90,7 @@
         <p style="font-weight: bold;">Emails : </p>
         <div class="row p-3">
           <div *ngFor="let email of merchantDetails.theEmails" class="col-md-12 col-lg-6 p-3">
-            <div class="card border-dark bg-transparent">
+            <div class="card border bg-transparent">
               <div class="card-body">
                 <p class="card-text" style="font-weight: bold; font-size: 12px;">Type : {{ email.emailType }}</p>
                 <p class="card-text" style="font-weight: bold; font-size: 12px;">Email. : {{ email.email }}</p>
@@ -101,7 +107,7 @@
         <p style="font-weight: bold;">Address : </p>
         <div class="row p-3">
           <div *ngFor="let address of merchantDetails.theAddress; let i = index" class="col-md-12 col-lg-6 p-3">
-            <div class="card border-dark bg-transparent">
+            <div class="card border bg-transparent">
               <div class="card-body">
                 <p class="card-text" style="font-weight: bold; font-size: 12px;">Address Line 1 :
                   {{ address.addressLine1 }}</p>
