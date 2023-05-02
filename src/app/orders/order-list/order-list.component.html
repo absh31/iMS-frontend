@@ -21,27 +21,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let order of ordersData; let i = index" style="cursor: pointer;">
-              <td (click)="openDetails(order.orderId, content)">{{ i + 1 }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderId }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ orderTypeObj[order.orderTypeId] }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ merchantObj[order.orderMerchantId] }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderDateTime | date : "medium" }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderDispatch ? "Yes" : "No" }}</td>
-              <td (click)="openDetails(order.orderId, content)">
+            <tr *ngFor="let order of ordersData; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ order.orderId }}</td>
+              <td>{{ orderTypeObj[order.orderTypeId] }}</td>
+              <td>{{ merchantObj[order.orderMerchantId] }}</td>
+              <td>{{ order.orderDateTime | date : "medium" }}</td>
+              <td>{{ order.orderDispatch ? "Yes" : "No" }}</td>
+              <td>
                 {{ order.orderDispatch ? (order.orderDispatchDateTime | date : "medium") : "NA" }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderAmount }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderTotal }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderDiscount }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.orderQuantity }}</td>
-              <td (click)="openDetails(order.orderId, content)">{{ order.remarks ? order.remarks : "-" }}</td>
+              <td>{{ order.orderAmount }}</td>
+              <td>{{ order.orderTotal }}</td>
+              <td>{{ order.orderDiscount }}</td>
+              <td>{{ order.orderQuantity }}</td>
+              <td>{{ order.remarks ? order.remarks : "-" }}</td>
               <td>
                 <div class="dropdown" *ngIf="!order.orderDispatch">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
                   </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="cursor: pointer;">
+                    <a class="dropdown-item" (click)="openDetails(order.orderId, content)"><i
+                        class="bi bi-book-fill"></i>
+                      View Details </a>
                     <a class="dropdown-item" (click)="onEdit(order.orderId)"><i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a class="dropdown-item" (click)="onDispatch(order.orderId)"><i class="bi bi-check2-square"></i>

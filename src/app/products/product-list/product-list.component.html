@@ -18,27 +18,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of productsData; let i = index" style="cursor: pointer;">
-              <td (click)="openDetails(product.productId, content)">{{ i + 1 }}</td>
-              <td (click)="openDetails(product.productId, content)">{{ product.productDesc }}</td>
-              <td (click)="openDetails(product.productId, content)">{{ typeObj[product.productType] }}</td>
-              <td (click)="openDetails(product.productId, content)">{{ product.productHSN }}</td>
-              <td (click)="openDetails(product.productId, content)">
+            <tr *ngFor="let product of productsData; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ product.productDesc }}</td>
+              <td>{{ typeObj[product.productType] }}</td>
+              <td>{{ product.productHSN }}</td>
+              <td>
                 {{ product.lastPurchased ? (product.lastPurchased | date : "medium") : "-" }}</td>
-              <td (click)="openDetails(product.productId, content)">
+              <td>
                 {{ product.lastSold ? (product.lastSold | date : "medium") : "-" }}
               </td>
-              <td (click)="openDetails(product.productId, content)">{{ product.productAdded | date : "medium" }}</td>
-              <td (click)="openDetails(product.productId, content)">{{ product.lastModifiedTime | date : "medium" }}
+              <td>{{ product.productAdded | date : "medium" }}</td>
+              <td>{{ product.lastModifiedTime | date : "medium" }}
               </td>
-              <td (click)="openDetails(product.productId, content)">{{ product.remarks ? product.remarks : "-" }}</td>
+              <td>{{ product.remarks ? product.remarks : "-" }}</td>
               <td>
                 <div class="dropdown">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
                   </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="cursor: pointer;">
+                    <a class="dropdown-item" (click)="openDetails(product.productId, content)"><i
+                        class="bi bi-book-fill"></i>
+                      View Details </a>
                     <a class="dropdown-item" (click)="updateProduct(product.productId)"><i
                         class="bi bi-pencil-square"></i> Edit </a>
                     <a class="dropdown-item" (click)="onDeleteProduct(product.productId)"><i class="bi bi-trash"></i>

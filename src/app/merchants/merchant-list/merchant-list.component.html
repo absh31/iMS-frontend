@@ -15,16 +15,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let merchant of merchants;let i = index" style="cursor: pointer;">
-              <td (click)="openDetails(merchant.merchantId, content)">{{ i + 1 }}</td>
-              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.merchantName }}</td>
-              <td (click)="openDetails(merchant.merchantId, content)">
+            <tr *ngFor="let merchant of merchants;let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ merchant.merchantName }}</td>
+              <td>
                 {{ merchant.merchantGST ? merchant.merchantGST : "-" }}</td>
-              <td (click)="openDetails(merchant.merchantId, content)">
+              <td>
                 {{ merchant.lastTraded ? (merchant.lastTraded | date : "medium") : "-" }}</td>
-              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.merchantAdded | date : "medium" }}
+              <td>{{ merchant.merchantAdded | date : "medium" }}
               </td>
-              <td (click)="openDetails(merchant.merchantId, content)">{{ merchant.remarks ? merchant.remarks : "-" }}
+              <td>{{ merchant.remarks ? merchant.remarks : "-" }}
               </td>
               <td>
                 <div class="dropdown">
@@ -32,7 +32,10 @@
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
                   </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="cursor: pointer;">
+                    <a class="dropdown-item" (click)="openDetails(merchant.merchantId, content)"><i
+                        class="bi bi-book-fill"></i>
+                      View Details </a>
                     <a class="dropdown-item" (click)="editMerchant(merchant.merchantId)"><i
                         class="bi bi-pencil-square"></i> Edit </a>
                     <a class="dropdown-item" (click)="onDeleteMerchant(merchant.merchantId)"><i class="bi bi-trash"></i>
