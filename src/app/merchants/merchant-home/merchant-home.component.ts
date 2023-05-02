@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AES, enc } from 'crypto-ts';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-merchant-home',
@@ -24,7 +24,7 @@ export class MerchantHomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrServices
   ) {}
 
   ngOnInit(): void {

@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-setting-product-size',
@@ -25,7 +25,7 @@ export class SettingProductSizeComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService 
+    private toastr: ToastrServices 
   ) {}
 
   ngOnInit(): void {

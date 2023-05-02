@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppModule } from './app.module';
-import { ResolveEnd } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',

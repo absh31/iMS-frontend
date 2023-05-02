@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
-import { DbSaveService } from 'src/app/db-save.service';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-merchant-update',
@@ -32,8 +31,7 @@ export class MerchantUpdateComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private dbSave: DbSaveService
+    private toastr: ToastrServices
   ) {}
 
   ngOnInit(): void {
@@ -107,18 +105,14 @@ export class MerchantUpdateComponent {
   }
 
   onSubmitDetails() {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.getDetailsForm())
+    this.getDetailsForm()
       .then((data) => this.updateMerchantDetails(data))
-      .then(() => this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success('Merchant details updated!');
       })
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -154,17 +148,13 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateContacts(index: number) {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.updateContacts(index))
-      .then(() => this.dbSave.commitChanges())
+    this.updateContacts(index)
       .then(() => {
         this.toastr.success('Contact Updated Successfully');
       })
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -182,17 +172,13 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateEmails(index: number) {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.updateEmails(index))
-      .then(() => this.dbSave.commitChanges())
+    this.updateEmails(index)
       .then(() => {
         this.toastr.success('Email Updated Successfully');
       })
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -210,17 +196,13 @@ export class MerchantUpdateComponent {
   }
 
   onUpdateAddress(index: number) {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.updateAddress(index))
-      .then(() => this.dbSave.commitChanges())
+    this.updateAddress(index)
       .then(() => {
         this.toastr.success('Address Updated Successfully');
       })
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -314,10 +296,7 @@ export class MerchantUpdateComponent {
   }
 
   onSaveNewContact(index: number) {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.saveNewContact(index))
-      .then(() => this.dbSave.commitChanges())
+    this.saveNewContact(index)
       .then(() => {
         this.toastr.success('New Contact Saved Successfully');
         this.removeNewContact(index);
@@ -325,7 +304,6 @@ export class MerchantUpdateComponent {
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -388,11 +366,8 @@ export class MerchantUpdateComponent {
     (<FormArray>this.newEmailsForm.get('theNewEmails')).removeAt(index);
   }
 
-  onSaveNewEmail(index : number){
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.saveNewEmail(index))
-      .then(() => this.dbSave.commitChanges())
+  onSaveNewEmail(index: number) {
+    this.saveNewEmail(index)
       .then(() => {
         this.toastr.success('New Email Saved Successfully');
         this.removeNewEmail(index);
@@ -400,7 +375,6 @@ export class MerchantUpdateComponent {
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
@@ -473,11 +447,8 @@ export class MerchantUpdateComponent {
     (<FormArray>this.newAddressForm.get('theNewAddress')).removeAt(index);
   }
 
-  onSaveNewAddress(index: number)  {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.saveNewAddress(index))
-      .then(() => this.dbSave.commitChanges())
+  onSaveNewAddress(index: number) {
+    this.saveNewAddress(index)
       .then(() => {
         this.toastr.success('New Address Saved Successfully');
         this.removeNewAddress(index);
@@ -485,7 +456,6 @@ export class MerchantUpdateComponent {
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 

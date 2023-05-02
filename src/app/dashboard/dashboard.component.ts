@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
-import { AppModule } from '../app.module';
 import { AES, enc } from 'crypto-ts';
-import { ToastrService } from 'ngx-toastr';
+import { AppModule } from '../app.module';
 import { AuthService } from '../services/auth.service';
+import { ToastrServices } from '../services/toastr.services';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService,
+    private toastr: ToastrServices,
     private authService: AuthService
   ) {}
 

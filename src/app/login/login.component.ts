@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
+import { ToastrServices } from '../services/toastr.services';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService,
+    private toastr: ToastrServices,
     private authService: AuthService
   ) {}
 
@@ -72,6 +72,4 @@ export class LoginComponent implements OnInit {
     });
     return promise;
   }
-
-  
 }

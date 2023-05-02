@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { AppModule } from '../app.module';
 import { AES, enc } from 'crypto-ts';
+import { AppModule } from '../app.module';
+import { ToastrServices } from './toastr.services';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { AES, enc } from 'crypto-ts';
 export class AuthService {
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService,
+    private toastr: ToastrServices,
     private route: ActivatedRoute,
     private router: Router
   ) {}

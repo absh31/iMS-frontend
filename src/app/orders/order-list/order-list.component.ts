@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
-import { DbSaveService } from 'src/app/db-save.service';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-order-list',
@@ -36,9 +35,8 @@ export class OrderListComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private modalService: NgbModal,
-    private dbSave: DbSaveService
+    private toastr: ToastrServices,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -320,7 +318,7 @@ export class OrderListComponent {
   }
 
   onDispatch(id: number) {
-      this.dispatchOrder(id)
+    this.dispatchOrder(id)
       .then(() => {
         this.toastr.success('Order has been dispatched successfully!');
       })

@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppModule } from 'src/app/app.module';
-import { ToastrService } from 'ngx-toastr';
-import { DbSaveService } from 'src/app/db-save.service';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-order-update',
@@ -41,8 +40,7 @@ export class OrderUpdateComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private dbSave: DbSaveService
+    private toastr: ToastrServices
   ) {}
 
   ngOnInit(): void {
@@ -389,14 +387,12 @@ export class OrderUpdateComponent {
 
   onSaveOrder(dispatch: boolean) {
     this.onRefresh()
-      .then(() => this.dbSave.saveCheckPoint())
       .then(() => this.getOrderFormData(dispatch))
       .then(() => this.saveOrder())
       .then(() => this.getOrderItems())
       .then(() => this.saveOrderItems())
       .then(() => this.getNewOrderItems())
       .then(() => this.saveNewOrderItems())
-      .then(() => this.dbSave.commitChanges())
       .then((data) => {
         this.toastr.success('Order Saved Successfully!!!');
         this.orderForm.reset();
@@ -405,7 +401,6 @@ export class OrderUpdateComponent {
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went wrong');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 

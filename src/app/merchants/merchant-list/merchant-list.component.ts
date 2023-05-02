@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
-import { DbSaveService } from 'src/app/db-save.service';
+import { ToastrServices } from 'src/app/services/toastr.services';
 @Component({
   selector: 'app-merchant-list',
   templateUrl: './merchant-list.component.html',
@@ -24,8 +23,7 @@ export class MerchantListComponent {
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService,
-    private dbSave: DbSaveService,
+    private toastr: ToastrServices,
     private modalService: NgbModal
   ) {}
 
@@ -66,23 +64,28 @@ export class MerchantListComponent {
   }
 
   onDeleteMerchant(merchantId: number) {
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.deleteMerchant(merchantId))
-      .then(() => this.dbSave.commitChanges())
+    this.deleteMerchant(merchantId)
+      .then(() => {
+        this.toastr.success('Merchant deleted Successfully!');
+      })
       .catch((error) => {
         console.log(error);
         this.toastr.error('Something went Wrong!');
-        this.dbSave.rollbackToCheckPoint();
       });
   }
 
   deleteMerchant(merchantId: number) {
-    this.http
-      .delete(AppModule.apiLink + 'merchants/' + merchantId)
-      .subscribe((data) => {
-        this.toastr.success('Merchant deleted Successfully!');
-      });
+    const promise = new Promise((resolve, reject) => {
+      this.http.delete(AppModule.apiLink + 'merchants/' + merchantId).subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+    return promise;
   }
 
   getCityObj() {
@@ -160,7 +163,7 @@ export class MerchantListComponent {
 
   openDetails(id: number, content: any) {
     this.getMerchantDetails(id).then(() => {
-      this.modalService.open(content, { size: 'xl', scrollable: true })
+      this.modalService.open(content, { size: 'xl', scrollable: true });
     });
   }
 }

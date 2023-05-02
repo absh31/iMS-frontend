@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AppModule } from 'src/app/app.module';
-import { DbSaveService } from 'src/app/db-save.service';
+import { ToastrServices } from 'src/app/services/toastr.services';
 
 @Component({
   selector: 'app-product-add',
@@ -31,8 +30,7 @@ export class ProductAddComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private dbSave: DbSaveService
+    private toastr: ToastrServices
   ) {}
 
   private addCheckboxesToColorForm() {
@@ -138,11 +136,8 @@ export class ProductAddComponent implements OnInit {
       remarks: this.productForm.value['remarks'],
     };
 
-    this.dbSave
-      .saveCheckPoint()
-      .then(() => this.addProduct(data))
+    this.addProduct(data)
       .then(() => this.addCombos())
-      .then(()=> this.dbSave.commitChanges())
       .then(() => {
         this.toastr.success('Product Added Successfully!!!');
         this.productForm.reset();
@@ -151,8 +146,7 @@ export class ProductAddComponent implements OnInit {
       .catch((error) => {
         this.productForm.reset();
         console.log(error);
-        this.toastr.error("Something went wrong!");
-        this.dbSave.rollbackToCheckPoint();
+        this.toastr.error('Something went wrong!');
       });
   }
 

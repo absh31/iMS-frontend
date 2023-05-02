@@ -1,7 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AppModule } from '../app.module';
-import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrServices } from '../services/toastr.services';
 
 @Component({
   selector: 'app-inventory',
@@ -25,7 +25,7 @@ export class InventoryComponent implements OnInit {
   sizeObj = {};
   logs: any;
 
-  constructor(private http: HttpClient, private toastr: ToastrService) {}
+  constructor(private http: HttpClient, private toastr: ToastrServices) {}
   ngOnInit() {
     this.dtOptions = {
       pagingType: 'numbers',
