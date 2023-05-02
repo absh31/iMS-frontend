@@ -280,7 +280,6 @@ export class OrderAddComponent implements OnInit {
 
   onSaveOrder() {
     this.onRefresh().then(() => {});
-    console.log(this.orderForm);
     if (this.orderForm.valid) {
       this.onRefresh()
         .then(() => this.getOrderItems())
