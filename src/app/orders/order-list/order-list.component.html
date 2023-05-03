@@ -36,22 +36,22 @@
               <td>{{ order.orderQuantity }}</td>
               <td>{{ order.remarks ? order.remarks : "-" }}</td>
               <td>
-                <div class="dropdown" *ngIf="!order.orderDispatch">
+                <div class="dropdown">
                   <button class="btn btn-transparent btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Actions
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="cursor: pointer;">
-                    <a class="dropdown-item" (click)="openDetails(order.orderId, content)"><i
-                        class="bi bi-book"></i>
+                    <a class="dropdown-item" (click)="openDetails(order.orderId, content)"><i class="bi bi-book"></i>
                       View Details </a>
-                    <a class="dropdown-item" (click)="onEdit(order.orderId)"><i class="bi bi-pencil-square"></i> Edit
+                    <a class="dropdown-item" *ngIf="!order.orderDispatch" (click)="onEdit(order.orderId)"><i
+                        class="bi bi-pencil-square"></i> Edit
                     </a>
-                    <a class="dropdown-item" (click)="onDispatch(order.orderId)"><i class="bi bi-check2-square"></i>
+                    <a class="dropdown-item" *ngIf="!order.orderDispatch" (click)="onDispatch(order.orderId)"><i
+                        class="bi bi-check2-square"></i>
                       Dispatch </a>
                   </div>
                 </div>
-                <div *ngIf="order.orderDispatch"> - </div>
               </td>
             </tr>
           </tbody>

@@ -49,8 +49,7 @@
       <div class="row p-2">
         <div class="col-md-12 col-lg-4" style="height: 395px; overflow-y: scroll;">
           <div class="table-responsive">
-            <table class="table table-sm table-striped" datatable [dtOptions]="dtOptions"
-              *ngIf="productCombos">
+            <table class="table table-sm table-striped" datatable [dtOptions]="dtOptions" *ngIf="productCombos">
               <thead class="thead-dark">
                 <tr>
                   <th></th>
@@ -177,10 +176,7 @@
       </div>
       <div class="row mt-4">
         <div class="btn-group">
-          <button class="btn btn-primary" type="submit" *ngIf="dispatchRequired">Save
-            Order</button>
-          <button class="btn btn-success" type="submit" *ngIf="!dispatchRequired">Save
-            & Dispatch</button>
+          <button class="btn btn-success" type="submit">Save Order</button>
         </div>
       </div>
     </div>
