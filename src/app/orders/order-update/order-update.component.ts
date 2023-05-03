@@ -11,6 +11,7 @@ import { ToastrServices } from 'src/app/services/toastr.services';
   styleUrls: ['./order-update.component.css'],
 })
 export class OrderUpdateComponent {
+  dtOptions: DataTables.Settings = {};
   productTypeSelected: boolean = false;
   productSelected: boolean = false;
   orderForm: FormGroup;
@@ -22,9 +23,13 @@ export class OrderUpdateComponent {
   dispatchRequired: boolean = true;
   merchants: any;
   productTypes: any;
+  productTypeObj = {};
   products: any;
   productObj = {};
+  productToTypeObj = {};
   productCombos: any;
+  productComboObj = {};
+  productComboToQtyObj = {};
   currentProductCombo: any;
   colors: any;
   sizes: any;
@@ -35,6 +40,7 @@ export class OrderUpdateComponent {
   existingItemsForm: FormGroup;
   exisitngItems: any;
   newOrderItems = [];
+  addedItems = [];
 
   constructor(
     private http: HttpClient,
@@ -44,6 +50,11 @@ export class OrderUpdateComponent {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'numbers',
+      pageLength: 10,
+      processing: true,
+    };
     this.route.params.subscribe((params) => {
       this.orderId = params.id;
       this.getOrderDetails()
@@ -51,12 +62,15 @@ export class OrderUpdateComponent {
         .then(() => this.getOrderTypeObj())
         .then(() => this.getMerchants())
         .then(() => this.getProductTypes())
+        .then(() => this.getProductTypeObj())
+        .then(() => this.getProducts())
+        .then(() => this.getProductObj())
+        .then(() => this.getProductCombos())
+        .then(() => this.getProductComboObj())
         .then(() => this.getColors())
         .then(() => this.getColorObj())
         .then(() => this.getSizes())
         .then(() => this.getSizeObj())
-        .then(() => this.getProducts('0'))
-        .then(() => this.getProductObj())
         .then(() => this.getExisitngOrderItems())
         .then(() => this.initForm())
         .then(() => this.initOrderItems())
@@ -72,6 +86,11 @@ export class OrderUpdateComponent {
       this.http.get(AppModule.apiLink + 'orders/' + this.orderId).subscribe(
         (data) => {
           this.orderDetails = data;
+          if (data['orderType'] == 1 || data['orderType'] == 4) {
+            this.dispatchRequired = true;
+          } else {
+            this.dispatchRequired = false;
+          }
           resolve(this.orderDetails);
         },
         (error) => reject(error)
@@ -190,16 +209,20 @@ export class OrderUpdateComponent {
     return promise;
   }
 
-  getProducts(productTypeId: string) {
-    let requestEndPoint = '';
-    if (productTypeId == '0') {
-      requestEndPoint = AppModule.apiLink + 'products';
-    } else {
-      requestEndPoint =
-        AppModule.apiLink + 'products/productType/' + productTypeId;
-    }
+  getProductTypeObj() {
     const promise = new Promise((resolve, reject) => {
-      this.http.get(requestEndPoint).subscribe(
+      this.productTypes.forEach((productType) => {
+        this.productTypeObj[productType['productTypeId']] =
+          productType['productType'];
+      });
+      resolve(this.productObj);
+    });
+    return promise;
+  }
+
+  getProducts() {
+    const promise = new Promise((resolve, reject) => {
+      this.http.get(AppModule.apiLink + 'products').subscribe(
         (data) => {
           this.products = data;
           resolve(this.products);
@@ -214,23 +237,35 @@ export class OrderUpdateComponent {
     const promise = new Promise((resolve, reject) => {
       this.products.forEach((product) => {
         this.productObj[product['productId']] = product['productDesc'];
+        this.productToTypeObj[product['productId']] = product['productType'];
       });
       resolve(this.productObj);
     });
     return promise;
   }
 
-  getProductCombos(productId: string) {
+  getProductCombos() {
     const promise = new Promise((resolve, reject) => {
-      this.http
-        .get(AppModule.apiLink + 'productCombos/product/' + productId)
-        .subscribe(
-          (data) => {
-            this.productCombos = data;
-            resolve(this.productCombos);
-          },
-          (error) => reject(error)
-        );
+      this.http.get(AppModule.apiLink + 'productCombos').subscribe(
+        (data) => {
+          this.productCombos = data;
+          resolve(this.productCombos);
+        },
+        (error) => reject(error)
+      );
+    });
+    return promise;
+  }
+
+  getProductComboObj() {
+    const promise = new Promise((resolve, reject) => {
+      this.productCombos.forEach((productCombo) => {
+        this.productComboObj[productCombo['productComboId']] =
+          productCombo['productId'];
+        this.productComboToQtyObj[productCombo['productComboId']] =
+          productCombo['productQuantity'];
+      });
+      resolve(this.productObj);
     });
     return promise;
   }
@@ -315,35 +350,10 @@ export class OrderUpdateComponent {
               ),
             })
           );
+          this.addedItems.push(existingItem['productComboId']);
         }
       );
     });
-  }
-
-  onChangeProductType() {
-    let productType = (<HTMLInputElement>document.getElementById('productType'))
-      .value;
-    this.getProducts(productType)
-      .then(() => {
-        this.products.forEach((product) => {
-          this.productObj[product['productId']] = product['productDesc'];
-        });
-        this.productTypeSelected = true;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.toastr.error('Something went wrong');
-      });
-  }
-
-  onChangeProduct() {
-    let product = (<HTMLInputElement>document.getElementById('product')).value;
-    this.getProductCombos(product)
-      .then(() => this.getProductObj)
-      .catch((error) => {
-        console.log(error);
-        this.toastr.error('Something went wrong');
-      });
   }
 
   onChangeOrderType() {
@@ -357,54 +367,12 @@ export class OrderUpdateComponent {
     }
   }
 
-  onAddItem() {
-    let productCombo = (<HTMLInputElement>(
-      document.getElementById('productItem')
-    )).value;
-    if (productCombo) {
-      this.getCurrentProductCombo(productCombo)
-        .then((data) => {
-          this.addItem(data, productCombo);
-        })
-        .then(() => {
-          this.resetProducts();
-        })
-        .catch((error) => {
-          console.log(error);
-          this.toastr.error('Something went wrong');
-        });
-    } else {
-      this.toastr.warning('Please Select an Item!!!');
-    }
-  }
-
-  addItem(data: any, productComboId: string) {
-    let displayText =
-      this.productObj[data['productId']] +
-      '-' +
-      this.sizeObj[data['productSize']] +
-      '-' +
-      this.colorObj[data['productColor']];
-    (<FormArray>this.orderForm.get('newProductInventory')).push(
-      new FormGroup({
-        orderId: new FormControl(+this.orderId),
-        productCombo: new FormControl({ value: displayText, disabled: true }),
-        productComboId: new FormControl(+productComboId),
-        productPrice: new FormControl(null),
-        productGST: new FormControl(null),
-        productComboQuantity: new FormControl(null),
-      })
-    );
-  }
-
-  onSaveOrder(dispatch: boolean) {
+  onSaveOrder() {
     this.onRefresh()
-      .then(() => this.getOrderFormData(dispatch))
-      .then(() => this.saveOrder())
       .then(() => this.getOrderItems())
-      .then(() => this.saveOrderItems())
       .then(() => this.getNewOrderItems())
-      .then(() => this.saveNewOrderItems())
+      .then(() => this.getOrderFormData())
+      .then(() => this.saveOrder())
       .then((data) => {
         this.toastr.success('Order Saved Successfully!!!');
         this.orderForm.reset();
@@ -416,12 +384,12 @@ export class OrderUpdateComponent {
       });
   }
 
-  getOrderFormData(dispatch: boolean) {
+  getOrderFormData() {
     const promise = new Promise((resolve, reject) => {
       let orderTypeId = this.orderForm.value['orderTypeId'];
       let orderMerchantId = this.orderForm.value['orderMerchantId'];
       let orderDateTime = this.orderForm.value['orderDateTime'];
-      let orderDispatch = dispatch;
+      let orderDispatch = false;
       let orderAmount = this.orderForm.value['orderAmount'];
       let orderTotal = this.orderForm.value['orderTotal'];
       let orderDiscount = this.orderForm.value['orderDiscount'];
@@ -438,6 +406,7 @@ export class OrderUpdateComponent {
         orderDiscount: orderDiscount,
         orderQuantity: orderQuantity,
         remarks: remarks,
+        theLogs: this.orderItems,
       };
       resolve(this.orderFormData);
     });
@@ -463,9 +432,10 @@ export class OrderUpdateComponent {
       items.forEach((item) => {
         item['logType'] =
           this.orderTypeObj[this.orderForm.value['orderTypeId']];
-        this.newOrderItems.push(item);
+        item['orderId'] = this.orderId;
+        this.orderItems.push(item);
       });
-      resolve(this.newOrderItems);
+      resolve(this.orderItems);
     });
     return promise;
   }
@@ -480,40 +450,6 @@ export class OrderUpdateComponent {
       );
     });
     return promise;
-  }
-
-  saveOrderItems() {
-    const promise = new Promise((resolve, reject) => {
-      this.http
-        .put(AppModule.apiLink + 'productLogs/many', this.orderItems)
-        .subscribe(
-          (data) => {
-            resolve(data);
-          },
-          (error) => reject(error)
-        );
-    });
-    return promise;
-  }
-
-  saveNewOrderItems() {
-    const promise = new Promise((resolve, reject) => {
-      this.http
-        .post(AppModule.apiLink + 'productLogs/many', this.newOrderItems)
-        .subscribe(
-          (data) => {
-            resolve(data);
-          },
-          (error) => reject(error)
-        );
-    });
-    return promise;
-  }
-
-  resetProducts() {
-    (<HTMLInputElement>document.getElementById('productType')).value = '';
-    (<HTMLInputElement>document.getElementById('product')).value = '';
-    (<HTMLInputElement>document.getElementById('productItem')).value = '';
   }
 
   onRefresh() {
@@ -556,15 +492,30 @@ export class OrderUpdateComponent {
   }
 
   onRemoveItem(index: number) {
+    let itemId =
+      this.orderForm.value['newProductInventory'][index]['productComboId'];
+    this.addedItems.splice(this.addedItems.indexOf(itemId), 1);
     (<FormArray>this.orderForm.get('newProductInventory')).removeAt(index);
+    this.onRefresh();
   }
 
   onDeleteItem(index: number) {
     let productInventoryLogId =
       this.orderForm.value['productInventory'][index]['productInventoryLogId'];
-    this.deleteItem(productInventoryLogId).then(() => {
-      (<FormArray>this.orderForm.get('productInventory')).removeAt(index);
-    });
+    this.deleteItem(productInventoryLogId)
+      .then(() => {
+        this.toastr.success('Item deleted successfully');
+        this.addedItems.splice(
+          this.addedItems.indexOf(productInventoryLogId),
+          1
+        );
+        (<FormArray>this.orderForm.get('productInventory')).removeAt(index);
+      })
+      .then(() => this.onRefresh())
+      .catch((error) => {
+        console.log(error);
+        this.toastr.error('Something went wrong');
+      });
   }
 
   deleteItem(productInventoryLogId: string) {
@@ -573,18 +524,46 @@ export class OrderUpdateComponent {
         .delete(AppModule.apiLink + 'productLogs/' + productInventoryLogId)
         .subscribe(
           (data) => {
-            if (data['success']) {
-              this.toastr.success('Item Deleted Successfully');
-            }
             resolve(data);
           },
           (error) => {
-            this.toastr.error('Something went wrong');
             reject(error);
           }
         );
     });
     return promise;
+  }
+
+  onToggle(productCombo: any, event: Event) {
+    if (event.srcElement['checked']) {
+      if (this.addedItems.indexOf(productCombo.productComboId) === -1) {
+        let displayText =
+          this.productObj[productCombo['productId']] +
+          '-' +
+          this.sizeObj[productCombo['productSize']] +
+          '-' +
+          this.colorObj[productCombo['productColor']];
+        (<FormArray>this.orderForm.get('newProductInventory')).push(
+          new FormGroup({
+            productCombo: new FormControl({
+              value: displayText,
+              disabled: true,
+            }),
+            productComboId: new FormControl(productCombo.productComboId),
+            productPrice: new FormControl(null),
+            productGST: new FormControl(null),
+            productComboQuantity: new FormControl(null),
+            maxQty: new FormControl({
+              value: productCombo.productComboQuantity,
+              disabled: true,
+            }),
+          })
+        );
+        this.addedItems.push(productCombo.productComboId);
+      } else {
+        this.toastr.warning('Already Added!');
+      }
+    }
   }
 
   onBack() {

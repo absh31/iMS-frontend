@@ -238,21 +238,6 @@ export class OrderAddComponent implements OnInit {
     return promise;
   }
 
-  getCurrentProductCombo(productComboId: string) {
-    const promise = new Promise((resolve, reject) => {
-      this.http
-        .get(AppModule.apiLink + 'productCombos/' + productComboId)
-        .subscribe(
-          (data) => {
-            this.currentProductCombo = data;
-            resolve(this.currentProductCombo);
-          },
-          (error) => reject(error)
-        );
-    });
-    return promise;
-  }
-
   initForm() {
     const promise = new Promise((resolve, reject) => {
       let orderTypeId = '';
@@ -274,7 +259,7 @@ export class OrderAddComponent implements OnInit {
         productType: new FormControl(null),
         product: new FormControl(null),
         productItem: new FormControl(null),
-        productInventory: new FormArray([], Validators.required),
+        productInventory: new FormArray([]),
       });
       resolve(this.orderForm);
     });
@@ -282,6 +267,8 @@ export class OrderAddComponent implements OnInit {
   }
 
   onSaveOrder() {
+    console.log(this.orderForm);
+    
     this.onRefresh().then(() => {});
     if (this.orderForm.valid) {
       this.onRefresh()
@@ -357,26 +344,6 @@ export class OrderAddComponent implements OnInit {
         );
     });
     return promise;
-  }
-
-  saveOrderItems() {
-    const promise = new Promise((resolve, reject) => {
-      this.http
-        .post(AppModule.apiLink + 'productLogs/many', this.orderItems)
-        .subscribe(
-          (data) => {
-            resolve(data);
-          },
-          (error) => reject(error)
-        );
-    });
-    return promise;
-  }
-
-  resetProducts() {
-    (<HTMLInputElement>document.getElementById('productType')).value = '';
-    (<HTMLInputElement>document.getElementById('product')).value = '';
-    (<HTMLInputElement>document.getElementById('productItem')).value = '';
   }
 
   onRefresh() {
