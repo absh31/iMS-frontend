@@ -3,7 +3,6 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #EAFAEA;
-  /* background-image: linear-gradient(#80C3BF, #E6EEEA); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -16,7 +15,6 @@ body {
 .navbar,
 .modal-header,
 .dark {
-  /* background-color: #EAFAEA; */
   background-color: #2C3743;
   color: #EAFAEA;
 }
@@ -25,21 +23,21 @@ body {
   background-color: azure;
 }
 
-.card-body{
+.card-body {
   background-color: transparent;
 }
 
-.dark-bg{
+.dark-bg {
   background-color: #2C3743;
   color: #EAFAEA;
 }
 
-.card-body{
+.card-body {
   background-color: #ffffff;
-  color: #2C3743; 
+  color: #2C3743;
 }
 
-.dark-font{
+.dark-font {
   color: #2C3743;
 }
 
