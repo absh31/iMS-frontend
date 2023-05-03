@@ -140,10 +140,10 @@ export class ProductAddComponent implements OnInit {
       productType: this.productForm.value['productType'],
       productHSN: this.productForm.value['productHSN'],
       remarks: this.productForm.value['remarks'],
+      theCombos: this.productForm.value['combinations'],
     };
 
     this.addProduct(data)
-      .then(() => this.addCombos())
       .then(() => {
         this.toastr.success('Product Added Successfully!!!');
         this.productForm.reset();
@@ -169,30 +169,6 @@ export class ProductAddComponent implements OnInit {
           reject(error);
         }
       );
-    });
-    return promise;
-  }
-
-  addCombos() {
-    const promise = new Promise((resolve, reject) => {
-      let combinations = this.productForm.value['combinations'];
-      combinations.forEach((combo) => {
-        combo.productId = this.id;
-      });
-      this.http
-        .post(AppModule.apiLink + 'productCombos/many', combinations)
-        .subscribe(
-          (data) => {
-            if (data['success']) {
-              resolve(data);
-            } else {
-              reject(data);
-            }
-          },
-          (error) => {
-            reject(error);
-          }
-        );
     });
     return promise;
   }
